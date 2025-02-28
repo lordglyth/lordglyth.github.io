@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT HUD</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        input, button { margin: 10px; padding: 8px; font-size: 16px; }
+        #response { margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>ChatGPT HUD</h2>
+    <input type="text" id="userInput" placeholder="Type a message...">
+    <button onclick="sendMessage()">Send</button>
+    <p id="response">Waiting for input...</p>
+
+    <script>
+        function sendMessage() {
+            let userMessage = document.getElementById("userInput").value;
+            if (!userMessage.trim()) {
+                document.getElementById("response").innerText = "⚠️ Please enter a message.";
+                return;
+            }
+
+            fetch("https://api.openai.com/v1/chat/completions", {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("openai_api_key")
+                },
+                body: JSON.stringify({
+                    model: "gpt-4", 
+                    messages: [{ role: "user", content: userMessage }]
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.choices && data.choices.length > 0) {
+                    document.getElementById("response").innerText = "ChatGPT: " + data.choices[0].message.content;
+                } else {
+                    document.getElementById("response").innerText = "⚠️ Error: No response from ChatGPT.";
+                }
+            })
+            .catch(error => {
+                document.getElementById("response").innerText = "❌ Error: " + error;
+                console.error("Error:", error);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,141 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
+<script>
+    const workerURL = "https://long-queen-ad3e.r-p-gmafia.workers.dev/"; // Replace with your actual Cloudflare Worker URL
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatGPT HUD</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+    function sendMessage() {
+        let userMessage = document.getElementById("userInput").value;
+
+        if (!userMessage.trim()) {
+            document.getElementById("response").innerHTML = "<span class='error'>⚠️ Please enter a message.</span>";
+            return;
         }
 
-        #chatContainer {
-            width: 80%;
-            max-width: 800px;
-            height: 500px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            overflow-y: scroll;
-            padding: 10px;
-            background-color: #f9f9f9;
-            margin-bottom: 10px;
-        }
+        document.getElementById("response").innerText = "⏳ Waiting for response...";
 
-        .message {
-            margin: 5px 0;
-        }
-
-        .user {
-            color: #1e90ff;
-        }
-
-        .bot {
-            color: #333;
-        }
-
-        .error {
-            color: red;
-        }
-
-        #inputContainer {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 80%;
-            max-width: 800px;
-        }
-
-        input {
-            flex: 1;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        button {
-            padding: 8px 12px;
-            margin-left: 5px;
-            border: 1px solid #1e90ff;
-            background-color: #1e90ff;
-            color: #fff;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #1c86ee;
-        }
-    </style>
-</head>
-
-<body>
-
-    <h2>ChatGPT HUD</h2>
-
-    <div id="chatContainer"></div>
-
-    <div id="inputContainer">
-        <input type="text" id="userInput" placeholder="Type a message...">
-        <button onclick="sendMessage()">Send</button>
-    </div>
-
-    <script>
-        const workerURL = "https://long-queen-ad3e.r-p-gmafia.workers.dev/"; // Replace with your actual Cloudflare Worker URL
-        const chatContainer = document.getElementById("chatContainer");
-        const userInput = document.getElementById("userInput");
-
-        let chatHistory = [];
-
-        function addMessage(role, content, error = false) {
-            const messageElement = document.createElement("div");
-            messageElement.className = "message";
-            if (error) {
-                messageElement.innerHTML = `<span class="error">❌ ${role}: ${content}</span>`;
-            } else {
-                messageElement.innerHTML = `<span class="${role}">${role === "user" ? "👤" : "🤖"} ${role}: ${content}</span>`;
-            }
-            chatContainer.appendChild(messageElement);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        function sendMessage() {
-            const userMessage = userInput.value.trim();
-            if (!userMessage) return;
-
-            addMessage("user", userMessage);
-            userInput.value = "";
-
-            fetch(workerURL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    messages: [...chatHistory, { role: "user", content: userMessage }]
-                })
+        fetch(workerURL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                messages: [{ role: "user", content: userMessage }]
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status} - ${response.statusText}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.choices && data.choices.length > 0) {
-                        const botMessage = data.choices[0].message.content;
-                        addMessage("bot", botMessage);
-                        chatHistory.push({ role: "user", content: userMessage });
-                        chatHistory.push({ role: "bot", content: botMessage });
-                    } else {
-                        addMessage("error", "Error: No response from ChatGPT.", true);
-                    }
-                })
-                .catch(error => {
-                    addMessage("error", `Error: ${error.message}`, true);
-                    console.error("Error:", error);
-                });
-        }
-   
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.choices && data.choices.length > 0) {
+                document.getElementById("response").innerText = "🗨️ ChatGPT: " + data.choices[0].message.content;
+            } else {
+                document.getElementById("response").innerHTML = "<span class='error'>⚠️ Error: No response from ChatGPT.</span>";
+            }
+        })
+        .catch(error => {
+            document.getElementById("response").innerHTML = `<span class='error'>❌ Error: ${error.message}</span>`;
+            console.error("Error:", error);
+        });
+    }
+</script>

@@ -40,7 +40,7 @@
             color: #4e94ce;
         }
 
-        .bot {
+        .assistant {
             color: #c586c0;
         }
 
@@ -100,14 +100,14 @@
         // Add a message to the chat history
         function addMessage(role, content) {
             const messageElem = document.createElement("div");
-            messageElem.className = "message " + (role === "user" ? "user" : "bot");
-            messageElem.innerHTML = `<b>${role === "user" ? "👤 user:" : "🤖 bot:"}</b> ${content}`;
+            messageElem.className = "message " + (role === "user" ? "user" : role === "assistant" ? "assistant" : "error");
+            messageElem.innerHTML = `<b>${role === "user" ? "👤 user:" : role === "assistant" ? "🤖 bot:" : "❌ error:"}</b> ${content}`;
             chatHistory.appendChild(messageElem);
             chatHistory.scrollTop = chatHistory.scrollHeight;
         }
 
         // Send message to the server
-        async function sendMessage() {
+        function sendMessage() {
             const userMessage = document.getElementById("userInput").value.trim();
             if (!userMessage) return;
 
@@ -117,39 +117,33 @@
 
             document.getElementById("userInput").value = "";
 
-            try {
-                const response = await fetch(workerURL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        messages: messageHistory
-                    })
+            fetch(workerURL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    messages: messageHistory
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.choices && data.choices.length > 0) {
+                        const botMessage = data.choices[0].message.content;
+                        addMessage("assistant", botMessage);  // Change 'bot' to 'assistant' here
+                        messageHistory.push({ role: "assistant", content: botMessage });  // Change 'bot' to 'assistant' here
+                        saveMessages();
+                    } else {
+                        addMessage("error", "❌ Error: No response from ChatGPT.");
+                    }
+                })
+                .catch(error => {
+                    addMessage("error", `❌ Error: ${error.message}`);
+                    console.error("Error:", error);
                 });
-
-                console.log("Response Status:", response.status);
-                console.log("Response Headers:", response.headers);
-
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error("Error Response Body:", errorText);
-                    throw new Error(`HTTP ${response.status} - ${response.statusText}`);
-                }
-
-                const data = await response.json();
-                console.log("API Response:", data);
-
-                if (data.choices && data.choices.length > 0) {
-                    const botMessage = data.choices[0].message.content;
-                    addMessage("bot", botMessage);
-                    messageHistory.push({ role: "bot", content: botMessage });
-                    saveMessages();
-                } else {
-                    addMessage("error", "❌ Error: No response from ChatGPT.");
-                }
-            } catch (error) {
-                addMessage("error", `❌ Error: ${error.message}`);
-                console.error("Error:", error);
-            }
         }
 
         // Load previous messages on start

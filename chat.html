@@ -69,9 +69,20 @@
     <script>
         const workerURL = "https://long-queen-ad3e.r-p-gmafia.workers.dev/"; // Replace with your actual Cloudflare Worker URL
 
-        // Load chat history from localStorage
+        // Function to load chat history from localStorage
+        function loadChatHistory() {
+            const savedHistory = localStorage.getItem("chatHistory");
+            return savedHistory ? JSON.parse(savedHistory) : [];
+        }
+
+        // Function to save chat history to localStorage
+        function saveChatHistory() {
+            localStorage.setItem("chatHistory", JSON.stringify(messages));
+        }
+
+        // Initialize chat history
         const chatHistory = document.getElementById("chatHistory");
-        let messages = JSON.parse(localStorage.getItem("chatHistory")) || [];
+        let messages = loadChatHistory();
 
         // Function to render chat history
         function renderChat() {
@@ -99,7 +110,7 @@
 
             // Display user message
             messages.push({ role: "user", content: userMessage });
-            localStorage.setItem("chatHistory", JSON.stringify(messages));
+            saveChatHistory(); // Save to localStorage
             renderChat();
             document.getElementById("messageInput").value = "";
 
@@ -122,12 +133,12 @@
                     } else {
                         messages.push({ role: "error", content: "No response from ChatGPT." });
                     }
-                    localStorage.setItem("chatHistory", JSON.stringify(messages));
+                    saveChatHistory(); // Save to localStorage
                     renderChat();
                 })
                 .catch(error => {
                     messages.push({ role: "error", content: error.message });
-                    localStorage.setItem("chatHistory", JSON.stringify(messages));
+                    saveChatHistory(); // Save to localStorage
                     renderChat();
                     console.error("Error:", error);
                 });

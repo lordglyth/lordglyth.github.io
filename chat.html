@@ -100,8 +100,8 @@
         // Add a message to the chat history
         function addMessage(role, content) {
             const messageElem = document.createElement("div");
-            messageElem.className = "message " + (role === "user" ? "user" : role === "assistant" ? "assistant" : "error");
-            messageElem.innerHTML = `<b>${role === "user" ? "👤 user:" : role === "assistant" ? "🤖 bot:" : "❌ error:"}</b> ${content}`;
+            messageElem.className = "message " + (role === "user" ? "user" : "assistant");
+            messageElem.innerHTML = `<b>${role === "user" ? "👤 user:" : "🤖 assistant:"}</b> ${content}`;
             chatHistory.appendChild(messageElem);
             chatHistory.scrollTop = chatHistory.scrollHeight;
         }
@@ -133,8 +133,8 @@
                 .then(data => {
                     if (data.choices && data.choices.length > 0) {
                         const botMessage = data.choices[0].message.content;
-                        addMessage("assistant", botMessage);  // Change 'bot' to 'assistant' here
-                        messageHistory.push({ role: "assistant", content: botMessage });  // Change 'bot' to 'assistant' here
+                        addMessage("assistant", botMessage);  // Updated role to "assistant"
+                        messageHistory.push({ role: "assistant", content: botMessage });  // Updated role to "assistant"
                         saveMessages();
                     } else {
                         addMessage("error", "❌ Error: No response from ChatGPT.");

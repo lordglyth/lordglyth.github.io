@@ -8,31 +8,29 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            text-align: center;
             padding: 20px;
-            background-color: #f9f9f9;
+            background-color: #f7f7f7;
         }
 
-        #chat-container {
+        #chatContainer {
+            width: 80%;
             max-width: 800px;
             margin: 0 auto;
             border: 1px solid #ddd;
             border-radius: 5px;
             background-color: #fff;
-            display: flex;
-            flex-direction: column;
-            height: 500px;
-            overflow: hidden;
-        }
-
-        #chat-history {
-            flex-grow: 1;
             padding: 10px;
-            overflow-y: auto;
-            border-bottom: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .message {
-            margin: 5px 0;
+        #chatHistory {
+            height: 400px;
+            overflow-y: scroll;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding: 5px;
+            background-color: #f9f9f9;
         }
 
         .user {
@@ -40,94 +38,72 @@
         }
 
         .bot {
-            color: #444;
+            color: #555;
         }
 
         .error {
             color: red;
         }
 
-        .icon {
-            width: 20px;
-            vertical-align: middle;
+        #messageInput {
+            width: calc(100% - 90px);
+            padding: 5px;
+            margin-bottom: 10px;
         }
 
-        #input-container {
-            display: flex;
-            padding: 10px;
-            border-top: 1px solid #ddd;
-            background-color: #f1f1f1;
-        }
-
-        #userInput {
-            flex-grow: 1;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        button {
-            margin-left: 5px;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #1a73e8;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #1664c4;
+        #sendButton {
+            padding: 5px 10px;
         }
     </style>
 </head>
 
 <body>
 
-    <h2 style="text-align: center;">ChatGPT HUD</h2>
-
-    <div id="chat-container">
-        <div id="chat-history"></div>
-        <div id="input-container">
-            <input type="text" id="userInput" placeholder="Type a message..." onkeydown="if(event.key === 'Enter') sendMessage()">
-            <button onclick="sendMessage()">Send</button>
-        </div>
+    <h2>ChatGPT HUD</h2>
+    <div id="chatContainer">
+        <div id="chatHistory"></div>
+        <input type="text" id="messageInput" placeholder="Type a message..." onkeydown="if(event.key === 'Enter') sendMessage()">
+        <button id="sendButton" onclick="sendMessage()">Send</button>
     </div>
 
     <script>
         const workerURL = "https://long-queen-ad3e.r-p-gmafia.workers.dev/"; // Replace with your actual Cloudflare Worker URL
 
-        // Function to add a message to the chat history
-        function addMessage(role, text, isError = false) {
-            const chatHistory = document.getElementById("chat-history");
-            const messageDiv = document.createElement("div");
-            messageDiv.className = "message";
+        // Load chat history from localStorage
+        const chatHistory = document.getElementById("chatHistory");
+        let messages = JSON.parse(localStorage.getItem("chatHistory")) || [];
 
-            if (isError) {
-                messageDiv.innerHTML = `<span class="error">❌ Error: ${text}</span>`;
-            } else {
-                const icon = role === "user" ? "👤" : "🤖";
-                const roleClass = role === "user" ? "user" : "bot";
-                messageDiv.innerHTML = `<span class="${roleClass}">${icon} ${role}: ${text}</span>`;
-            }
-
-            chatHistory.appendChild(messageDiv);
-            chatHistory.scrollTop = chatHistory.scrollHeight; // Scroll to bottom
+        // Function to render chat history
+        function renderChat() {
+            chatHistory.innerHTML = "";
+            messages.forEach(msg => {
+                const div = document.createElement("div");
+                if (msg.role === "user") {
+                    div.innerHTML = `<span class="user">👤 user: </span>${msg.content}`;
+                } else if (msg.role === "bot") {
+                    div.innerHTML = `<span class="bot">🤖 bot: </span>${msg.content}`;
+                } else if (msg.role === "error") {
+                    div.innerHTML = `<span class="error">❌ Error: </span>${msg.content}`;
+                }
+                chatHistory.appendChild(div);
+            });
+            chatHistory.scrollTop = chatHistory.scrollHeight; // Auto-scroll to bottom
         }
 
-        // Send message to the server
+        // Initial render
+        renderChat();
+
         function sendMessage() {
-            const userInput = document.getElementById("userInput");
-            const userMessage = userInput.value.trim();
+            const userMessage = document.getElementById("messageInput").value.trim();
+            if (!userMessage) return;
 
-            if (!userMessage) {
-                addMessage("error", "Please enter a message.", true);
-                return;
-            }
+            // Display user message
+            messages.push({ role: "user", content: userMessage });
+            localStorage.setItem("chatHistory", JSON.stringify(messages));
+            renderChat();
+            document.getElementById("messageInput").value = "";
 
-            addMessage("user", userMessage);
-            userInput.value = "";
-
+            // Fetch response from Cloudflare Worker
             fetch(workerURL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -136,21 +112,23 @@
                 })
             })
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status} - ${response.statusText}`);
-                    }
+                    if (!response.ok) throw new Error(`HTTP ${response.status} - ${response.statusText}`);
                     return response.json();
                 })
                 .then(data => {
                     if (data.choices && data.choices.length > 0) {
                         const botMessage = data.choices[0].message.content;
-                        addMessage("bot", botMessage);
+                        messages.push({ role: "bot", content: botMessage });
                     } else {
-                        addMessage("error", "No response from ChatGPT.", true);
+                        messages.push({ role: "error", content: "No response from ChatGPT." });
                     }
+                    localStorage.setItem("chatHistory", JSON.stringify(messages));
+                    renderChat();
                 })
                 .catch(error => {
-                    addMessage("error", `Failed to fetch`, true);
+                    messages.push({ role: "error", content: error.message });
+                    localStorage.setItem("chatHistory", JSON.stringify(messages));
+                    renderChat();
                     console.error("Error:", error);
                 });
         }

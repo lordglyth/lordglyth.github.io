@@ -1,48 +1,170 @@
-// Add a message to the chat history
-function addMessage(role, content) {
-    const messageElem = document.createElement("div");
-    messageElem.className = "message " + (role === "user" ? "user" : "assistant");
-    messageElem.innerHTML = `<b>${role === "user" ? "👤 user:" : "🤖 assistant:"}</b> ${content}`;
-    chatHistory.appendChild(messageElem);
-    chatHistory.scrollTop = chatHistory.scrollHeight;
-}
+<!DOCTYPE html>
+<html lang="en">
 
-// Send message to the server
-function sendMessage() {
-    const userMessage = document.getElementById("userInput").value.trim();
-    if (!userMessage) return;
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT HUD</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            padding: 20px;
+            text-align: center;
+        }
 
-    addMessage("user", userMessage);
-    messageHistory.push({ role: "user", content: userMessage });
-    saveMessages();
+        #chatContainer {
+            width: 60%;
+            margin: 0 auto;
+            background-color: #2d2d2d;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
 
-    document.getElementById("userInput").value = "";
+        #chatHistory {
+            max-height: 400px;
+            overflow-y: auto;
+            background-color: #252526;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
 
-    fetch(workerURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            messages: messageHistory
-        })
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+        .message {
+            margin: 5px 0;
+        }
+
+        .user {
+            color: #4e94ce;
+        }
+
+        .assistant {
+            color: #c586c0;
+        }
+
+        .error {
+            color: #f44747;
+        }
+
+        #userInput {
+            width: calc(100% - 100px);
+            padding: 8px;
+            border: 1px solid #3c3c3c;
+            border-radius: 5px;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+        }
+
+        #sendButton {
+            padding: 8px 15px;
+            background-color: #007acc;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        #sendButton:hover {
+            background-color: #005f9e;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>ChatGPT HUD</h2>
+
+    <div id="chatContainer">
+        <div id="chatHistory"></div>
+        <input type="text" id="userInput" placeholder="Type a message..." onkeydown="if(event.key === 'Enter') sendMessage()">
+        <button id="sendButton" onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        const workerURL = "https://long-queen-ad3e.r-p-gmafia.workers.dev/"; // Replace with your Cloudflare Worker URL
+        const chatHistory = document.getElementById("chatHistory");
+        let messageHistory = JSON.parse(localStorage.getItem("messageHistory")) || [];
+
+        // Load saved messages
+        function loadMessages() {
+            console.log("Loading messages...");
+            const savedMessages = localStorage.getItem("messageHistory");
+            if (savedMessages) {
+                messageHistory = JSON.parse(savedMessages);
+                messageHistory.forEach(msg => addMessage(msg.role, msg.content));
             }
-            return response.json();
-        })
-        .then(data => {
-            if (data.choices && data.choices.length > 0) {
-                const botMessage = data.choices[0].message.content;
-                addMessage("assistant", botMessage);  // Use "assistant" instead of "bot"
-                messageHistory.push({ role: "assistant", content: botMessage });  // Use "assistant" instead of "bot"
-                saveMessages();
-            } else {
-                addMessage("error", "❌ Error: No response from ChatGPT.");
-            }
-        })
-        .catch(error => {
-            addMessage("error", `❌ Error: ${error.message}`);
-            console.error("Error:", error);
-        });
-}
+        }
+
+        // Save message history
+        function saveMessages() {
+            console.log("Saving messages:", messageHistory);
+            localStorage.setItem("messageHistory", JSON.stringify(messageHistory));
+        }
+
+        // Add a message to the chat history
+        function addMessage(role, content) {
+            const messageElem = document.createElement("div");
+            messageElem.className = "message " + (role === "user" ? "user" : "assistant");
+            messageElem.innerHTML = `${role === "user" ? "👤 user:" : "🤖 assistant:"} ${content}`;
+            chatHistory.appendChild(messageElem);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+
+        // Send message to the server
+        function sendMessage() {
+            const userMessage = document.getElementById("userInput").value.trim();
+            if (!userMessage) return;
+
+            addMessage("user", userMessage);
+            messageHistory.push({ role: "user", content: userMessage });
+            saveMessages();
+
+            document.getElementById("userInput").value = "";
+
+            fetch(workerURL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    messages: messageHistory
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Received data:", data);
+                    if (data.choices && data.choices.length > 0) {
+                        const botMessage = data.choices[0].message.content;
+                        addMessage("assistant", botMessage);
+                        messageHistory.push({ role: "assistant", content: botMessage });
+                        saveMessages();
+                    } else {
+                        addMessage("error", "❌ Error: No response from ChatGPT.");
+                    }
+                })
+                .catch(error => {
+                    addMessage("error", `❌ Error: ${error.message}`);
+                    console.error("Error:", error);
+                });
+        }
+
+        // Clear message history (for testing purposes)
+        function clearMessages() {
+            localStorage.removeItem("messageHistory");
+            messageHistory = [];
+            chatHistory.innerHTML = "";
+            console.log("Cleared message history.");
+        }
+
+        // Load previous messages on start
+        loadMessages();
+    </script>
+
+</body>
+
+</html>

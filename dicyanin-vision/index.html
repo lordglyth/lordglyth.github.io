@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0a0620" />
+  <meta name="description" content="Dicyanin Vision — a local, deterministic spectral image-processing simulator." />
+  <title>Dicyanin Vision</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">◉</div>
+      <div>
+        <h1>Dicyanin Vision</h1>
+        <p>Local spectral image simulator</p>
+      </div>
+    </div>
+    <div class="toolbar">
+      <label class="button primary" for="fileInput">Open Image</label>
+      <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp,image/bmp" hidden />
+      <select id="presetSelect" class="select" aria-label="Preset">
+        <option value="historical">Historical Dicyanin</option>
+        <option value="spectral" selected>Spectral</option>
+        <option value="extreme">Extreme Spectral</option>
+        <option value="darkroom">Darkroom</option>
+        <option value="aura">Aura View</option>
+      </select>
+      <button id="saveBtn" class="button">Save Image</button>
+      <button id="exportCompareBtn" class="button">Export Comparison</button>
+      <button id="cameraBtn" class="button">Live Camera</button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section class="workspace" id="dropZone">
+      <div class="drop-hint" id="dropHint">
+        <div class="drop-icon">✦</div>
+        <h2>Drop an image here</h2>
+        <p>PNG, JPG, WEBP, or BMP. Processing stays in your browser.</p>
+      </div>
+
+      <div class="viewer-grid" id="viewerGrid" hidden>
+        <article class="viewer-panel">
+          <div class="viewer-title"><span>Original</span><span id="sourceInfo"></span></div>
+          <div class="canvas-wrap"><canvas id="originalCanvas"></canvas></div>
+        </article>
+        <article class="viewer-panel">
+          <div class="viewer-title"><span>Dicyanin View</span><span id="renderInfo"></span></div>
+          <div class="canvas-wrap"><canvas id="processedCanvas"></canvas></div>
+        </article>
+      </div>
+    </section>
+
+    <aside class="sidebar">
+      <div class="sidebar-actions">
+        <button id="resetBtn" class="button compact">Reset</button>
+        <button id="randomBtn" class="button compact">Randomize</button>
+        <button id="copyBtn" class="button compact">Copy Image</button>
+        <button id="compareBtn" class="button compact">Compare Original</button>
+        <button id="fullBtn" class="button compact">Full Screen</button>
+      </div>
+
+      <div class="toggles">
+        <label class="toggle-row"><span>Subject Aura Enhancement</span><input id="subjectAura" type="checkbox" checked /></label>
+        <label class="toggle-row"><span>Show Goggles</span><input id="showGoggles" type="checkbox" /></label>
+      </div>
+
+      <div id="controls" class="controls"></div>
+
+      <details class="details" open>
+        <summary>Processing notes</summary>
+        <p>Deterministic local pipeline: luminance analysis, shadow recovery, Sobel edges, multi-radius aura fields, bloom, spectral separation, texture reaction, haze, and optional lens simulation.</p>
+      </details>
+    </aside>
+  </main>
+
+  <div id="compareOverlay" class="compare-overlay" hidden>
+    <button id="closeCompareBtn" class="close-button" aria-label="Close comparison">×</button>
+    <div class="compare-stage" id="compareStage">
+      <canvas id="compareProcessed"></canvas>
+      <div id="compareOriginalClip" class="compare-original-clip"><canvas id="compareOriginal"></canvas></div>
+      <div id="compareDivider" class="compare-divider"><span></span></div>
+      <input id="compareRange" type="range" min="0" max="100" value="50" aria-label="Before after comparison" />
+      <div class="compare-label left">Original</div>
+      <div class="compare-label right">Dicyanin</div>
+    </div>
+  </div>
+
+  <dialog id="cameraDialog" class="camera-dialog">
+    <form method="dialog" class="dialog-topbar">
+      <div><strong>Live Dicyanin Camera</strong><small> Runs locally in this browser</small></div>
+      <button class="close-button" value="close" aria-label="Close camera">×</button>
+    </form>
+    <div class="camera-controls">
+      <select id="cameraSelect" class="select"><option value="">Default camera</option></select>
+      <select id="cameraResolution" class="select">
+        <option value="640x480">640 × 480</option>
+        <option value="1280x720" selected>1280 × 720</option>
+        <option value="1920x1080">1920 × 1080</option>
+      </select>
+      <button id="startCameraBtn" class="button primary" type="button">Start</button>
+      <button id="stopCameraBtn" class="button" type="button">Stop</button>
+      <button id="snapCameraBtn" class="button" type="button">Screenshot</button>
+      <button id="recordCameraBtn" class="button" type="button">Record</button>
+      <label class="toggle-inline">Effect <input id="cameraEffect" type="checkbox" checked /></label>
+      <span id="fpsCounter">0 FPS</span>
+    </div>
+    <div class="camera-stage">
+      <video id="cameraVideo" playsinline muted></video>
+      <canvas id="cameraCanvas"></canvas>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast" hidden></div>
+  <script src="app.js"></script>
+</body>
+</html>

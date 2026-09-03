@@ -1,0 +1,10 @@
+{
+  "name": "Dicyanin Vision",
+  "short_name": "Dicyanin",
+  "description": "Local spectral image-processing simulator",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#070510",
+  "theme_color": "#0a0620",
+  "icons": []
+}

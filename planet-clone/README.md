@@ -17,6 +17,9 @@ The planet painter is inspired by the *kind* of tactile tiny-world interaction s
 - Sandbox mode and NPC creation.
 - Browser-local save/load.
 - Local LLM support through Ollama, with a deterministic built-in simulation fallback when Ollama is disconnected.
+- **Soji Core** system/world profile injected into Ollama decisions for persistent canon, autonomous non-yes-men NPCs, memory/relationship continuity and strict player agency.
+- **Mobile-first control dock**: Tools, NPC, Influence, Soji and View open as thumb-friendly bottom sheets while leaving the planet visible.
+- Mobile safe-area support, 44px+ touch targets, landscape handling, scrollable quick events and full-screen mobile Chronicle mode.
 
 ## Best way to use your local Ollama model
 
@@ -24,16 +27,25 @@ GitHub Pages can run the visual sandbox, but browsers can restrict requests from
 
 1. Install/run Ollama and make sure you have at least one model (`ollama list`).
 2. Clone/download this folder to the computer running Ollama.
-3. Double-click **`start_local.bat`** on Windows, or run `python local_server.py`.
-4. The game opens at `http://127.0.0.1:8765/`.
-5. In **LOCAL AI**, keep **Local companion server (recommended)** selected and press **Connect**.
-6. Pick any installed Ollama model. Auto AI will rotate NPC decisions through the model; **Think now** forces the selected NPC to decide immediately.
+3. Optional: copy `.env.example` to `.env` and change local settings.
+4. Double-click **`start_local.bat`** on Windows, or run `python local_server.py`.
+5. The game opens at `http://127.0.0.1:8765/`.
+6. In **LOCAL AI · SOJI CORE**, keep **Local companion server (recommended)** selected and press **Connect**.
+7. Pick any installed Ollama model. Auto AI rotates NPC decisions through the model; **Think now** forces the selected NPC to decide immediately.
 
-The server uses Python's standard library only. By default it proxies to `http://127.0.0.1:11434`. Override that with the `OLLAMA_URL` environment variable if needed.
+The server uses Python's standard library only. By default it proxies to `http://127.0.0.1:11434`. It loads `.env` itself, so no extra package is needed. The real `.env` is gitignored.
+
+## Soji Core
+
+`soji_profile.json` follows the Soji Worlds wrapper convention and carries the world/system behavior for this simulation. `soji_client.js` injects the profile for browser/direct requests, while `local_server.py` injects it for proxied requests. Both mark the prompt with `[SOJI CORE]` so it is not duplicated.
+
+The profile keeps NPCs autonomous and distinct, preserves stable identities/canon/memories/relationships, limits NPC knowledge to what they plausibly know, keeps consequences persistent, and does not decide the player's thoughts, feelings, dialogue, choices or physical actions. Default temperature is `0.84`.
+
+See **`SOJI.md`** for the exact setup and environment variables.
 
 ## Direct Ollama mode
 
-The UI also includes a **Direct Ollama URL** mode. This can work when the browser is allowed to call your Ollama endpoint directly and Ollama's allowed origins are configured for the page origin. The companion-server mode is less fiddly and keeps the LLM traffic local.
+The UI also includes a **Direct Ollama URL** mode. This can work when the browser is allowed to call your Ollama endpoint directly and Ollama's allowed origins are configured for the page origin. `soji_client.js` still injects Soji Core into `/api/chat` and `/api/generate` calls in this mode.
 
 ## How local AI is used
 

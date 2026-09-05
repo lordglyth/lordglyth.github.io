@@ -1,0 +1,23 @@
+name: Fox's Tails smoke test
+
+on:
+  push:
+    paths:
+      - 'foxs-tails/**'
+      - '.github/workflows/foxs-tails-smoke.yml'
+  pull_request:
+    paths:
+      - 'foxs-tails/**'
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check JavaScript syntax
+        run: node --check foxs-tails/game.js
+      - name: Verify required game files
+        run: |
+          test -s foxs-tails/index.html
+          test -s foxs-tails/style.css
+          test -s foxs-tails/game.js

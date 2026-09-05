@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#1a241d" />
+  <title>Fox's Tails</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main id="app">
+    <canvas id="game" width="1280" height="720" aria-label="Fox's Tails game canvas"></canvas>
+
+    <section id="titleScreen" class="panel title-screen">
+      <div class="logo-mark">🦊</div>
+      <h1>Fox's Tails</h1>
+      <p class="tagline">A little fox. Three lost moon-ribbons. One village full of secrets.</p>
+      <button id="startBtn">Begin Adventure</button>
+      <button id="continueBtn" class="secondary">Continue</button>
+      <p class="tiny">WASD / arrows · E interact · Q scent vision · Space tail-swish · Shift sprint</p>
+    </section>
+
+    <section id="dialogue" class="dialogue hidden" aria-live="polite">
+      <div id="speaker" class="speaker"></div>
+      <div id="dialogueText"></div>
+      <div class="continue-hint">E / tap to continue</div>
+    </section>
+
+    <section id="hud" class="hud hidden">
+      <div class="hud-card objective-card">
+        <div class="hud-label">Current trail</div>
+        <div id="objective">Speak to Elder Rowan by the lantern tree.</div>
+      </div>
+      <div class="hud-card stats-card">
+        <span>🌙 Ribbons <strong id="ribbonCount">0/3</strong></span>
+        <span>🫐 Berries <strong id="berryCount">0</strong></span>
+      </div>
+      <div id="scentStatus" class="scent-status">SCENT VISION</div>
+    </section>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <section id="touchControls" class="touch-controls hidden" aria-label="Touch controls">
+      <div class="dpad">
+        <button data-touch="up">▲</button>
+        <div>
+          <button data-touch="left">◀</button>
+          <button data-touch="down">▼</button>
+          <button data-touch="right">▶</button>
+        </div>
+      </div>
+      <div class="action-pad">
+        <button data-touch="scent">Q<br><small>Scent</small></button>
+        <button data-touch="swish">✦<br><small>Swish</small></button>
+        <button data-touch="interact">E<br><small>Use</small></button>
+      </div>
+    </section>
+
+    <button id="muteBtn" class="mute-button" title="Toggle sound">🔊</button>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>

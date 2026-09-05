@@ -1,0 +1,6 @@
+.fox-touch .action-pad{grid-template-columns:repeat(2,76px);grid-template-rows:repeat(2,76px);grid-auto-rows:unset}
+.fox-touch .sprint-button{grid-column:1;grid-row:1}
+.fox-touch .action-pad button[data-touch="scent"]{grid-column:1;grid-row:2}
+.fox-touch .action-pad button[data-touch="swish"]{grid-column:2;grid-row:1}
+.fox-touch .action-pad button[data-touch="interact"]{grid-column:2;grid-row:2;align-self:center;width:82px;height:82px;min-width:82px;min-height:82px}
+@media(max-width:520px){.fox-touch .action-pad{grid-template-columns:repeat(2,66px);grid-template-rows:repeat(2,66px)}.fox-touch .action-pad button[data-touch="interact"]{width:72px;height:72px;min-width:72px;min-height:72px}}

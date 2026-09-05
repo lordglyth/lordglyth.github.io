@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="mobile-fix.css" />
   <link rel="stylesheet" href="mobile-layout-v2.css" />
+  <link rel="stylesheet" href="map-transitions.css" />
 </head>
 <body>
   <main id="app">
@@ -18,11 +19,11 @@
     <section id="titleScreen" class="panel title-screen">
       <div class="logo-mark">🦊</div>
       <h1>Fox's Tails</h1>
-      <p class="tagline">A little fox. Three lost moon-ribbons. One village full of secrets.</p>
+      <p class="tagline">A little fox. Three lost moon-ribbons. Three connected places full of secrets.</p>
       <button id="startBtn">Begin Adventure</button>
       <button id="continueBtn" class="secondary">Continue</button>
       <p class="tiny">WASD / arrows · E interact · Q scent vision · Space tail-swish · Shift sprint</p>
-      <p class="tiny">On phone: larger D-pad + action buttons · hold ⚡ Sprint while moving.</p>
+      <p class="tiny">On phone: D-pad + Scent, Swish, Use and hold ⚡ Sprint while moving.</p>
     </section>
 
     <section id="dialogue" class="dialogue hidden" aria-live="polite">
@@ -43,7 +44,14 @@
       <div id="scentStatus" class="scent-status">SCENT VISION</div>
     </section>
 
+    <div id="locationBadge" class="location-badge hidden"></div>
     <div id="toast" class="toast hidden"></div>
+    <div id="mapTransition" class="map-transition" aria-live="polite">
+      <div class="map-transition-card">
+        <div id="mapTransitionTitle" class="map-transition-title"></div>
+        <div id="mapTransitionSubtitle" class="map-transition-subtitle"></div>
+      </div>
+    </div>
 
     <section id="touchControls" class="touch-controls hidden" aria-label="Touch controls">
       <div class="dpad">
@@ -55,15 +63,15 @@
         </div>
       </div>
       <div class="action-pad">
-        <button data-touch="scent" aria-label="Scent vision">Q<br><small>Scent</small></button>
+        <button data-touch="sprint" class="sprint-button" aria-label="Hold to sprint">⚡<br><small>Sprint</small></button>
         <button data-touch="swish" aria-label="Tail swish">✦<br><small>Swish</small></button>
+        <button data-touch="scent" aria-label="Scent vision">Q<br><small>Scent</small></button>
         <button data-touch="interact" aria-label="Use or interact">E<br><small>Use</small></button>
       </div>
     </section>
 
     <button id="muteBtn" class="mute-button" title="Toggle sound" aria-label="Toggle sound">🔊</button>
   </main>
-  <script src="mobile-fix.js"></script>
   <script src="game.js"></script>
 </body>
 </html>

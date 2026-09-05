@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#1a241d" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
   <title>Fox's Tails</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="mobile-fix.css" />
 </head>
 <body>
   <main id="app">
@@ -18,6 +21,7 @@
       <button id="startBtn">Begin Adventure</button>
       <button id="continueBtn" class="secondary">Continue</button>
       <p class="tiny">WASD / arrows · E interact · Q scent vision · Space tail-swish · Shift sprint</p>
+      <p class="tiny">On phone: larger D-pad + action buttons · hold ⚡ Sprint while moving.</p>
     </section>
 
     <section id="dialogue" class="dialogue hidden" aria-live="polite">
@@ -42,22 +46,23 @@
 
     <section id="touchControls" class="touch-controls hidden" aria-label="Touch controls">
       <div class="dpad">
-        <button data-touch="up">▲</button>
+        <button data-touch="up" aria-label="Move up">▲</button>
         <div>
-          <button data-touch="left">◀</button>
-          <button data-touch="down">▼</button>
-          <button data-touch="right">▶</button>
+          <button data-touch="left" aria-label="Move left">◀</button>
+          <button data-touch="down" aria-label="Move down">▼</button>
+          <button data-touch="right" aria-label="Move right">▶</button>
         </div>
       </div>
       <div class="action-pad">
-        <button data-touch="scent">Q<br><small>Scent</small></button>
-        <button data-touch="swish">✦<br><small>Swish</small></button>
-        <button data-touch="interact">E<br><small>Use</small></button>
+        <button data-touch="scent" aria-label="Scent vision">Q<br><small>Scent</small></button>
+        <button data-touch="swish" aria-label="Tail swish">✦<br><small>Swish</small></button>
+        <button data-touch="interact" aria-label="Use or interact">E<br><small>Use</small></button>
       </div>
     </section>
 
-    <button id="muteBtn" class="mute-button" title="Toggle sound">🔊</button>
+    <button id="muteBtn" class="mute-button" title="Toggle sound" aria-label="Toggle sound">🔊</button>
   </main>
+  <script src="mobile-fix.js"></script>
   <script src="game.js"></script>
 </body>
 </html>

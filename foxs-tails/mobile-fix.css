@@ -1,0 +1,61 @@
+/* Mobile comfort pass for Fox's Tails */
+.fox-touch html,.fox-touch body{overscroll-behavior:none}
+.fox-touch body{position:fixed;inset:0;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.fox-touch #app{height:100dvh;min-height:100dvh}
+.fox-touch #game{width:100vw;height:100dvh;max-width:none;max-height:none;object-fit:cover;touch-action:none}
+
+.fox-touch .touch-controls{left:0;right:0;bottom:max(14px,env(safe-area-inset-bottom));padding:0 max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left));align-items:flex-end;z-index:12}
+.fox-touch .touch-controls button{touch-action:none;-webkit-tap-highlight-color:transparent;border:2px solid rgba(255,255,255,.2);background:rgba(16,26,20,.74);backdrop-filter:blur(7px);box-shadow:0 7px 22px rgba(0,0,0,.38);font-weight:900}
+
+.fox-touch .dpad{width:176px;height:176px;position:relative;pointer-events:none}
+.fox-touch .dpad>button,.fox-touch .dpad>div button{position:absolute;width:66px;height:66px;min-width:66px;min-height:66px;border-radius:21px;pointer-events:auto;margin:0;font-size:24px}
+.fox-touch .dpad>button{left:55px;top:0}
+.fox-touch .dpad>div{display:block}
+.fox-touch .dpad>div button[data-touch="left"]{left:0;top:55px}
+.fox-touch .dpad>div button[data-touch="down"]{left:55px;top:110px}
+.fox-touch .dpad>div button[data-touch="right"]{left:110px;top:55px}
+.fox-touch .dpad::after{content:"";position:absolute;left:61px;top:61px;width:54px;height:54px;border-radius:17px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);pointer-events:none}
+
+.fox-touch .action-pad{display:grid;grid-template-columns:repeat(2,76px);grid-auto-rows:76px;gap:9px;align-items:end}
+.fox-touch .action-pad button{width:76px;height:76px;min-width:76px;min-height:76px;border-radius:50%;font-size:22px;padding:0;line-height:1}
+.fox-touch .action-pad button small{display:block;font-size:9px;line-height:1.1;margin-top:4px;opacity:.8}
+.fox-touch .action-pad button[data-touch="interact"]{width:90px;height:90px;min-width:90px;min-height:90px;grid-column:2;grid-row:1 / span 2;align-self:center;background:linear-gradient(145deg,rgba(225,130,70,.94),rgba(145,63,34,.94));font-size:25px}
+.fox-touch .sprint-button{grid-column:1;grid-row:1;background:linear-gradient(145deg,rgba(83,136,93,.92),rgba(47,83,58,.92))!important}
+.fox-touch .action-pad button[data-touch="scent"]{grid-column:1;grid-row:2}
+.fox-touch .action-pad button[data-touch="swish"]{grid-column:2;grid-row:3}
+.fox-touch .action-pad .pressed,.fox-touch .action-pad button:active,.fox-touch .dpad button:active{transform:scale(.91);filter:brightness(1.25)}
+
+.fox-touch .dialogue{bottom:calc(max(14px,env(safe-area-inset-bottom)) + 190px);width:min(760px,calc(100vw - 24px));min-height:100px;max-height:34vh;overflow:auto;padding:15px 18px 24px;font-size:15px;border-radius:17px}
+.fox-touch .speaker{font-size:19px}
+.fox-touch .continue-hint{font-size:9px}
+.fox-touch .hud{padding:max(10px,env(safe-area-inset-top)) max(62px,calc(env(safe-area-inset-right) + 54px)) 0 max(10px,env(safe-area-inset-left));gap:7px}
+.fox-touch .hud-card{padding:7px 9px;border-radius:12px}
+.fox-touch .objective-card{max-width:62vw}
+.fox-touch #objective{font-size:12px;line-height:1.2}
+.fox-touch .hud-label{font-size:8px}
+.fox-touch .stats-card{font-size:10px;gap:4px;flex-direction:column}
+.fox-touch .mute-button{top:max(10px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right));bottom:auto;width:46px;height:46px;font-size:19px}
+.fox-touch .toast{top:max(90px,calc(env(safe-area-inset-top) + 75px));max-width:82vw;text-align:center;font-size:13px}
+
+.fox-touch .title-screen{width:min(94vw,620px);max-height:92dvh;overflow:auto;padding:25px 18px 21px}
+.fox-touch .title-screen .logo-mark{font-size:52px}
+.fox-touch .title-screen h1{font-size:clamp(44px,14vw,72px)}
+.fox-touch .tagline{font-size:14px;margin:14px auto 19px}
+.fox-touch .title-screen button{min-height:52px}
+.fox-touch .tiny{font-size:10px;line-height:1.4}
+
+@media(max-width:520px){
+  .fox-touch .dpad{width:154px;height:154px}
+  .fox-touch .dpad>button,.fox-touch .dpad>div button{width:58px;height:58px;min-width:58px;min-height:58px;border-radius:18px}
+  .fox-touch .dpad>button{left:48px}.fox-touch .dpad>div button[data-touch="left"]{top:48px}.fox-touch .dpad>div button[data-touch="down"]{left:48px;top:96px}.fox-touch .dpad>div button[data-touch="right"]{left:96px;top:48px}
+  .fox-touch .dpad::after{left:53px;top:53px;width:48px;height:48px}
+  .fox-touch .action-pad{grid-template-columns:repeat(2,66px);grid-auto-rows:66px;gap:7px}
+  .fox-touch .action-pad button{width:66px;height:66px;min-width:66px;min-height:66px}.fox-touch .action-pad button[data-touch="interact"]{width:80px;height:80px;min-width:80px;min-height:80px}
+  .fox-touch .dialogue{bottom:calc(max(12px,env(safe-area-inset-bottom)) + 166px)}
+}
+
+@media(max-height:520px) and (orientation:landscape){
+  .fox-touch .dpad{transform:scale(.78);transform-origin:left bottom;margin-right:-36px;margin-top:-36px}
+  .fox-touch .action-pad{transform:scale(.8);transform-origin:right bottom;margin-left:-26px;margin-top:-45px}
+  .fox-touch .dialogue{left:50%;bottom:max(9px,env(safe-area-inset-bottom));width:min(54vw,650px);font-size:14px;max-height:44vh}
+}

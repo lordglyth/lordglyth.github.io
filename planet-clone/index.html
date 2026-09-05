@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Tiny Planet Painter</title>
+  <style>
+    :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #04111f; }
+    body {
+      background:
+        radial-gradient(circle at 65% 15%, rgba(30,219,226,.22), transparent 34%),
+        radial-gradient(circle at 18% 80%, rgba(112,56,190,.18), transparent 32%),
+        linear-gradient(#071728, #020710 70%);
+    }
+    #app { position: fixed; inset: 0; }
+    canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+    .panel { position: fixed; z-index: 5; user-select: none; -webkit-user-select: none; }
+    #tools {
+      left: max(14px, env(safe-area-inset-left)); top: 50%; transform: translateY(-50%);
+      display: grid; gap: 9px;
+    }
+    button {
+      border: 1px solid rgba(255,255,255,.18); color: white; background: rgba(8,18,31,.72);
+      backdrop-filter: blur(10px); box-shadow: 0 8px 24px rgba(0,0,0,.28); cursor: pointer;
+    }
+    .tool {
+      width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center;
+      font-size: 23px; transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+    .tool:hover { transform: scale(1.07); }
+    .tool.active { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.78); transform: scale(1.09); }
+    #actions { top: max(14px, env(safe-area-inset-top)); right: max(14px, env(safe-area-inset-right)); display: flex; gap: 8px; }
+    .action { min-width: 42px; height: 42px; border-radius: 14px; padding: 0 12px; font-size: 16px; }
+    #brand {
+      left: 16px; bottom: max(15px, env(safe-area-inset-bottom)); padding: 9px 12px; border-radius: 14px;
+      background: rgba(5,13,23,.62); border: 1px solid rgba(255,255,255,.1); color: rgba(255,255,255,.84);
+      font-size: 12px; letter-spacing: .02em; pointer-events: none;
+    }
+    #hint {
+      left: 50%; bottom: max(18px, env(safe-area-inset-bottom)); transform: translateX(-50%);
+      padding: 10px 14px; border-radius: 14px; background: rgba(5,13,23,.66); border: 1px solid rgba(255,255,255,.1);
+      color: rgba(255,255,255,.78); font-size: 12px; text-align: center; pointer-events: none;
+      transition: opacity .35s ease;
+    }
+    #toast {
+      left: 50%; top: 18px; transform: translateX(-50%) translateY(-20px); opacity: 0;
+      padding: 9px 13px; border-radius: 13px; background: rgba(8,18,31,.82); border: 1px solid rgba(255,255,255,.16);
+      color: white; font-size: 13px; transition: .2s ease; pointer-events: none;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    @media (max-width: 560px) {
+      #tools { left: 9px; gap: 6px; }
+      .tool { width: 44px; height: 44px; font-size: 20px; }
+      #hint { width: calc(100% - 130px); font-size: 11px; }
+      #brand { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <div id="tools" class="panel" aria-label="Terrain tools">
+    <button class="tool active" data-tool="land" title="Raise land">⛰️</button>
+    <button class="tool" data-tool="water" title="Water">💧</button>
+    <button class="tool" data-tool="forest" title="Forest">🌲</button>
+    <button class="tool" data-tool="city" title="City">🏘️</button>
+    <button class="tool" data-tool="snow" title="Snow / ice">❄️</button>
+    <button class="tool" data-tool="lower" title="Lower terrain">⬇️</button>
+  </div>
+
+  <div id="actions" class="panel">
+    <button class="action" id="newWorld" title="Generate a new planet">🎲</button>
+    <button class="action" id="saveWorld" title="Save in this browser">💾</button>
+    <button class="action" id="loadWorld" title="Load saved planet">↩️</button>
+  </div>
+
+  <div id="brand" class="panel">TINY PLANET PAINTER · procedural WebGL toy</div>
+  <div id="hint" class="panel">Click a tile to paint · drag to rotate · wheel/pinch to zoom</div>
+  <div id="toast" class="panel"></div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js';
+
+    const app = document.querySelector('#app');
+    const toast = document.querySelector('#toast');
+    const hint = document.querySelector('#hint');
+    const toolButtons = [...document.querySelectorAll('.tool')];
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
+    app.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x06101d, 0.045);
+
+    const camera = new THREE.PerspectiveCamera(43, innerWidth / innerHeight, 0.1, 100);
+    camera.position.set(0, 0.2, 7.1);
+
+    scene.add(new THREE.HemisphereLight(0xbdefff, 0x1c1830, 2.6));
+    const sun = new THREE.DirectionalLight(0xffead3, 4.2);
+    sun.position.set(-4, 6, 5);
+    scene.add(sun);
+    const rim = new THREE.DirectionalLight(0x54d9ff, 2.2);
+    rim.position.set(5, 0, -5);
+    scene.add(rim);
+
+    const world = new THREE.Group();
+    world.rotation.set(-0.18, 0.55, 0.05);
+    scene.add(world);
+
+    const BASE_RADIUS = 2.2;
+    let source = new THREE.IcosahedronGeometry(BASE_RADIUS, 3);
+    const geometry = source.index ? source.toNonIndexed() : source;
+    source.dispose?.();
+    geometry.computeVertexNormals();
+
+    const pos = geometry.getAttribute('position');
+    const dirs = [];
+    for (let i = 0; i < pos.count; i++) {
+      dirs.push(new THREE.Vector3(pos.getX(i), pos.getY(i), pos.getZ(i)).normalize());
+    }
+    const faceCount = pos.count / 3;
+    const colors = new Float32Array(pos.count * 3);
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    const material = new THREE.MeshStandardMaterial({
+      vertexColors: true, roughness: 0.88, metalness: 0.02, flatShading: true
+    });
+    const planet = new THREE.Mesh(geometry, material);
+    world.add(planet);
+
+    const atmosphere = new THREE.Mesh(
+      new THREE.SphereGeometry(BASE_RADIUS + 0.12, 48, 32),
+      new THREE.MeshBasicMaterial({ color: 0x6ddfff, transparent: true, opacity: 0.085, side: THREE.BackSide, depthWrite: false })
+    );
+    world.add(atmosphere);
+
+    // Sparse stars, all made at runtime: no borrowed art/assets.
+    const starGeo = new THREE.BufferGeometry();
+    const starData = [];
+    for (let i = 0; i < 700; i++) {
+      const r = 20 + Math.random() * 35;
+      const u = Math.random() * Math.PI * 2;
+      const v = Math.acos(2 * Math.random() - 1);
+      starData.push(r * Math.sin(v) * Math.cos(u), r * Math.cos(v), r * Math.sin(v) * Math.sin(u));
+    }
+    starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starData, 3));
+    scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xd7efff, size: 0.035, transparent: true, opacity: 0.72 })));
+
+    const palette = {
+      water: new THREE.Color('#58cbe3'),
+      deepWater: new THREE.Color('#2f91bd'),
+      land: new THREE.Color('#7faf73'),
+      highLand: new THREE.Color('#a8be80'),
+      forest: new THREE.Color('#315f50'),
+      city: new THREE.Color('#b26b63'),
+      snow: new THREE.Color('#dcecf0')
+    };
+
+    const states = Array.from({ length: faceCount }, () => ({ type: 'water', altitude: -0.28 }));
+    const decorations = new Map();
+    let seed = Math.random() * 1000;
+    let activeTool = 'land';
+
+    function faceDirection(face) {
+      return dirs[face * 3].clone().add(dirs[face * 3 + 1]).add(dirs[face * 3 + 2]).normalize();
+    }
+
+    function colorFor(state, face) {
+      if (state.type === 'water') return state.altitude < -0.45 ? palette.deepWater : palette.water;
+      if (state.type === 'forest') return palette.forest;
+      if (state.type === 'city') return palette.city;
+      if (state.type === 'snow') return palette.snow;
+      return state.altitude > 0.55 ? palette.highLand : palette.land;
+    }
+
+    function radiusFor(state) {
+      return BASE_RADIUS + state.altitude * 0.13;
+    }
+
+    function clearDecoration(face) {
+      const old = decorations.get(face);
+      if (!old) return;
+      old.traverse(obj => {
+        if (obj.geometry) obj.geometry.dispose();
+        if (obj.material) obj.material.dispose();
+      });
+      world.remove(old);
+      decorations.delete(face);
+    }
+
+    function addDecoration(face) {
+      clearDecoration(face);
+      const state = states[face];
+      if (state.type !== 'forest' && state.type !== 'city') return;
+
+      const dir = faceDirection(face);
+      const group = new THREE.Group();
+      group.position.copy(dir.clone().multiplyScalar(radiusFor(state) + 0.025));
+      group.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+
+      const rand = (n) => {
+        const x = Math.sin((face + 1) * 12.9898 + n * 78.233 + seed) * 43758.5453;
+        return x - Math.floor(x);
+      };
+
+      if (state.type === 'forest') {
+        for (let i = 0; i < 3; i++) {
+          const tree = new THREE.Group();
+          const trunk = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.018, 0.024, 0.09, 5),
+            new THREE.MeshStandardMaterial({ color: 0x684b3c, roughness: 1 })
+          );
+          trunk.position.y = 0.045;
+          const crown = new THREE.Mesh(
+            new THREE.ConeGeometry(0.075 + rand(i) * 0.025, 0.19 + rand(i + 4) * 0.06, 6),
+            new THREE.MeshStandardMaterial({ color: i === 1 ? 0x284f43 : 0x386c52, roughness: 1, flatShading: true })
+          );
+          crown.position.y = 0.16;
+          tree.add(trunk, crown);
+          tree.position.set((rand(i + 8) - .5) * .19, 0, (rand(i + 12) - .5) * .19);
+          tree.rotation.y = rand(i + 16) * Math.PI;
+          group.add(tree);
+        }
+      } else {
+        const wallMat = new THREE.MeshStandardMaterial({ color: 0xd7a07f, roughness: 0.95 });
+        const roofMat = new THREE.MeshStandardMaterial({ color: 0x74455f, roughness: 0.95 });
+        for (let i = 0; i < 3; i++) {
+          const house = new THREE.Group();
+          const w = .07 + rand(i) * .055;
+          const h = .07 + rand(i + 4) * .09;
+          const body = new THREE.Mesh(new THREE.BoxGeometry(w, h, w), wallMat.clone());
+          body.position.y = h / 2;
+          const roof = new THREE.Mesh(new THREE.ConeGeometry(w * .78, .07, 4), roofMat.clone());
+          roof.position.y = h + .035;
+          roof.rotation.y = Math.PI / 4;
+          house.add(body, roof);
+          house.position.set((rand(i + 8) - .5) * .20, 0, (rand(i + 12) - .5) * .20);
+          house.rotation.y = rand(i + 16) * Math.PI;
+          group.add(house);
+        }
+      }
+      decorations.set(face, group);
+      world.add(group);
+    }
+
+    function applyFace(face, rebuildDecoration = true) {
+      const state = states[face];
+      const radius = radiusFor(state);
+      const col = colorFor(state, face);
+      for (let k = 0; k < 3; k++) {
+        const i = face * 3 + k;
+        const d = dirs[i];
+        pos.setXYZ(i, d.x * radius, d.y * radius, d.z * radius);
+        colors[i * 3] = col.r;
+        colors[i * 3 + 1] = col.g;
+        colors[i * 3 + 2] = col.b;
+      }
+      if (rebuildDecoration) addDecoration(face);
+    }
+
+    function refreshAll() {
+      for (const face of [...decorations.keys()]) clearDecoration(face);
+      for (let face = 0; face < faceCount; face++) applyFace(face, false);
+      pos.needsUpdate = true;
+      geometry.getAttribute('color').needsUpdate = true;
+      geometry.computeVertexNormals();
+      for (let face = 0; face < faceCount; face++) {
+        if (states[face].type === 'forest' || states[face].type === 'city') addDecoration(face);
+      }
+    }
+
+    function proceduralValue(dir, face) {
+      return (
+        Math.sin(dir.x * 4.6 + seed * .11) +
+        Math.cos(dir.z * 5.4 - seed * .07) +
+        Math.sin((dir.x + dir.y - dir.z) * 7.1 + seed * .043) * .75 +
+        Math.cos((face % 31) * .31 + seed) * .22
+      );
+    }
+
+    function generateWorld() {
+      seed = Math.random() * 10000;
+      for (let face = 0; face < faceCount; face++) {
+        const dir = faceDirection(face);
+        const n = proceduralValue(dir, face);
+        const polar = Math.abs(dir.y);
+        const s = states[face];
+        if (n < -0.18) {
+          s.type = 'water'; s.altitude = -0.36 - Math.max(0, -n - .18) * .13;
+        } else if (polar > .84) {
+          s.type = 'snow'; s.altitude = .26 + Math.max(0, n) * .09;
+        } else if (n > 1.2) {
+          s.type = 'forest'; s.altitude = .27 + n * .07;
+        } else {
+          s.type = 'land'; s.altitude = .19 + Math.max(0, n) * .08;
+        }
+      }
+      refreshAll();
+      showToast('New planet generated');
+    }
+
+    function paintFace(face) {
+      if (face == null || face < 0 || face >= faceCount) return;
+      const s = states[face];
+      if (activeTool === 'land') {
+        s.type = 'land'; s.altitude = Math.min(1.4, Math.max(.08, s.altitude) + .22);
+      } else if (activeTool === 'lower') {
+        s.altitude = Math.max(-1.2, s.altitude - .24);
+        if (s.altitude < -.08) s.type = 'water';
+      } else if (activeTool === 'water') {
+        s.type = 'water'; s.altitude = Math.min(-.14, s.altitude - .16);
+      } else if (activeTool === 'forest') {
+        s.type = 'forest'; s.altitude = Math.max(.18, s.altitude);
+      } else if (activeTool === 'city') {
+        s.type = 'city'; s.altitude = Math.max(.16, s.altitude);
+      } else if (activeTool === 'snow') {
+        s.type = 'snow'; s.altitude = Math.max(.12, s.altitude);
+      }
+      applyFace(face, true);
+      pos.needsUpdate = true;
+      geometry.getAttribute('color').needsUpdate = true;
+      geometry.computeVertexNormals();
+      atmosphere.scale.setScalar(1 + Math.max(0, s.altitude) * .003);
+    }
+
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+    function hitFace(clientX, clientY) {
+      const rect = renderer.domElement.getBoundingClientRect();
+      pointer.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+      pointer.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(pointer, camera);
+      return raycaster.intersectObject(planet, false)[0]?.faceIndex ?? null;
+    }
+
+    let drag = null;
+    renderer.domElement.addEventListener('pointerdown', e => {
+      renderer.domElement.setPointerCapture(e.pointerId);
+      drag = { id: e.pointerId, x: e.clientX, y: e.clientY, lastX: e.clientX, lastY: e.clientY, moved: false };
+    });
+    renderer.domElement.addEventListener('pointermove', e => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const dx = e.clientX - drag.lastX;
+      const dy = e.clientY - drag.lastY;
+      if (Math.hypot(e.clientX - drag.x, e.clientY - drag.y) > 5) drag.moved = true;
+      if (drag.moved) {
+        world.rotation.y += dx * .007;
+        world.rotation.x = THREE.MathUtils.clamp(world.rotation.x + dy * .006, -1.25, 1.25);
+      }
+      drag.lastX = e.clientX; drag.lastY = e.clientY;
+    });
+    renderer.domElement.addEventListener('pointerup', e => {
+      if (!drag || e.pointerId !== drag.id) return;
+      if (!drag.moved) paintFace(hitFace(e.clientX, e.clientY));
+      drag = null;
+      hint.style.opacity = '.25';
+    });
+    renderer.domElement.addEventListener('pointercancel', () => drag = null);
+    renderer.domElement.addEventListener('wheel', e => {
+      e.preventDefault();
+      camera.position.z = THREE.MathUtils.clamp(camera.position.z + e.deltaY * .005, 4.3, 11.5);
+    }, { passive: false });
+
+    let pinchDistance = 0;
+    const touches = new Map();
+    renderer.domElement.addEventListener('pointerdown', e => { if (e.pointerType === 'touch') touches.set(e.pointerId, e); });
+    renderer.domElement.addEventListener('pointermove', e => {
+      if (e.pointerType !== 'touch' || !touches.has(e.pointerId)) return;
+      touches.set(e.pointerId, e);
+      if (touches.size === 2) {
+        const [a,b] = [...touches.values()];
+        const d = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+        if (pinchDistance) camera.position.z = THREE.MathUtils.clamp(camera.position.z + (pinchDistance - d) * .012, 4.3, 11.5);
+        pinchDistance = d;
+      }
+    });
+    const endTouch = e => { touches.delete(e.pointerId); if (touches.size < 2) pinchDistance = 0; };
+    renderer.domElement.addEventListener('pointerup', endTouch);
+    renderer.domElement.addEventListener('pointercancel', endTouch);
+
+    toolButtons.forEach(btn => btn.addEventListener('click', () => {
+      activeTool = btn.dataset.tool;
+      toolButtons.forEach(b => b.classList.toggle('active', b === btn));
+      showToast(btn.title);
+    }));
+
+    document.querySelector('#newWorld').addEventListener('click', generateWorld);
+    document.querySelector('#saveWorld').addEventListener('click', () => {
+      localStorage.setItem('tiny-planet-world-v1', JSON.stringify({ seed, states }));
+      showToast('Planet saved in this browser');
+    });
+    document.querySelector('#loadWorld').addEventListener('click', () => {
+      try {
+        const data = JSON.parse(localStorage.getItem('tiny-planet-world-v1'));
+        if (!data?.states || data.states.length !== faceCount) throw new Error('No compatible save');
+        seed = data.seed ?? seed;
+        data.states.forEach((s, i) => Object.assign(states[i], s));
+        refreshAll();
+        showToast('Saved planet loaded');
+      } catch { showToast('No saved planet yet'); }
+    });
+
+    let toastTimer;
+    function showToast(text) {
+      toast.textContent = text;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 1300);
+    }
+
+    addEventListener('resize', () => {
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+    });
+
+    const clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+      atmosphere.material.opacity = .075 + Math.sin(t * .55) * .012;
+      renderer.render(scene, camera);
+    }
+
+    generateWorld();
+    animate();
+  </script>
+</body>
+</html>

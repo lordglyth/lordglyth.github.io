@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
   <meta name="theme-color" content="#071322" />
   <title>Tiny Planet: NPC Chaos Lab</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="mobile.css" />
 </head>
 <body>
   <div id="app"></div>
@@ -105,7 +106,7 @@
   </section>
 
   <section id="llmPanel" class="glass panel llm-panel">
-    <div class="panel-title row"><span>LOCAL AI</span><span id="llmStatus" class="status off">OFFLINE</span></div>
+    <div class="panel-title row"><span>LOCAL AI · SOJI CORE</span><span id="llmStatus" class="status off">OFFLINE</span></div>
     <label>Mode
       <select id="llmMode">
         <option value="proxy">Local companion server (recommended)</option>
@@ -119,7 +120,17 @@
       <button id="autoAiBtn" class="active">🤖 Auto AI: ON</button>
     </div>
     <div class="muted tiny">Local mode uses your Ollama model for NPC decisions, conversations and reactions. Without it, the built-in sim keeps running.</div>
+    <div class="muted tiny soji-note">🟣 Soji Core is injected into NPC/world LLM calls: continuity, persistent memory, autonomous characters, non-yes-men behavior and strict player agency.</div>
   </section>
+
+  <div id="mobileShade" aria-hidden="true"></div>
+  <nav id="mobileDock" aria-label="Mobile controls">
+    <button class="mobile-dock-btn" data-mobile-panel="paint" aria-label="Planet tools">🛠️<span>Tools</span></button>
+    <button class="mobile-dock-btn" data-mobile-panel="npc" aria-label="NPC inspector">🧑<span>NPC</span></button>
+    <button class="mobile-dock-btn" data-mobile-panel="god" aria-label="Influence world">⚡<span>Influence</span></button>
+    <button class="mobile-dock-btn" data-mobile-panel="ai" aria-label="Local AI">🧠<span>Soji</span></button>
+    <button class="mobile-dock-btn" data-mobile-panel="view" aria-label="View controls">👁️<span>View</span></button>
+  </nav>
 
   <div id="toast"></div>
   <div id="hint">Paint tiles · drag to rotate · wheel/pinch to zoom · click NPCs to inspect</div>
@@ -132,6 +143,8 @@
     </form>
   </dialog>
 
+  <script src="soji_client.js"></script>
   <script type="module" src="app.js"></script>
+  <script src="mobile.js"></script>
 </body>
 </html>

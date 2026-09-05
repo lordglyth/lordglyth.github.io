@@ -1,0 +1,10 @@
+.map-transition{position:absolute;inset:0;display:grid;place-items:center;background:rgba(5,9,7,0);pointer-events:none;z-index:50;transition:background .22s ease,opacity .22s ease;opacity:0}
+.map-transition.show{background:rgba(5,9,7,.88);opacity:1}
+.map-transition-card{padding:24px 30px;border-radius:24px;background:rgba(18,27,21,.88);border:1px solid rgba(255,244,216,.18);box-shadow:0 22px 70px rgba(0,0,0,.5);transform:translateY(12px) scale(.96);transition:transform .22s ease;text-align:center;max-width:min(86vw,620px)}
+.map-transition.show .map-transition-card{transform:translateY(0) scale(1)}
+.map-transition-title{font-family:Georgia,serif;font-size:clamp(28px,6vw,46px);font-weight:800;color:#ffe4a3;text-shadow:0 3px 14px rgba(0,0,0,.45)}
+.map-transition-subtitle{margin-top:6px;font-size:13px;opacity:.72;letter-spacing:.08em;text-transform:uppercase}
+.location-badge{position:absolute;left:50%;top:78px;transform:translateX(-50%);z-index:9;padding:7px 12px;border-radius:999px;background:rgba(14,22,17,.78);border:1px solid rgba(255,255,255,.12);box-shadow:0 8px 28px rgba(0,0,0,.28);font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;pointer-events:none;white-space:nowrap}
+.portal-glow{pointer-events:none}
+.fox-touch .location-badge{top:max(82px,calc(env(safe-area-inset-top) + 72px));font-size:9px;padding:6px 10px}
+@media(max-width:520px){.map-transition-card{padding:20px 22px}.map-transition-subtitle{font-size:10px}.fox-touch .location-badge{max-width:54vw;overflow:hidden;text-overflow:ellipsis}}

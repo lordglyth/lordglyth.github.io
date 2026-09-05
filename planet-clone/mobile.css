@@ -1,0 +1,87 @@
+#mobileDock,#mobileShade{display:none}
+@media(max-width:760px){
+  :root{--mobile-dock-h:68px}
+  html,body{height:100dvh;min-height:100dvh;overscroll-behavior:none}
+  body{padding:0;touch-action:manipulation}
+  button,select,input,textarea{font-size:16px;min-height:44px}
+  #topbar{top:max(6px,env(safe-area-inset-top));left:6px;right:6px;transform:none;width:auto;height:50px;border-radius:14px;padding:6px 8px;gap:6px}
+  #topbar>div:first-child{min-width:70px;max-width:84px;overflow:hidden}
+  #topbar strong{display:block;font-size:11px;line-height:1.05;white-space:nowrap}
+  #topbar .sub{display:none}
+  .top-actions{gap:4px;min-width:0}
+  .top-actions button,.top-actions select{height:40px;min-height:40px;min-width:40px;padding:0 8px;border-radius:10px}
+  #pauseBtn{font-size:0;width:44px;padding:0}
+  #pauseBtn::after{content:'⏯';font-size:18px}
+  #speedSelect{width:58px;padding:0 4px}
+  #saveBtn,#loadBtn,#newBtn{width:42px;padding:0}
+
+  #paintPanel,#viewPanel,#inspector,#godPanel,#llmPanel{
+    position:fixed!important;left:8px!important;right:8px!important;top:auto!important;
+    bottom:calc(var(--mobile-dock-h) + env(safe-area-inset-bottom) + 6px)!important;
+    width:auto!important;min-width:0!important;max-width:none!important;max-height:min(64dvh,560px)!important;
+    overflow:auto!important;transform:translateY(calc(100% + 100px))!important;opacity:0;
+    pointer-events:none;display:block!important;border-radius:18px!important;padding:12px!important;
+    transition:transform .22s ease,opacity .16s ease;z-index:35!important;
+    -webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+  }
+  #paintPanel.mobile-open,#viewPanel.mobile-open,#inspector.mobile-open,#godPanel.mobile-open,#llmPanel.mobile-open{
+    transform:translateY(0)!important;opacity:1;pointer-events:auto;
+  }
+  .mobile-close{position:absolute;right:9px;top:7px;width:38px;height:38px;min-height:38px;padding:0;border-radius:50%;z-index:3;font-size:18px}
+  .panel-title{padding-right:42px;margin-bottom:10px}
+
+  #paintPanel .tool-grid{grid-template-columns:repeat(3,1fr);gap:8px}
+  #paintPanel .tool{height:58px;font-size:22px;padding:5px}
+  #paintPanel .tool small{display:block!important;font-size:10px}
+  #paintPanel .toggle{min-height:44px;margin:7px 0}
+  #paintPanel .wide{min-height:48px}
+
+  #viewPanel{grid-template-columns:1fr 1fr!important;gap:8px!important}
+  #viewPanel .panel-title{grid-column:1/-1}
+  #viewPanel .view{font-size:13px!important;min-height:50px;text-align:center!important;padding:8px!important}
+  #viewPanel .view::first-letter{font-size:inherit!important}
+
+  #inspector .npc-head{grid-template-columns:48px 1fr;gap:8px}
+  #inspector .avatar{width:48px;height:48px;font-size:26px}
+  #inspector .name-input{font-size:17px}
+  #inspector .mini-grid,#llmPanel .mini-grid{grid-template-columns:1fr 1fr;gap:8px}
+  #inspector .mini-grid button,#llmPanel .mini-grid button{min-height:48px;font-size:12px}
+  #inspector textarea{min-height:86px}
+
+  #godPanel .influence-row{grid-template-columns:1fr auto!important;gap:7px}
+  #godPanel #influenceInput{min-width:0}
+  #godPanel #influenceBtn{min-width:96px}
+  #godPanel .quick-events{display:flex!important;gap:6px;overflow-x:auto;flex-wrap:nowrap!important;padding:4px 0 2px;scrollbar-width:none}
+  #godPanel .quick-events::-webkit-scrollbar{display:none}
+  #godPanel .quick-events button{flex:0 0 auto;min-height:44px;font-size:11px;padding:7px 10px}
+
+  #llmPanel label{font-size:11px}
+  #llmPanel .soji-note{margin-top:8px;padding:8px 10px;border:1px solid rgba(190,121,255,.35);border-radius:10px;background:rgba(126,64,176,.12);color:#ddc4ff}
+
+  #chronicle:not([hidden]){position:fixed!important;left:8px!important;right:8px!important;top:62px!important;bottom:calc(var(--mobile-dock-h) + env(safe-area-inset-bottom) + 6px)!important;width:auto!important;height:auto!important;transform:none!important;max-height:none!important;z-index:34!important;border-radius:18px!important;padding:12px!important;overflow:auto!important}
+
+  #mobileShade{position:fixed;inset:0;background:rgba(0,0,0,.38);backdrop-filter:blur(1.5px);z-index:30}
+  body.mobile-sheet-open #mobileShade{display:block}
+  #mobileDock{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;z-index:45;left:6px;right:6px;bottom:max(6px,env(safe-area-inset-bottom));height:62px;padding:5px;border-radius:17px;background:rgba(5,14,25,.94);border:1px solid rgba(255,255,255,.16);box-shadow:0 12px 38px rgba(0,0,0,.48);backdrop-filter:blur(15px)}
+  .mobile-dock-btn{min-width:0;min-height:50px;height:50px;padding:3px 2px;border-radius:12px;border:0;background:transparent;display:grid;place-items:center;align-content:center;gap:1px;font-size:20px}
+  .mobile-dock-btn span{display:block;font-size:9px;line-height:1.05;color:#b9cad8}
+  .mobile-dock-btn.active{background:rgba(114,230,255,.16);outline:1px solid rgba(114,230,255,.4)}
+
+  #toast{top:60px;max-width:calc(100% - 20px);text-align:center}
+  #hint{display:none!important}
+  dialog{width:calc(100% - 16px)!important;max-height:88dvh!important;margin:auto 8px;border-radius:18px}
+  dialog form{padding-top:4px}
+  .close{min-width:44px;min-height:44px}
+}
+@media(max-width:430px){
+  #topbar>div:first-child{max-width:72px}
+  .top-actions{gap:3px}
+  .top-actions button,.top-actions select{min-width:38px;width:38px;padding:0 3px}
+  #speedSelect{width:52px}
+  #godPanel .influence-row{grid-template-columns:1fr!important}
+  #godPanel #influenceBtn{width:100%}
+}
+@media(max-width:760px) and (orientation:landscape){
+  #paintPanel,#viewPanel,#inspector,#godPanel,#llmPanel{max-height:72dvh!important;left:10%!important;right:10%!important}
+  #chronicle:not([hidden]){left:10%!important;right:10%!important}
+}

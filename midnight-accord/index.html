@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#09070a" />
+  <title>Midnight Accord — Supernatural Romance Visual Novel</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <section id="screen-title" class="screen active title-screen">
+      <div class="title-vignette"></div>
+      <div class="title-content">
+        <div class="eyebrow">AN ORIGINAL SUPERNATURAL ROMANCE VISUAL NOVEL</div>
+        <h1>MIDNIGHT<br><span>ACCORD</span></h1>
+        <p class="tagline">The city has rules for monsters. Tonight, one of them is you.</p>
+        <div class="title-actions">
+          <button class="primary" data-action="new-game">New Game</button>
+          <button data-action="load-game">Continue</button>
+          <button data-action="show-gallery">Cast & Gallery</button>
+        </div>
+        <p class="route-note">Play as a man or woman. Your protagonist is bisexual. Romance routes are women-only.</p>
+      </div>
+    </section>
+
+    <section id="screen-creator" class="screen creator-screen">
+      <header class="topbar">
+        <button class="ghost" data-action="home">← Home</button>
+        <div><strong>Create Your Character</strong><small>Make the protagonist yours.</small></div>
+      </header>
+      <main class="creator-grid">
+        <div class="avatar-panel">
+          <div id="avatar-preview" class="avatar-preview gender-woman">
+            <div class="avatar-hair back"></div>
+            <div class="avatar-head"><div class="avatar-eyes"></div><div class="avatar-mouth"></div></div>
+            <div class="avatar-hair front"></div>
+            <div class="avatar-body"><div class="avatar-outfit"></div></div>
+          </div>
+          <div class="identity-card">
+            <strong id="preview-name">Alex</strong>
+            <span id="preview-identity">Woman • she/her • bisexual</span>
+            <span id="preview-style">Midnight Street</span>
+          </div>
+        </div>
+
+        <form id="creator-form" class="creator-form" onsubmit="return false;">
+          <label>Name<input id="player-name" maxlength="24" value="Alex" /></label>
+          <fieldset><legend>Gender</legend><div class="segmented">
+            <button type="button" class="selected" data-gender="woman">Woman</button>
+            <button type="button" data-gender="man">Man</button>
+          </div></fieldset>
+          <div class="fixed-row"><span>Orientation</span><strong>Bisexual</strong><small>Story routes: women only</small></div>
+
+          <label>Skin tone<select id="skin-tone">
+            <option value="#f2d2bd">Porcelain warm</option><option value="#d6a07b">Golden tan</option>
+            <option value="#b97450">Deep bronze</option><option value="#7d4c35">Rich brown</option>
+            <option value="#4f3028">Deep umber</option>
+          </select></label>
+          <label>Hair style<select id="hair-style">
+            <option value="shag">Shag / layered</option><option value="long">Long waves</option>
+            <option value="bob">Sharp bob</option><option value="undercut">Undercut</option>
+            <option value="curls">Wild curls</option>
+          </select></label>
+          <label>Hair color<select id="hair-color">
+            <option value="#17141a">Midnight black</option><option value="#4a2d23">Dark brown</option>
+            <option value="#c49b68">Ash blonde</option><option value="#8f2f28">Blood auburn</option>
+            <option value="#d8d6d2">Silver</option>
+          </select></label>
+          <label>Eye color<select id="eye-color">
+            <option value="#879a89">Gray-green</option><option value="#5f8fa8">Storm blue</option>
+            <option value="#6a4c39">Brown</option><option value="#7c9b57">Hazel-green</option>
+            <option value="#8c72b8">Violet</option>
+          </select></label>
+          <label>Wardrobe<select id="wardrobe">
+            <option value="street">Midnight Street — leather, black denim, boots</option>
+            <option value="academia">Dark Academia — coat, knit, tailored trousers</option>
+            <option value="velvet">Velvet Formal — crimson and black eveningwear</option>
+            <option value="rebel">Rebel — cropped jacket, chains, distressed layers</option>
+            <option value="soft">Soft Noir — charcoal knits, long coat, silver jewelry</option>
+          </select></label>
+          <label>Personality edge<select id="personality">
+            <option value="bold">Bold</option><option value="curious">Curious</option>
+            <option value="guarded">Guarded</option><option value="playful">Playful</option>
+          </select></label>
+          <button class="primary big" type="button" data-action="start-story">Enter Bellwether Bay</button>
+        </form>
+      </main>
+    </section>
+
+    <section id="screen-game" class="screen game-screen">
+      <div id="scene-bg" class="scene-bg"></div>
+      <div class="game-topbar">
+        <button class="icon-btn" data-action="home" title="Home">☰</button>
+        <div id="chapter-label">CHAPTER ONE</div>
+        <button class="icon-btn" data-action="save-game" title="Save">💾</button>
+      </div>
+      <aside id="relationship-strip" class="relationship-strip"></aside>
+      <div id="portrait-wrap" class="portrait-wrap"><img id="speaker-portrait" alt="Character portrait" /></div>
+      <div class="dialogue-shell">
+        <div class="dialogue-meta"><span id="speaker-name"></span><span id="location-name"></span></div>
+        <div id="dialogue-text" class="dialogue-text"></div>
+        <div id="choice-list" class="choice-list"></div>
+        <button id="continue-btn" class="continue-btn">Continue ›</button>
+      </div>
+    </section>
+
+    <section id="screen-gallery" class="screen gallery-screen">
+      <header class="topbar"><button class="ghost" data-action="home">← Home</button><div><strong>Women of the Accord</strong><small>All four are adult, bisexual, and romanceable by either player gender.</small></div></header>
+      <main class="gallery-grid" id="gallery-grid"></main>
+      <section class="lore-card">
+        <h2>What makes this world different</h2>
+        <p>Bellwether Bay is governed by the Midnight Accord, a treaty between vampires, witches, shifters, and human witnesses. Humans who discover the hidden world are not automatically hunted: they are offered a tribunal, a memory seal, or a supernatural sponsor. Love is not illegal—but cross-faction bonds can wreck alliances, expose secrets, and make you politically dangerous.</p>
+      </section>
+    </section>
+  </div>
+  <script src="assets-cover.js"></script>
+  <script src="assets-p1.js"></script>
+  <script src="assets-p2.js"></script>
+  <script src="assets-s1.js"></script>
+  <script src="assets-s2.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

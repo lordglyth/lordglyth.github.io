@@ -7,10 +7,11 @@ if not exist .env (
   echo Edit .env if you want ComfyUI image generation.
 )
 echo.
-echo Starting Soji Social local bridge...
+echo Starting Soji Social local bridge with accounts...
 echo Open http://127.0.0.1:3333 in your browser.
+echo First launch will ask you to create an account.
 echo.
-node server.mjs
+node server-auth.mjs
 if errorlevel 1 (
   echo.
   echo Bridge stopped with an error. Make sure Node.js 20+ is installed.

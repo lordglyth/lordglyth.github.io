@@ -4,14 +4,13 @@ cd /d "%~dp0"
 if not exist .env (
   copy /Y .env.example .env >nul
   echo Created .env from .env.example
-  echo Edit .env if you want ComfyUI image generation.
+  echo Put your Soji API_URL/API_KEY/MODEL_NAME in .env and point COMFY_WORKFLOWS_DIR at your API workflow folder.
 )
 echo.
-echo Starting Soji Social local bridge with accounts...
+echo Starting Soji Social v0.3...
 echo Open http://127.0.0.1:3333 in your browser.
-echo First launch will ask you to create an account.
 echo.
-node server-auth.mjs
+node server-v3.mjs
 if errorlevel 1 (
   echo.
   echo Bridge stopped with an error. Make sure Node.js 20+ is installed.

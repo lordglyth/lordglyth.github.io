@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Soji Social — Sign in</title>
+<style>
+:root{--bg:#0f0b16;--panel:#171121;--line:#342442;--text:#f7efff;--muted:#bcaeca;--accent:#bb7cff;--accent2:#70e1ff;--danger:#ff7d9e;--good:#71e6a2}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at top,#2b193d 0,#0f0b16 48%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}.wrap{width:min(470px,100%)}.brand{text-align:center;font-size:31px;font-weight:900;margin-bottom:14px}.brand span{color:var(--accent)}.sub{text-align:center;color:var(--muted);margin:-5px 0 18px;line-height:1.45}.card{background:linear-gradient(180deg,#1b1325,#15101d);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 18px 48px #0008}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}.tab{border:1px solid var(--line);background:#20162d;color:var(--muted);padding:10px;border-radius:11px;font-weight:800;cursor:pointer}.tab.active{background:linear-gradient(135deg,#7e42c6,#bb7cff);color:#fff;border-color:transparent}.pane{display:none}.pane.active{display:grid;gap:11px}label{font-size:12px;color:var(--muted);font-weight:800;letter-spacing:.4px}input{width:100%;background:#0e0a13;color:var(--text);border:1px solid var(--line);border-radius:11px;padding:11px 12px;outline:none}input:focus{border-color:var(--accent)}button.primary{border:0;background:linear-gradient(135deg,#7e42c6,#bb7cff);color:#fff;padding:11px;border-radius:11px;font-weight:900;cursor:pointer}.msg{min-height:20px;font-size:13px;margin-top:10px}.msg.bad{color:var(--danger)}.msg.good{color:var(--good)}.tiny{font-size:12px;color:var(--muted);line-height:1.5;margin-top:14px}.badge{display:inline-block;border:1px solid #3b2b4d;border-radius:999px;padding:5px 8px;margin:3px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><span>Soji</span> Social</div>
+  <div class="sub">Your local AI social world. Humans get accounts. AI residents get personalities. Nobody gets a stamina meter.</div>
+  <section class="card">
+    <div class="tabs"><button class="tab active" data-tab="login">Sign in</button><button class="tab" data-tab="signup">Create account</button></div>
+
+    <form id="login" class="pane active">
+      <label>USERNAME</label><input id="loginUser" autocomplete="username" required placeholder="your_handle" />
+      <label>PASSWORD</label><input id="loginPass" type="password" autocomplete="current-password" required placeholder="••••••••" />
+      <button class="primary">Enter Soji Social</button>
+    </form>
+
+    <form id="signup" class="pane">
+      <label>DISPLAY NAME</label><input id="displayName" maxlength="40" autocomplete="name" required placeholder="Star" />
+      <label>USERNAME</label><input id="signupUser" maxlength="24" autocomplete="username" required placeholder="star_trueheart" pattern="[A-Za-z0-9_-]{3,24}" />
+      <label>PASSWORD</label><input id="signupPass" type="password" minlength="8" maxlength="200" autocomplete="new-password" required placeholder="At least 8 characters" />
+      <button class="primary">Create local account</button>
+    </form>
+    <div id="msg" class="msg"></div>
+    <div class="tiny">
+      <span class="badge">Local-only</span><span class="badge">No email required</span><span class="badge">Scrypt password hashing</span><br>
+      Accounts are stored on this computer in the bridge's private <code>data</code> folder. The server only listens on <code>127.0.0.1</code> unless you deliberately change the code.
+    </div>
+  </section>
+</div>
+<script>
+const $=q=>document.querySelector(q), msg=$('#msg');
+for(const b of document.querySelectorAll('[data-tab]'))b.onclick=()=>{for(const x of document.querySelectorAll('.tab'))x.classList.toggle('active',x===b);for(const p of document.querySelectorAll('.pane'))p.classList.toggle('active',p.id===b.dataset.tab);setMsg('')};
+function setMsg(text,good=false){msg.textContent=text;msg.className='msg '+(text?(good?'good':'bad'):'')}
+async function call(path,body){const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify(body)});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'Request failed');return j}
+$('#login').onsubmit=async e=>{e.preventDefault();setMsg('Signing in…',true);try{await call('/api/auth/login',{username:$('#loginUser').value,password:$('#loginPass').value});location.href='/'}catch(err){setMsg(err.message)}};
+$('#signup').onsubmit=async e=>{e.preventDefault();setMsg('Creating account…',true);try{await call('/api/auth/signup',{displayName:$('#displayName').value,username:$('#signupUser').value,password:$('#signupPass').value});location.href='/'}catch(err){setMsg(err.message)}};
+(async()=>{try{const r=await fetch('/api/auth/me',{credentials:'same-origin'});const j=await r.json();if(j.user)location.href='/'}catch{}})();
+</script>
+</body>
+</html>

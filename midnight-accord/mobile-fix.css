@@ -1,0 +1,36 @@
+/* Midnight Accord creator hotfix — mobile-first and photoreal player preview */
+html,body,#app{max-width:100%;overflow-x:hidden}
+.creator-grid,.avatar-panel,.creator-form{min-width:0;max-width:100%}
+.avatar-preview.real-photo-preview{position:relative;background:#080608;isolation:isolate}
+.avatar-preview.real-photo-preview>.avatar-hair,
+.avatar-preview.real-photo-preview>.avatar-head,
+.avatar-preview.real-photo-preview>.avatar-body{display:none!important}
+.player-real-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;z-index:10;display:block;background:#0b090c}
+.player-photo-shade{position:absolute;inset:0;z-index:11;pointer-events:none;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.52) 100%)}
+.player-photo-badge{position:absolute;left:.75rem;bottom:.75rem;z-index:12;max-width:calc(100% - 1.5rem);padding:.48rem .65rem;border:1px solid rgba(255,255,255,.24);border-radius:999px;background:rgba(5,4,6,.78);backdrop-filter:blur(8px);font-size:.74rem;color:#eee;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.creator-form input,.creator-form select,.creator-form button{min-width:0;max-width:100%}
+
+/* Force phones, tablets and narrow browser viewports to stack. The previous 850px breakpoint was too fragile on Samsung Internet. */
+@media(max-width:1199px){
+  .creator-screen{width:100%;overflow-x:hidden}
+  .creator-grid{display:flex!important;flex-direction:column!important;width:100%!important;max-width:720px!important;margin:0 auto!important;padding:1rem!important;gap:1rem!important}
+  .avatar-panel{order:1;width:100%!important;min-height:0!important;padding:1rem!important;border-radius:1rem!important}
+  .avatar-preview{width:min(100%,430px)!important;max-width:100%!important;aspect-ratio:4/5!important;height:auto!important;margin:0 auto!important}
+  .identity-card{width:min(100%,430px)!important;max-width:100%!important}
+  .creator-form{order:2;width:100%!important;display:flex!important;flex-direction:column!important;grid-template-columns:none!important;padding:1rem!important;gap:.95rem!important;border-radius:1rem!important}
+  .creator-form>*{width:100%!important;min-width:0!important;max-width:100%!important;grid-column:auto!important}
+  .creator-form label,.creator-form fieldset,.fixed-row{width:100%!important}
+  .creator-form input,.creator-form select{width:100%!important;font-size:16px!important}
+  .segmented{width:100%!important;grid-template-columns:1fr 1fr!important}
+  .segmented button{width:100%!important;min-height:48px!important}
+  .creator-form .big{width:100%!important;min-height:52px!important}
+  .topbar{width:100%;min-height:68px;height:auto;padding:max(.6rem,env(safe-area-inset-top)) .75rem .6rem;position:sticky}
+}
+
+@media(max-width:560px){
+  .creator-grid{padding:.65rem!important}
+  .avatar-panel,.creator-form{padding:.75rem!important}
+  .avatar-preview{width:100%!important;aspect-ratio:4/5!important;border-radius:.9rem!important}
+  .identity-card{width:100%!important}
+  .topbar strong{font-size:.95rem}.topbar small{font-size:.72rem}
+}

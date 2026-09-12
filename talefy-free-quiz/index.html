@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#11111a" />
+  <title>Arcane Academy Quiz — Free</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">✦ ARCANE QUIZ</div>
+      <div class="privacy">No signup · No tracking · No paywall</div>
+    </header>
+
+    <section id="start" class="panel hero active">
+      <div class="sigil">✦</div>
+      <p class="eyebrow">FREE PERSONALITY QUIZ</p>
+      <h1>Which arcane path fits you?</h1>
+      <p class="lede">Answer a few instinctive questions and get your full result immediately. Nothing is hidden behind an email form or subscription screen.</p>
+      <button id="startBtn" class="primary">Start the quiz</button>
+      <p class="tiny">Your answers stay in this browser.</p>
+    </section>
+
+    <section id="quiz" class="panel quiz-panel" aria-live="polite">
+      <div class="progress-wrap">
+        <div class="progress-meta"><span id="stepText">Question 1</span><span id="percentText">0%</span></div>
+        <div class="progress"><div id="progressBar"></div></div>
+      </div>
+      <p id="questionKicker" class="eyebrow"></p>
+      <h2 id="questionText"></h2>
+      <div id="answers" class="answers"></div>
+      <div class="navrow">
+        <button id="backBtn" class="ghost">← Back</button>
+      </div>
+    </section>
+
+    <section id="analyzing" class="panel center">
+      <div class="orb"><span>✦</span></div>
+      <p class="eyebrow">READING THE PATTERN</p>
+      <h2>Matching your choices…</h2>
+      <p id="analysisLine" class="lede">Looking at your instincts.</p>
+    </section>
+
+    <section id="result" class="panel result-panel">
+      <p class="eyebrow">YOUR RESULT</p>
+      <div id="resultIcon" class="result-icon">✦</div>
+      <h1 id="resultName"></h1>
+      <p id="resultTagline" class="result-tagline"></p>
+      <p id="resultBody" class="lede"></p>
+
+      <div class="score-card">
+        <h3>Your arcane profile</h3>
+        <div id="scoreBars"></div>
+      </div>
+
+      <div class="traits">
+        <h3>Core traits</h3>
+        <div id="traitPills" class="pills"></div>
+      </div>
+
+      <div class="result-actions">
+        <button id="copyBtn" class="primary">Copy my result</button>
+        <button id="restartBtn" class="ghost">Retake</button>
+      </div>
+      <p id="copyStatus" class="tiny"></p>
+    </section>
+  </main>
+
+  <footer>Built as a free, original quiz experience. No Talefy assets, text, accounts, or payment flow are used.</footer>
+  <script src="app.js"></script>
+</body>
+</html>

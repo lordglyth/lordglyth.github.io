@@ -1,5 +1,5 @@
 (() => {
-  const SOJI_UPSTREAM_BASE = 'https://inference.chub.ai/soji/v1';
+  const SOJI_UPSTREAM_BASE = 'https://mars.chub.ai/soji/v1';
   const SOJI_MODEL = 'soji';
   const DEFAULT_PROXY = 'https://tiny-planet-soji-proxy-ptsuhjy1p-rpgmafia-3007.vercel.app';
   const mode = document.querySelector('#llmMode');
@@ -48,8 +48,6 @@
 
   mode.addEventListener('change', updateUi);
 
-  // On the public GitHub Pages build, make Soji the useful default instead of
-  // pointing visitors at localhost. Local copies keep the local-server default.
   if (location.hostname === 'lordglyth.github.io') mode.value = 'soji';
   updateUi();
 
@@ -67,8 +65,6 @@
     const rawUrl = typeof resource === 'string' ? resource : resource?.url || '';
     if (!selected) return originalFetch(resource, options);
 
-    // app.js still speaks Ollama. In public Soji mode we emulate the two Ollama
-    // endpoints it expects, then translate the chat request to OpenAI format.
     if (/\/api\/tags(?:\?|$)/.test(rawUrl)) {
       return jsonResponse({ models: [{ name: SOJI_MODEL }] });
     }

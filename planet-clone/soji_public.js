@@ -1,7 +1,7 @@
 (() => {
   const SOJI_UPSTREAM_BASE = 'https://mars.chub.ai/soji/v1';
   const SOJI_MODEL = 'soji';
-  const DEFAULT_PROXY = 'https://tiny-planet-soji-proxy-ptsuhjy1p-rpgmafia-3007.vercel.app';
+  const DEFAULT_PROXY = 'https://tiny-planet-soji-proxy-rpgmafia-3007.vercel.app';
   const mode = document.querySelector('#llmMode');
   const urlInput = document.querySelector('#llmUrl');
   const modelSelect = document.querySelector('#llmModel');
@@ -47,7 +47,6 @@
   }
 
   mode.addEventListener('change', updateUi);
-
   if (location.hostname === 'lordglyth.github.io') mode.value = 'soji';
   updateUi();
 

@@ -113,13 +113,20 @@
         <option value="direct">Direct Ollama URL</option>
       </select>
     </label>
-    <label>Ollama base URL<input id="llmUrl" value="http://127.0.0.1:11434" /></label>
+    <label>Ollama / API base URL<input id="llmUrl" value="http://127.0.0.1:11434" /></label>
+    <label>API key / bearer token
+      <input id="llmApiKey" type="password" autocomplete="off" placeholder="Optional — leave blank for local Ollama" />
+    </label>
+    <div class="row tiny">
+      <label class="toggle"><input id="showApiKey" type="checkbox"> Show key</label>
+      <label class="toggle"><input id="rememberApiKey" type="checkbox"> Remember on this device</label>
+    </div>
     <label>Model<select id="llmModel"><option value="">Connect first…</option></select></label>
     <div class="mini-grid">
       <button id="connectLlmBtn">🔌 Connect</button>
       <button id="autoAiBtn" class="active">🤖 Auto AI: ON</button>
     </div>
-    <div class="muted tiny">Local mode uses your Ollama model for NPC decisions, conversations and reactions. Without it, the built-in sim keeps running.</div>
+    <div class="muted tiny">Local Ollama normally needs no key. For an authenticated Ollama-compatible endpoint, enter the token above; it is sent as <code>Authorization: Bearer …</code>.</div>
     <div class="muted tiny soji-note">🟣 Soji Core is injected into NPC/world LLM calls: continuity, persistent memory, autonomous characters, non-yes-men behavior and strict player agency.</div>
   </section>
 
@@ -143,6 +150,7 @@
     </form>
   </dialog>
 
+  <script src="api_key.js"></script>
   <script src="soji_client.js"></script>
   <script type="module" src="app.js"></script>
   <script src="mobile.js"></script>

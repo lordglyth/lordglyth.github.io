@@ -1,6 +1,7 @@
 (() => {
   const SOJI_UPSTREAM_BASE = 'https://inference.chub.ai/soji/v1';
   const SOJI_MODEL = 'soji';
+  const DEFAULT_PROXY = 'https://tiny-planet-soji-proxy-ptsuhjy1p-rpgmafia-3007.vercel.app';
   const mode = document.querySelector('#llmMode');
   const urlInput = document.querySelector('#llmUrl');
   const modelSelect = document.querySelector('#llmModel');
@@ -10,7 +11,7 @@
   if (![...mode.options].some(o => o.value === 'soji')) {
     const opt = document.createElement('option');
     opt.value = 'soji';
-    opt.textContent = 'Soji API · visitor uses own key';
+    opt.textContent = 'Soji API · use your own key';
     mode.appendChild(opt);
   }
 
@@ -18,14 +19,14 @@
   note.id = 'sojiPublicNote';
   note.className = 'muted tiny soji-note';
   note.hidden = true;
-  note.innerHTML = '🌐 Public Soji mode uses the visitor\'s own API key. Requests go through the site proxy only so the upstream call can carry <code>User-Agent: starlablood/1.0</code>. The key is forwarded for that request and is not committed to GitHub.';
+  note.innerHTML = '🌐 Public Soji mode uses <b>your own Soji API key</b>. Tiny Planet forwards it only for the request through the public proxy, which adds <code>User-Agent: starlablood/1.0</code> upstream. Your key is not stored in GitHub.';
   document.querySelector('#llmPanel')?.appendChild(note);
 
   function configuredProxy() {
     const fromWindow = String(window.TINY_PLANET_SOJI_PROXY_URL || '').trim();
     const fromMeta = document.querySelector('meta[name="tiny-planet-soji-proxy"]')?.content?.trim() || '';
     const fromStorage = localStorage.getItem('tinyPlanetSojiProxyUrl') || '';
-    return fromWindow || fromMeta || fromStorage;
+    return fromWindow || fromMeta || fromStorage || DEFAULT_PROXY;
   }
 
   function updateUi() {
@@ -46,6 +47,10 @@
   }
 
   mode.addEventListener('change', updateUi);
+
+  // On the public GitHub Pages build, make Soji the useful default instead of
+  // pointing visitors at localhost. Local copies keep the local-server default.
+  if (location.hostname === 'lordglyth.github.io') mode.value = 'soji';
   updateUi();
 
   const originalFetch = window.fetch.bind(window);
@@ -65,16 +70,11 @@
     // app.js still speaks Ollama. In public Soji mode we emulate the two Ollama
     // endpoints it expects, then translate the chat request to OpenAI format.
     if (/\/api\/tags(?:\?|$)/.test(rawUrl)) {
-      const proxy = configuredProxy();
-      if (!proxy) {
-        return jsonResponse({ error: 'Public Soji proxy is not configured yet.' }, 503);
-      }
       return jsonResponse({ models: [{ name: SOJI_MODEL }] });
     }
 
     if (/\/api\/chat(?:\?|$)/.test(rawUrl)) {
       const proxy = configuredProxy();
-      if (!proxy) return jsonResponse({ error: 'Public Soji proxy is not configured yet.' }, 503);
       const key = keyInput.value.trim();
       if (!key) return jsonResponse({ error: 'Enter your own Soji API key first.' }, 401);
 
@@ -123,6 +123,7 @@
   window.TinyPlanetSojiPublic = {
     upstream: SOJI_UPSTREAM_BASE,
     model: SOJI_MODEL,
+    defaultProxy: DEFAULT_PROXY,
     getProxyUrl: configuredProxy,
     setProxyUrl(url) {
       const clean = String(url || '').trim().replace(/\/$/, '');

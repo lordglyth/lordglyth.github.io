@@ -13,7 +13,7 @@ User-Agent: starlablood/1.0
 Upstream:
 
 ```text
-https://inference.chub.ai/soji/v1/chat/completions
+https://mars.chub.ai/soji/v1/chat/completions
 model: soji
 ```
 

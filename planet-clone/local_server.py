@@ -163,7 +163,10 @@ class Handler(SimpleHTTPRequestHandler):
             "Content-Type": self.headers.get("Content-Type", "application/json"),
             "User-Agent": SOJI_USER_AGENT,
         }
-        if OLLAMA_BEARER_TOKEN:
+        client_authorization = self.headers.get("Authorization", "").strip()
+        if client_authorization:
+            headers["Authorization"] = client_authorization
+        elif OLLAMA_BEARER_TOKEN:
             headers["Authorization"] = f"Bearer {OLLAMA_BEARER_TOKEN}"
 
         req = urllib.request.Request(target, data=body, method=method, headers=headers)
@@ -193,7 +196,10 @@ class Handler(SimpleHTTPRequestHandler):
 
 def ollama_status() -> str:
     try:
-        req = urllib.request.Request(OLLAMA + "/api/tags", headers={"User-Agent": SOJI_USER_AGENT})
+        headers = {"User-Agent": SOJI_USER_AGENT}
+        if OLLAMA_BEARER_TOKEN:
+            headers["Authorization"] = f"Bearer {OLLAMA_BEARER_TOKEN}"
+        req = urllib.request.Request(OLLAMA + "/api/tags", headers=headers)
         with urllib.request.urlopen(req, timeout=2) as r:
             data = json.loads(r.read().decode("utf-8"))
             models = [m.get("name", "?") for m in data.get("models", [])]

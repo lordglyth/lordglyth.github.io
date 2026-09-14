@@ -4,7 +4,7 @@ const ALLOWED_ORIGINS = new Set([
   'http://localhost:8765'
 ]);
 
-const SOJI_URL = 'https://inference.chub.ai/soji/v1/chat/completions';
+const SOJI_URL = 'https://mars.chub.ai/soji/v1/chat/completions';
 const SOJI_USER_AGENT = 'starlablood/1.0';
 
 function setCors(req, res) {

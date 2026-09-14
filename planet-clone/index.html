@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
   <meta name="theme-color" content="#071322" />
-  <meta name="tiny-planet-soji-proxy" content="" />
+  <meta name="tiny-planet-soji-proxy" content="https://tiny-planet-soji-proxy-rpgmafia-3007.vercel.app" />
   <title>Tiny Planet: NPC Chaos Lab</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="mobile.css" />
+  <link rel="stylesheet" href="style.css?v=20260914-3" />
+  <link rel="stylesheet" href="mobile.css?v=20260914-3" />
 </head>
 <body>
   <div id="app"></div>
@@ -114,7 +114,7 @@
         <option value="direct">Direct Ollama URL</option>
       </select>
     </label>
-    <label>Ollama / API base URL<input id="llmUrl" value="http://127.0.0.1:11434" /></label>
+    <label>Soji / Ollama endpoint<input id="llmUrl" value="http://127.0.0.1:11434" /></label>
     <label>API key / bearer token
       <input id="llmApiKey" type="password" autocomplete="off" placeholder="Optional — leave blank for local Ollama" />
     </label>
@@ -127,7 +127,7 @@
       <button id="connectLlmBtn">🔌 Connect</button>
       <button id="autoAiBtn" class="active">🤖 Auto AI: ON</button>
     </div>
-    <div class="muted tiny">Local Ollama normally needs no key. For an authenticated Ollama-compatible endpoint, enter the token above; it is sent as <code>Authorization: Bearer …</code>.</div>
+    <div class="muted tiny">Public Soji mode uses <code>https://mars.chub.ai/soji/v1/chat/completions</code> with your own key. Local Ollama normally needs no key.</div>
     <div class="muted tiny soji-note">🟣 Soji Core is injected into NPC/world LLM calls: continuity, persistent memory, autonomous characters, non-yes-men behavior and strict player agency.</div>
   </section>
 
@@ -151,10 +151,10 @@
     </form>
   </dialog>
 
-  <script src="api_key.js"></script>
-  <script src="soji_public.js"></script>
-  <script src="soji_client.js"></script>
-  <script type="module" src="app.js"></script>
-  <script src="mobile.js"></script>
+  <script src="api_key.js?v=20260914-3"></script>
+  <script src="soji_public.js?v=mars-fix-3"></script>
+  <script src="soji_client.js?v=mars-fix-3"></script>
+  <script type="module" src="app.js?v=mars-fix-3"></script>
+  <script src="mobile.js?v=20260914-3"></script>
 </body>
 </html>

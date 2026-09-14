@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/soji.js": {
+      "maxDuration": 60
+    }
+  }
+}

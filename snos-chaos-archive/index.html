@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#090611" />
+  <meta name="description" content="Sno's Chaos Archive — thoughts, experiments, weirdness, projects and whatever escaped my brain today." />
+  <title>Sno's Chaos Archive</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="noise"></div>
+  <div class="aurora aurora-a"></div>
+  <div class="aurora aurora-b"></div>
+  <div id="particles" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Sno's Chaos Archive home">
+      <span class="brand-mark">✦</span>
+      <span>CHAOS ARCHIVE</span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open navigation" aria-expanded="false">☰</button>
+    <nav id="mainNav" class="nav">
+      <a href="#latest">Latest</a>
+      <a href="#projects">Projects</a>
+      <a href="#about">About</a>
+      <button id="randomBtn" class="nav-random">Random thought ↝</button>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-kicker"><span class="pulse-dot"></span> TRANSMISSION ACTIVE</div>
+      <h1 class="glitch" data-text="SNO'S CHAOS ARCHIVE">SNO'S CHAOS ARCHIVE</h1>
+      <p class="hero-copy">Thoughts, experiments, weirdness and whatever escaped my brain today.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#latest">Enter the archive</a>
+        <button class="btn ghost" id="chaosBtn">Cause harmless chaos ✦</button>
+      </div>
+
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+          <span>RANTS & RAVES</span><b>✦</b><span>AI CHAOS</span><b>✦</b><span>GAMES</span><b>✦</b>
+          <span>WITCHY STUFF</span><b>✦</b><span>WEIRD INTERNET</span><b>✦</b><span>ANIMALS</span><b>✦</b>
+          <span>PROJECTS</span><b>✦</b><span>RANDOM THOUGHTS</span><b>✦</b>
+          <span>RANTS & RAVES</span><b>✦</b><span>AI CHAOS</span><b>✦</b><span>GAMES</span><b>✦</b>
+          <span>WITCHY STUFF</span><b>✦</b><span>WEIRD INTERNET</span><b>✦</b><span>ANIMALS</span><b>✦</b>
+          <span>PROJECTS</span><b>✦</b><span>RANDOM THOUGHTS</span><b>✦</b>
+        </div>
+      </div>
+    </section>
+
+    <section class="dashboard">
+      <article class="thought-card glass">
+        <div class="eyebrow">UNHINGED THOUGHT OF THE DAY</div>
+        <blockquote id="thoughtText">The internet was more fun when every website looked like somebody lived there.</blockquote>
+        <button class="tiny-btn" id="thoughtBtn">another one ↻</button>
+      </article>
+
+      <article class="status-card glass">
+        <div class="eyebrow">ARCHIVE STATUS</div>
+        <div class="status-grid">
+          <div><strong id="postCount">0</strong><span>posts loaded</span></div>
+          <div><strong id="projectCount">0</strong><span>projects mutating</span></div>
+          <div><strong>∞</strong><span>ideas loose</span></div>
+        </div>
+      </article>
+    </section>
+
+    <section id="latest" class="section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">RECENT TRANSMISSIONS</div>
+          <h2>Latest from the brain attic</h2>
+        </div>
+        <label class="search">
+          <span>⌕</span>
+          <input id="searchInput" type="search" placeholder="Search the chaos…" autocomplete="off" />
+        </label>
+      </div>
+
+      <div class="filters" id="filters"></div>
+      <div id="featuredPost" class="featured"></div>
+      <div id="postGrid" class="post-grid"></div>
+      <div id="emptyState" class="empty" hidden>No matching weirdness found. Try another category.</div>
+    </section>
+
+    <section id="projects" class="section projects-section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">THINGS ESCAPING THE LAB</div>
+          <h2>Featured projects</h2>
+        </div>
+      </div>
+      <div id="projectGrid" class="project-grid"></div>
+    </section>
+
+    <section class="section manifesto">
+      <div class="manifesto-inner glass">
+        <div class="manifesto-symbol">☾</div>
+        <div>
+          <div class="eyebrow">SITE PHILOSOPHY</div>
+          <h2>Personal websites should have fingerprints.</h2>
+          <p>No startup beige. No sterile template sludge. Just experiments, strange ideas, glowing buttons, unfinished projects, rabbit holes and whatever feels worth preserving.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section about">
+      <div class="about-copy">
+        <div class="eyebrow">ABOUT SNO</div>
+        <h2>Collector of odd ideas. Builder of stranger ones.</h2>
+        <p>This is a living archive for projects, games, AI experiments, animals, witchy curiosities, rants, discoveries and spontaneous nonsense.</p>
+      </div>
+      <div class="sigil glass" aria-hidden="true">
+        <span>✦</span><span>☾</span><span>⌁</span>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>© <span id="year"></span> Sno's Chaos Archive</span>
+    <span>Built on GitHub Pages • powered by questionable amounts of curiosity</span>
+  </footer>
+
+  <dialog id="postDialog">
+    <button class="dialog-close" id="dialogClose" aria-label="Close">×</button>
+    <div id="dialogContent"></div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Draw Path AI</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:#09090d;color:#f4f1fb;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;overscroll-behavior:none}
+body{padding-bottom:40px}
+.wrap{width:min(720px,100%);margin:auto;padding:14px}
+h1{margin:8px 0 2px;font-size:30px} h1 span{color:#b78cff}
+.sub{margin:0 0 14px;color:#aaa5b5;line-height:1.35}
+.card{background:#17171e;border:1px solid #30303b;border-radius:20px;padding:15px;margin:12px 0}
+.label{font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:#bc96ff;margin-bottom:8px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+button,select,input[type=file]{font:inherit}
+button,.btn,select{border:1px solid #444452;background:#25252e;color:#f5f1ff;border-radius:12px;padding:10px 12px}
+button{cursor:pointer}
+.primary{background:#734be0;border-color:#865ff0;font-weight:800}
+button:disabled{opacity:.45}
+select{min-height:42px}
+input[type=file]{max-width:100%;color:#d6d2df}
+.preview{display:none;width:100%;max-height:260px;object-fit:contain;background:#08080b;border:1px solid #292932;border-radius:14px;margin-top:12px}
+.status{margin-top:10px;color:#bbb4ca;line-height:1.4;font-size:14px}
+.status strong{color:#e3d6ff}
+.progress{height:7px;background:#262630;border-radius:999px;overflow:hidden;margin-top:8px;display:none}
+.progress>div{height:100%;width:0;background:#a97cff;transition:width .15s}
+.tools{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}
+.tool.active{outline:2px solid #a97cff;background:#2d2146}
+.swatches{display:flex;gap:8px;margin:9px 0}
+.swatch{width:34px;height:34px;border-radius:50%;border:2px solid #555;cursor:pointer}
+.swatch.active{outline:2px solid #c9a8ff}
+.meta{color:#aaa5b5;font-size:14px;margin:5px 0}
+.stepname{font-size:22px;font-weight:800;margin:4px 0}
+.tip{color:#c7c1cf;line-height:1.4;margin:4px 0}
+.board{position:relative;width:100%;aspect-ratio:1/1;background:#07070b;border-radius:18px;overflow:hidden;touch-action:none;border:1px solid #25252d}
+.board canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
+#ink{cursor:crosshair}
+.legend{font-size:12px;color:#888494;margin-top:8px}
+.legend b{font-weight:700}.g{color:#45db7b}.r{color:#ff6871}.p{color:#b68cff}
+.small{font-size:12px;color:#8e8999;line-height:1.45}
+details summary{color:#b991ff;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Draw Path <span>AI</span></h1>
+  <p class="sub">Upload a picture. AI finds the meaningful regions; Draw Path turns them into traceable strokes.</p>
+
+  <div class="card">
+    <div class="label">1 · Picture</div>
+    <input id="file" type="file" accept="image/*">
+    <img id="preview" class="preview" alt="Uploaded reference">
+    <div class="row" style="margin-top:10px">
+      <select id="mode" aria-label="AI mode">
+        <option value="character" selected>AI character / person</option>
+        <option value="general">AI general scene</option>
+      </select>
+      <select id="detail" aria-label="Detail">
+        <option value="simple">Simple</option>
+        <option value="normal" selected>Normal</option>
+        <option value="detailed">Detailed</option>
+      </select>
+      <button id="make" class="primary" disabled>Make drawing guide</button>
+    </div>
+    <div id="status" class="status">Choose an image. The first AI run downloads a model; later runs can use the browser cache.</div>
+    <div id="progress" class="progress"><div></div></div>
+  </div>
+
+  <div class="card">
+    <div class="label">2 · Trace</div>
+    <div id="meta" class="meta">No guide yet.</div>
+    <div id="stepname" class="stepname">Upload something first</div>
+    <div id="tip" class="tip">The board will show one trace path at a time.</div>
+
+    <div class="tools">
+      <button id="prev">◀ Line</button>
+      <button id="next">Line ▶</button>
+      <button id="guide" class="tool active">Trace guide</button>
+      <button id="ghost" class="tool">Faint photo</button>
+      <button id="mirror" class="tool">Mirror</button>
+      <button id="eraser" class="tool">Eraser</button>
+    </div>
+
+    <div class="swatches" id="swatches"></div>
+
+    <div class="board" id="board">
+      <canvas id="source"></canvas>
+      <canvas id="guideCanvas"></canvas>
+      <canvas id="ink"></canvas>
+    </div>
+
+    <div class="tools">
+      <button id="undo">Undo</button>
+      <button id="clear">Clear ink</button>
+      <button id="export">Export PNG</button>
+    </div>
+    <div class="legend"><b class="g">● start</b> &nbsp; <b class="r">● stop</b> &nbsp; <b class="p">purple = current line</b></div>
+  </div>
+
+  <details class="card">
+    <summary>What the AI is doing</summary>
+    <p class="small">Character mode uses semantic segmentation aimed at people/clothing/body regions. General mode uses scene segmentation. Those regions become clean boundaries; only the strongest internal photo edges are added for facial features, folds, and other useful details. The result is simplified and split into ordered paths for Line ▶. It is deliberately not a raw “trace every pixel edge” filter.</p>
+  </details>
+</div>
+
+<script type="module">
+import { pipeline, env } from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1";
+env.allowLocalModels = false;
+
+const $ = (id)=>document.getElementById(id);
+const file=$("file"), preview=$("preview"), make=$("make"), status=$("status"), progress=$("progress"), progressBar=progress.firstElementChild;
+const mode=$("mode"), detail=$("detail"), board=$("board"), srcC=$("source"), guideC=$("guideCanvas"), inkC=$("ink");
+const srcX=srcC.getContext("2d"), guideX=guideC.getContext("2d"), inkX=inkC.getContext("2d");
+
+let img=null, imageURL=null, paths=[], lineIndex=0, strokes=[], drawing=false, current=null;
+let guideOn=true, ghostOn=false, mirrored=false, erasing=false, dpr=1;
+const modelCache={};
+const colors=["#eeeaf4","#d89c19","#d74870","#3e9dd0","#29a33f","#8450c9"];
+let inkColor=colors[0];
+
+const MODEL={
+  character:"Xenova/segformer_b0_clothes",
+  general:"Xenova/segformer-b0-finetuned-ade-512-512"
+};
+
+function setStatus(t){status.innerHTML=t}
+function setProg(v){ if(v==null){progress.style.display="none";return} progress.style.display="block"; progressBar.style.width=Math.max(0,Math.min(100,v))+"%"; }
+
+async function getModel(kind){
+  if(modelCache[kind]) return modelCache[kind];
+  modelCache[kind]=(async()=>{
+    const opts={progress_callback:(p)=>{
+      if(p?.status==="progress" && typeof p.progress==="number"){
+        setProg(p.progress); setStatus("Downloading AI model… <strong>"+Math.round(p.progress)+"%</strong>");
+      } else if(p?.status) setStatus("AI model: <strong>"+p.status+"</strong>");
+    }};
+    if(navigator.gpu){
+      try{
+        setStatus("Loading AI with <strong>WebGPU</strong>…");
+        return await pipeline("image-segmentation",MODEL[kind],{...opts,device:"webgpu"});
+      }catch(e){ setStatus("WebGPU model load failed; trying browser CPU…"); }
+    }
+    return await pipeline("image-segmentation",MODEL[kind],{...opts,device:"wasm"});
+  })();
+  return modelCache[kind];
+}
+
+function cfg(){
+  if(detail.value==="simple") return {side:300,minLen:18,max:36,eps:2.9,edgePct:.97,extra:false};
+  if(detail.value==="detailed") return {side:430,minLen:6,max:135,eps:1.25,edgePct:.885,extra:true};
+  return {side:360,minLen:10,max:78,eps:1.85,edgePct:.93,extra:true};
+}
+function percentile(a,p){ if(!a.length)return 0; const b=a.slice().sort((x,y)=>x-y); return b[Math.floor((b.length-1)*p)]}
+function rdp(points,eps){
+  if(points.length<3)return points.slice();
+  const a=points[0],b=points[points.length-1],dx=b[0]-a[0],dy=b[1]-a[1],den=Math.hypot(dx,dy);
+  let md=-1,idx=-1;
+  for(let i=1;i<points.length-1;i++){
+    const p=points[i], d=den<1e-6?Math.hypot(p[0]-a[0],p[1]-a[1]):Math.abs(dy*p[0]-dx*p[1]+b[0]*a[1]-b[1]*a[0])/den;
+    if(d>md){md=d;idx=i}
+  }
+  if(md>eps){const l=rdp(points.slice(0,idx+1),eps),r=rdp(points.slice(idx),eps);return l.slice(0,-1).concat(r)}
+  return [a,b]
+}
+function thin(mask,w,h){
+  const at=(x,y)=>mask[y*w+x]?1:0; let changed=true,iter=0;
+  while(changed&&iter++<40){
+    changed=false;
+    for(let pass=0;pass<2;pass++){
+      const del=[];
+      for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++){
+        const id=y*w+x;if(!mask[id])continue;
+        const p2=at(x,y-1),p3=at(x+1,y-1),p4=at(x+1,y),p5=at(x+1,y+1),p6=at(x,y+1),p7=at(x-1,y+1),p8=at(x-1,y),p9=at(x-1,y-1);
+        const n=p2+p3+p4+p5+p6+p7+p8+p9;if(n<2||n>6)continue;
+        const seq=[p2,p3,p4,p5,p6,p7,p8,p9,p2];let tr=0;for(let k=0;k<8;k++)if(seq[k]===0&&seq[k+1]===1)tr++;
+        if(tr!==1)continue;
+        if(pass===0){if(p2*p4*p6!==0||p4*p6*p8!==0)continue}else{if(p2*p4*p8!==0||p2*p6*p8!==0)continue}
+        del.push(id)
+      }
+      if(del.length){changed=true;del.forEach(id=>mask[id]=0)}
+    }
+  }
+  return mask
+}
+function traceSkeleton(mask,w,h){
+  const dirs=[[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]];
+  const nb=(id)=>{const x=id%w,y=(id/w)|0,o=[];for(const d of dirs){const nx=x+d[0],ny=y+d[1];if(nx>=0&&ny>=0&&nx<w&&ny<h){const q=ny*w+nx;if(mask[q])o.push(q)}}return o};
+  const ek=(a,b)=>a<b?a+":"+b:b+":"+a, used=new Set(), deg=new Uint8Array(w*h), pix=[], out=[];
+  for(let i=0;i<mask.length;i++)if(mask[i]){deg[i]=nb(i).length;pix.push(i)}
+  function walk(start,next){
+    const p=[start];let prev=start,cur=next,guard=0;used.add(ek(prev,cur));
+    while(guard++<w*h){p.push(cur);if(deg[cur]!==2)break;const n=nb(cur);let cand=n[0]===prev?n[1]:n[0];if(cand==null||used.has(ek(cur,cand)))break;prev=cur;cur=cand;used.add(ek(prev,cur))}
+    return p
+  }
+  for(const id of pix)if(deg[id]!==2)for(const q of nb(id))if(!used.has(ek(id,q)))out.push(walk(id,q));
+  for(const id of pix)for(const q of nb(id))if(!used.has(ek(id,q))){
+    const p=[id];let prev=id,cur=q,guard=0;used.add(ek(prev,cur));
+    while(guard++<w*h){p.push(cur);let cand=null;for(const n of nb(cur))if(n!==prev&&!used.has(ek(cur,n))){cand=n;break}if(cand==null)break;prev=cur;cur=cand;used.add(ek(prev,cur));if(cur===id){p.push(id);break}}
+    out.push(p)
+  }
+  return out.map(ids=>ids.map(id=>[id%w,(id/w)|0]))
+}
+function maskVal(m,x,y){
+  const ch=m.channels||1,id=(y*m.width+x)*ch;let v=0;for(let c=0;c<ch;c++)v=Math.max(v,m.data[id+c]||0);return v
+}
+function semanticMap(segments,w,h,kind){
+  const labels=new Uint16Array(w*h),fg=new Uint8Array(w*h);let n=0;
+  for(const seg of segments){
+    if(!seg?.mask)continue;
+    const lab=(seg.label||"").toLowerCase();
+    if(kind==="character"&&lab.includes("background"))continue;
+    const m=seg.mask,lid=++n;
+    for(let y=0;y<h;y++){
+      const sy=Math.min(m.height-1,Math.floor((y+.5)*m.height/h));
+      for(let x=0;x<w;x++){
+        const sx=Math.min(m.width-1,Math.floor((x+.5)*m.width/w));
+        if(maskVal(m,sx,sy)>127){const id=y*w+x;labels[id]=lid;fg[id]=1}
+      }
+    }
+  }
+  const b=new Uint8Array(w*h),L=(x,y)=>labels[y*w+x];
+  for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++){
+    const a=L(x,y),ns=[L(x+1,y),L(x-1,y),L(x,y+1),L(x,y-1)];
+    if(ns.some(v=>v!==a)&&(a||ns.some(Boolean)))b[y*w+x]=1
+  }
+  return {b,fg,count:n}
+}
+function photoEdges(img,w,h,pct,fg,character){
+  const c=document.createElement("canvas");c.width=w;c.height=h;const x=c.getContext("2d",{willReadFrequently:true});
+  x.drawImage(img,0,0,w,h);const d=x.getImageData(0,0,w,h).data,g=new Float32Array(w*h);
+  for(let i=0;i<w*h;i++)g[i]=.299*d[i*4]+.587*d[i*4+1]+.114*d[i*4+2];
+  const bl=new Float32Array(g.length);
+  for(let y=2;y<h-2;y++)for(let xx=2;xx<w-2;xx++){let sm=0;for(let yy=-2;yy<=2;yy++)for(let dx=-2;dx<=2;dx++)sm+=g[(y+yy)*w+xx+dx];bl[y*w+xx]=sm/25}
+  const mag=new Float32Array(w*h),vals=[];
+  for(let y=2;y<h-2;y++)for(let xx=2;xx<w-2;xx++){
+    const p=y*w+xx;if(character&&!fg[p])continue;
+    const gx=-bl[p-w-1]-2*bl[p-1]-bl[p+w-1]+bl[p-w+1]+2*bl[p+1]+bl[p+w+1];
+    const gy=-bl[p-w-1]-2*bl[p-w]-bl[p-w+1]+bl[p+w-1]+2*bl[p+w]+bl[p+w+1];
+    const m=Math.hypot(gx,gy);mag[p]=m;if(m>8)vals.push(m)
+  }
+  const th=Math.max(35,percentile(vals,pct)),o=new Uint8Array(w*h);for(let i=0;i<o.length;i++)if(mag[i]>=th)o[i]=1;return o
+}
+function dilate(mask,w,h){
+  const o=new Uint8Array(mask);
+  for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++){const p=y*w+x;if(!mask[p]&&(mask[p-1]||mask[p+1]||mask[p-w]||mask[p+w]))o[p]=1}
+  return o
+}
+async function makeGuide(){
+  if(!img)return;
+  make.disabled=true;setProg(null);paths=[];lineIndex=0;strokes=[];renderAll();
+  try{
+    const C=cfg(),scale=Math.min(1,C.side/Math.max(img.naturalWidth,img.naturalHeight)),w=Math.max(32,Math.round(img.naturalWidth*scale)),h=Math.max(32,Math.round(img.naturalHeight*scale));
+    const seg=await getModel(mode.value);setProg(null);setStatus("AI is simplifying the image…");
+    const segments=await seg(img.src);
+    const sm=semanticMap(segments,w,h,mode.value);let mask=sm.b;
+    if(C.extra){const e=photoEdges(img,w,h,C.edgePct,sm.fg,mode.value==="character");for(let i=0;i<mask.length;i++)if(e[i])mask[i]=1}
+    mask=dilate(mask,w,h);thin(mask,w,h);
+    let pp=traceSkeleton(mask,w,h).filter(p=>p.length>=C.minLen).map(p=>rdp(p,C.eps)).filter(p=>p.length>=2);
+    pp.sort((a,b)=>score(b)-score(a));if(pp.length>C.max)pp=pp.slice(0,C.max);
+    if(!pp.length)throw new Error("No useful paths survived. Try Detailed or the other AI mode.");
+    paths=normalizePaths(pp,w,h);lineIndex=0;
+    setStatus("<strong>"+paths.length+" trace paths</strong> from "+sm.count+" AI regions.");
+    renderAll()
+  }catch(e){console.error(e);setStatus("Could not build guide: <strong>"+(e.message||e)+"</strong>")}finally{make.disabled=false;setProg(null)}
+}
+function score(p){const a=p[0],b=p[p.length-1],span=Math.hypot(b[0]-a[0],b[1]-a[1]);return p.length+span*.7}
+function normalizePaths(pp,w,h){
+  const pad=22,scale=Math.min((512-pad*2)/w,(512-pad*2)/h),ox=(512-w*scale)/2,oy=(512-h*scale)/2;
+  return pp.map(p=>p.map(q=>[ox+q[0]*scale,oy+q[1]*scale]))
+}
+
+function fit(){
+  const r=board.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,3);
+  for(const c of [srcC,guideC,inkC]){c.width=Math.round(r.width*dpr);c.height=Math.round(r.height*dpr)}
+  for(const x of [srcX,guideX,inkX])x.setTransform(dpr,0,0,dpr,0,0);
+  renderAll()
+}
+function boardSize(){return board.getBoundingClientRect().width}
+function txPoint(p){
+  const S=boardSize()/512;let x=p[0]*S,y=p[1]*S;if(mirrored)x=boardSize()-x;return [x,y]
+}
+function drawSource(){
+  const W=boardSize();srcX.clearRect(0,0,W,W);if(!img||!ghostOn)return;
+  srcX.save();srcX.globalAlpha=.17;
+  const iw=img.naturalWidth,ih=img.naturalHeight,sc=Math.min(W/iw,W/ih),dw=iw*sc,dh=ih*sc,dx=(W-dw)/2,dy=(W-dh)/2;
+  if(mirrored){srcX.translate(W,0);srcX.scale(-1,1);srcX.drawImage(img,W-dx-dw,dy,dw,dh)}else srcX.drawImage(img,dx,dy,dw,dh);
+  srcX.restore()
+}
+function drawGuide(){
+  const W=boardSize();guideX.clearRect(0,0,W,W);if(!guideOn||!paths.length)return;
+  guideX.lineCap="round";guideX.lineJoin="round";
+  for(let i=0;i<paths.length;i++){
+    const p=paths[i];guideX.beginPath();
+    for(let j=0;j<p.length;j++){const q=txPoint(p[j]);j?guideX.lineTo(...q):guideX.moveTo(...q)}
+    guideX.strokeStyle=i===lineIndex?"#ae7dff":"rgba(150,145,165,.22)";guideX.lineWidth=i===lineIndex?3:1;guideX.stroke()
+  }
+  if(lineIndex<paths.length){
+    const p=paths[lineIndex],a=txPoint(p[0]),b=txPoint(p[p.length-1]);
+    guideX.fillStyle="#39df76";guideX.beginPath();guideX.arc(a[0],a[1],5,0,Math.PI*2);guideX.fill();
+    guideX.fillStyle="#ff5c69";guideX.beginPath();guideX.arc(b[0],b[1],5,0,Math.PI*2);guideX.fill()
+  }
+}
+function redrawInk(){
+  const W=boardSize();inkX.clearRect(0,0,W,W);inkX.lineCap="round";inkX.lineJoin="round";
+  for(const s of strokes){inkX.beginPath();for(let i=0;i<s.pts.length;i++){const p=s.pts[i];i?inkX.lineTo(p[0],p[1]):inkX.moveTo(p[0],p[1])}inkX.strokeStyle=s.erase?"rgba(0,0,0,1)":s.color;inkX.globalCompositeOperation=s.erase?"destination-out":"source-over";inkX.lineWidth=s.erase?22:4;inkX.stroke()}
+  inkX.globalCompositeOperation="source-over"
+}
+function renderMeta(){
+  $("meta").textContent=paths.length?"Line "+(Math.min(lineIndex+1,paths.length))+" of "+paths.length:"No guide yet.";
+  $("stepname").textContent=paths.length?(lineIndex<paths.length?"Trace this line":"Guide finished ✓"):"Upload something first";
+  $("tip").textContent=paths.length?(lineIndex<paths.length?"Follow the purple path from green to red.":"Turn off Trace guide and try it from memory."):"The board will show one trace path at a time."
+}
+function renderAll(){drawSource();drawGuide();redrawInk();renderMeta()}
+function pos(e){const r=inkC.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top]}
+function pointerDown(e){drawing=true;inkC.setPointerCapture?.(e.pointerId);current={pts:[pos(e)],erase:erasing,color:inkColor};e.preventDefault()}
+function pointerMove(e){if(!drawing||!current)return;current.pts.push(pos(e));redrawInk();const p=current;inkX.beginPath();for(let i=0;i<p.pts.length;i++){const q=p.pts[i];i?inkX.lineTo(q[0],q[1]):inkX.moveTo(q[0],q[1])}inkX.globalCompositeOperation=p.erase?"destination-out":"source-over";inkX.strokeStyle=p.color;inkX.lineWidth=p.erase?22:4;inkX.lineCap="round";inkX.lineJoin="round";inkX.stroke();inkX.globalCompositeOperation="source-over";e.preventDefault()}
+function pointerUp(e){if(!drawing)return;drawing=false;if(current&&current.pts.length>1){strokes.push(current);if(!erasing&&lineIndex<paths.length)lineIndex++}current=null;renderAll();e.preventDefault()}
+
+file.addEventListener("change",()=>{
+  const f=file.files?.[0];if(!f)return;
+  if(imageURL)URL.revokeObjectURL(imageURL);imageURL=URL.createObjectURL(f);
+  const im=new Image();im.onload=()=>{img=im;preview.src=imageURL;preview.style.display="block";make.disabled=false;setStatus("Ready. Choose AI mode/detail and tap <strong>Make drawing guide</strong>.");renderAll()};im.onerror=()=>setStatus("Could not open that image.");im.src=imageURL
+});
+make.addEventListener("click",makeGuide);
+$("prev").onclick=()=>{if(paths.length){lineIndex=Math.max(0,lineIndex-1);renderAll()}};
+$("next").onclick=()=>{if(paths.length){lineIndex=Math.min(paths.length,lineIndex+1);renderAll()}};
+$("guide").onclick=()=>{guideOn=!guideOn;$("guide").classList.toggle("active",guideOn);drawGuide()};
+$("ghost").onclick=()=>{ghostOn=!ghostOn;$("ghost").classList.toggle("active",ghostOn);drawSource()};
+$("mirror").onclick=()=>{mirrored=!mirrored;$("mirror").classList.toggle("active",mirrored);renderAll()};
+$("eraser").onclick=()=>{erasing=!erasing;$("eraser").classList.toggle("active",erasing)};
+$("undo").onclick=()=>{strokes.pop();redrawInk()};
+$("clear").onclick=()=>{strokes=[];redrawInk()};
+$("export").onclick=()=>{
+  const W=inkC.width,H=inkC.height,t=document.createElement("canvas");t.width=W;t.height=H;const x=t.getContext("2d");x.drawImage(inkC,0,0);t.toBlob(b=>{const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="draw-path-ai.png";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)},"image/png")
+};
+inkC.addEventListener("pointerdown",pointerDown);inkC.addEventListener("pointermove",pointerMove);inkC.addEventListener("pointerup",pointerUp);inkC.addEventListener("pointercancel",pointerUp);
+
+const sw=$("swatches");colors.forEach((c,i)=>{const b=document.createElement("button");b.className="swatch"+(i===0?" active":"");b.style.background=c;b.onclick=()=>{inkColor=c;[...sw.children].forEach(q=>q.classList.remove("active"));b.classList.add("active")};sw.appendChild(b)});
+fit();addEventListener("resize",()=>setTimeout(fit,100));addEventListener("orientationchange",()=>setTimeout(fit,250));
+</script>
+</body>
+</html>

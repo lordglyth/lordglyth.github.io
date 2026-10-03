@@ -1,5 +1,23 @@
 const POSTS = [
   {
+    id:"hit-me-again-991-episodes-no-wiki",
+    title:"Hit Me Again Has 991 Episodes and Somehow No Proper Wiki",
+    category:"Rants & Raves",
+    date:"Oct 2, 2026",
+    accent:"#ff58bd",
+    excerpt:"Nine hundred ninety-one episodes. NINE HUNDRED NINETY-ONE. And I still can't find a proper full wiki for Hit Me Again. How does something get that huge and leave viewers digging through scraps?",
+    body:[
+      "Hit Me Again has 991 episodes. Let that number sit there for a second. Nine hundred. Ninety-one. That is not a tiny web drama somebody uploaded on a weekend. That is a whole damn ecosystem.",
+      "And yet trying to look something up about it feels like archaeology. Where is the proper episode guide? Where are the character pages? The relationship chart? The arc breakdowns? The timeline? The list of who betrayed who, disappeared, came back, got exposed, got forgiven, got revenge, and then somehow had another crisis 300 episodes later?",
+      "A series that long needs a real wiki just so normal humans can keep track of what planet they are standing on.",
+      "<h3>What the wiki should have</h3><p>Every episode should have at least a short summary, major events, characters involved, and links to the larger story arc. Characters need their own pages with relationships, aliases, turning points, and appearances. Major arcs need overview pages so somebody can jump back in without rewatching hundreds of episodes.</p>",
+      "It should also track recurring locations, major reveals, villains, family connections, betrayals, deaths, fake deaths, reconciliations, and all the other nonsense a 991-episode drama has enough room to pull.",
+      "<blockquote>If your show is nearly one thousand episodes long, a wiki stops being a fan luxury and becomes navigation equipment.</blockquote>",
+      "I should be able to remember one bizarre scene, type a character name and a few details, and actually figure out where the hell it happened. Instead it feels like the fandom was handed a mountain and no map.",
+      "So yes: Hit Me Again deserves a full wiki. Not three paragraphs and a cast list. A ridiculous, obsessive, episode-by-episode monster of a wiki big enough to match the show."
+    ]
+  },
+  {
     id:"internet-had-fingerprints",
     title:"The Internet Was Better When Websites Had Fingerprints",
     category:"Rants & Raves",

@@ -1,5 +1,28 @@
 const POSTS = [
   {
+    id:"ai-cant-organize-aniimo-farm",
+    title:"AI Is Too Incompetent to Take Over the World — It Can't Even Organize My Aniimo Farm",
+    category:"AI Chaos",
+    date:"Oct 5, 2026",
+    accent:"#4de4ff",
+    excerpt:"People keep warning me that AI is going to take over the world. Mine can't even look at an Aniimo farm, notice half the jobs are being neglected, and assign the right workers without needing a constitution.",
+    body:[
+      "I keep hearing the same dramatic prophecy: AI is going to take over the world. Superintelligence. Machine overlords. Humanity reduced to pets while some glowing server farm quietly runs civilization.",
+      "Meanwhile I ask an AI to organize my Aniimo Homeland and it acts like I handed it the nuclear launch codes written in ancient Sumerian.",
+      "The task is not conquer Europe. It is not optimize global shipping. It is not solve protein folding while composing an opera. It is: look at the farm, see which jobs are being ignored, and put enough qualified Aniimo on them.",
+      "That should be the kind of microscopic management computers are terrifyingly good at. There are workers. There are slots. There are Home abilities. There are tasks. Match the little creature with the little job. Congratulations, silicon emperor, you have discovered management.",
+      "Instead I have to write restrictions like a legal contract: do not touch my active combat team, do not steal my main Glacy, the Glacy already on the farm can stay there, do not spend currency, do not burn materials, do not randomly upgrade things, and please for the love of all that is computational do not "optimize" the one part I told you to leave alone.",
+      "<h3>Why does AI suck at micromanagement?</h3><p>Because the annoying part is not raw intelligence. It is maintaining a live model of dozens of tiny constraints at once. An AI can understand each rule individually and still lose one halfway through the job. It may recognize that a facility needs a certain ability, then forget that the best worker for it is protected because that fact was mentioned six steps earlier.</p>",
+      "Humans do this too, obviously. But humans are not currently being marketed as the inevitable all-seeing management layer for civilization.",
+      "The funniest part is that AI often looks smarter on big abstract problems than on stupid little ones. Ask it to explain an economic system and it will produce a miniature textbook. Ask it to keep six farm jobs covered without moving the wrong ice creature and suddenly the machine is eating crayons.",
+      "<blockquote>The robot uprising has been postponed because the robots are still trying to figure out who should work the berry patch.</blockquote>",
+      "Micromanagement punishes every weakness modern AI has: drifting attention, incomplete state tracking, over-eager "helpfulness," making a plausible move instead of the exact move, and assuming that changing more things must mean improving more things.",
+      "Games expose this brutally because the rules are visible. If an AI forgets one restriction while writing an essay, you might never notice. If it forgets one restriction while managing an Aniimo farm, suddenly your combat unit is harvesting potatoes and the workshop is abandoned.",
+      "So no, I am not currently afraid of AI taking over the world. First it needs to demonstrate that it can take over my farm for five minutes without me standing behind it with a rolled-up newspaper yelling, "NO. THAT GLACY IS NOT A WORKER."",
+      "Wake me up when Skynet can cover gathering, hauling, production, crafting, leisure, and dispatch without dismantling my combat team. Then I will start worrying."
+    ]
+  },
+  {
     id:"hit-me-again-991-episodes-no-wiki",
     title:"Hit Me Again Has 991 Episodes and Somehow No Proper Wiki",
     category:"Rants & Raves",

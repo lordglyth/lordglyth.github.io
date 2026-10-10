@@ -81,8 +81,8 @@ dialog::backdrop{background:rgba(2,1,4,.78);backdrop-filter:blur(8px)}.dialog-cl
   height:100vh;
   z-index:0;
   pointer-events:none;
-  opacity:1;
-  filter:saturate(1.75) contrast(1.28) brightness(1.28) drop-shadow(0 0 24px rgba(171,55,255,.65));
+  opacity:.96;
+  filter:saturate(1.22) contrast(1.12) brightness(1.08);
   mix-blend-mode:screen;
 }
 main,footer{position:relative;z-index:2}

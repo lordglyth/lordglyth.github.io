@@ -62,36 +62,36 @@ class LiquidFire extends HTMLElement {
 
   color(t) {
     t = Math.max(0, Math.min(1.25, t * this.intensity));
-    if (t < .10) return [3,0,10,0];
-    if (t < .28) {
-      const q=(t-.10)/.18;
-      return [22+38*q, 2+4*q, 48+65*q, 75+70*q];
+    if (t < .06) return [0,0,0,0];
+    if (t < .20) {
+      const q=(t-.06)/.14;
+      return [28+42*q, 0, 64+70*q, 105+85*q];
     }
-    if (t < .52) {
-      const q=(t-.28)/.24;
-      return [60+75*q, 6+18*q, 113+80*q, 145+45*q];
+    if (t < .42) {
+      const q=(t-.20)/.22;
+      return [70+80*q, 0+18*q, 134+90*q, 190+45*q];
     }
-    if (t < .78) {
-      const q=(t-.52)/.26;
-      return [135+70*q, 24+40*q, 193+40*q, 190+35*q];
+    if (t < .70) {
+      const q=(t-.42)/.28;
+      return [150+78*q, 18+36*q, 224+25*q, 235+18*q];
     }
-    const q=Math.min(1,(t-.78)/.35);
-    return [205+45*q, 64+120*q, 233+20*q, 225];
+    const q=Math.min(1,(t-.70)/.40);
+    return [228+27*q, 54+150*q, 249, 255];
   }
 
   step(time) {
     const w=this.w,h=this.h,src=this.heat,dst=this.next;
     const turb=this.turbulence;
-    const base = .72 + .07*Math.sin(time*.0017*this.speed);
+    const base = 1.02 + .12*Math.sin(time*.0017*this.speed);
     for (let x=0;x<w;x++) {
       const n = (Math.sin(x*.15 + time*.0023*this.speed) + Math.sin(x*.047 - time*.0015))*0.5;
       let fuel = base + .16*n + Math.random()*.22;
       if (this.pointerHeat > .01) {
         const dx = Math.abs(x/(w-1)-this.pointerX);
-        fuel += Math.max(0, 1-dx*9) * .7 * this.pointerHeat;
+        fuel += Math.max(0, 1-dx*9) * 1.15 * this.pointerHeat;
       }
-      src[(h-1)*w+x] = Math.min(1.3, fuel);
-      src[(h-2)*w+x] = Math.min(1.15, fuel*.92);
+      src[(h-1)*w+x] = Math.min(1.65, fuel);
+      src[(h-2)*w+x] = Math.min(1.5, fuel*.98);
     }
 
     for (let y=0;y<h-2;y++) {
@@ -109,7 +109,7 @@ class LiquidFire extends HTMLElement {
           src[left]*.7 +
           src[right]*.7
         ) / 6.1;
-        const decay = .0065 + (y/h)*.002 + Math.random()*.010*turb;
+        const decay = .0032 + (y/h)*.0012 + Math.random()*.006*turb;
         dst[y*w+x] = Math.max(0, v-decay);
       }
     }

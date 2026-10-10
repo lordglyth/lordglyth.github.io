@@ -84,6 +84,6 @@ dialog::backdrop{background:rgba(2,1,4,.78);backdrop-filter:blur(8px)}.dialog-cl
   opacity:.68;
   filter:saturate(1.35) contrast(1.08) brightness(.9);
 }
-.topbar,main,footer{position:relative;z-index:2}
+main,footer{position:relative;z-index:2}
 .aurora,#particles{z-index:1}
 .noise{z-index:50}

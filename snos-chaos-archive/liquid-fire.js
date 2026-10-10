@@ -182,7 +182,7 @@ class LiquidFire extends HTMLElement {
 
   color(v) {
     // Harder transparency cutoff removes the blurry purple haze.
-    const t=Math.max(0,Math.min(1.35,v*this.intensity));
+    const t=Math.max(0,Math.min(1.20,v*this.intensity));
     if (t<.16) return [0,0,0,0];
 
     // Gamma-like shaping: dim heat vanishes; flame cores stay crisp.
@@ -190,18 +190,18 @@ class LiquidFire extends HTMLElement {
 
     if (s<.22) {
       const q=s/.22;
-      return [45+38*q,0,92+55*q,80+90*q];
+      return [24+28*q,0,78+48*q,70+70*q];
     }
     if (s<.48) {
       const q=(s-.22)/.26;
-      return [83+72*q,4+12*q,147+82*q,170+50*q];
+      return [52+48*q,2+8*q,126+76*q,140+50*q];
     }
     if (s<.76) {
       const q=(s-.48)/.28;
-      return [155+73*q,16+54*q,229+23*q,220+30*q];
+      return [100+55*q,10+26*q,202+32*q,190+35*q];
     }
     const q=Math.min(1,(s-.76)/.24);
-    return [228+27*q,70+150*q,252,250];
+    return [155+55*q,36+72*q,234+18*q,220];
   }
 
   render() {

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#090611">
+  <meta name="description" content="Sno's seven new ChatGPT prompts every day, archived together on one separate page of Sno's Chaos Archive.">
+  <title>Daily Prompts ✦ Sno's Chaos Archive</title>
+  <style>
+    :root{color-scheme:dark;--bg:#08060e;--ink:#faf5ff;--muted:#c6b9d6;--violet:#9b5cff;--cyan:#4de4ff;--pink:#ff58bd;--line:rgba(255,255,255,.14)}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--bg)}
+    body{margin:0;min-height:100vh;color:var(--ink);font:16px/1.6 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(ellipse at 10% 0%,rgba(155,92,255,.24),transparent 34%),radial-gradient(ellipse at 90% 30%,rgba(77,228,255,.10),transparent 30%),#08060e}
+    a{color:inherit}button{font:inherit;cursor:pointer}
+    .topbar{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px max(18px,calc((100vw - 1000px)/2));border-bottom:1px solid var(--line);background:rgba(8,6,14,.86);backdrop-filter:blur(16px)}
+    .brand{text-decoration:none;font-size:.77rem;font-weight:900;letter-spacing:.14em}.brand b{color:var(--cyan)}
+    .home{font-size:.83rem;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 12px;white-space:nowrap}
+    .home:hover,.copy:hover{border-color:var(--cyan)}
+    main{width:min(1000px,calc(100% - 32px));margin:auto}
+    .hero{padding:76px 0 40px}
+    .eyebrow{color:var(--cyan);font-size:.74rem;letter-spacing:.19em;font-weight:900;text-transform:uppercase}
+    h1{font-size:clamp(3.1rem,10vw,6.5rem);line-height:.95;letter-spacing:-.068em;margin:15px 0 20px;text-shadow:0 0 45px rgba(155,92,255,.22)}
+    .hero p{max-width:690px;color:var(--muted);font-size:1.12rem;margin:0}
+    .chips{display:flex;gap:10px;flex-wrap:wrap;margin:28px 0}
+    .chip{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:.8rem;color:#e8dbf5}
+    .chip strong{color:white}
+    .day{margin:26px 0 46px;padding:clamp(18px,4vw,34px);border:1px solid var(--line);border-radius:28px;background:linear-gradient(140deg,rgba(255,255,255,.065),rgba(255,255,255,.025));box-shadow:0 18px 60px rgba(0,0,0,.28)}
+    .day-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:20px;border-bottom:1px solid var(--line);padding-bottom:16px}
+    .day-head h2{margin:4px 0 0;line-height:1.15;font-size:clamp(1.5rem,5vw,2.25rem)}
+    .day-count{border:1px solid rgba(77,228,255,.38);color:var(--cyan);border-radius:100px;padding:7px 12px;font-size:.78rem;font-weight:800;white-space:nowrap}
+    .prompts{display:grid;gap:13px;list-style:none;margin:0;padding:0}
+    .prompt{position:relative;border:1px solid var(--line);border-radius:18px;padding:19px;background:rgba(6,5,13,.55)}
+    .prompt-top{display:flex;align-items:flex-start;gap:10px;justify-content:space-between}
+    .prompt-title{font-size:1.06rem;line-height:1.3;font-weight:900;margin:0 0 8px}.prompt-title span{color:var(--pink);margin-right:8px}
+    .prompt-text{white-space:pre-wrap;margin:0;color:#ddd5e7;font-size:.96rem}
+    .copy{flex-shrink:0;border:1px solid var(--line);background:rgba(155,92,255,.12);color:white;border-radius:999px;padding:7px 12px;font-size:.77rem;font-weight:850}
+    .empty{border:1px dashed var(--line);border-radius:20px;padding:30px;color:var(--muted)}
+    footer{color:#a79bb6;border-top:1px solid var(--line);padding:25px 0 50px;font-size:.81rem}
+    :focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+    @media(max-width:520px){.hero{padding-top:50px}.topbar{padding:14px 16px}.brand{letter-spacing:.05em}.prompt{padding:15px}.copy{padding:7px 10px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../"><b>✦</b> SNO'S CHAOS ARCHIVE</a>
+    <a class="home" href="../">← Main blog</a>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">A separate wing of the archive</div>
+      <h1>7 Daily<br>Prompts <span aria-hidden="true" style="color:var(--violet)">✦</span></h1>
+      <p>Seven fresh ideas for things to ask ChatGPT, every day at 9 AM Eastern. All seven stay together in one dated entry, and past days remain below. The main blog and its posts are separate and untouched by this archive.</p>
+      <div class="chips"><span class="chip"><strong>7</strong> prompts per day</span><span class="chip"><strong>9:00 AM ET</strong> schedule</span><span class="chip">Newest first · Copy-friendly</span></div>
+    </section>
+    <div id="prompt-archive" aria-label="Daily prompts archive">
+      <!-- DAILY_PROMPTS_START -->
+      <article class="day" id="prompts-2026-10-18" data-date="2026-10-18">
+        <div class="day-head"><div><div class="eyebrow">Launch edition</div><h2>Sunday, October 18, 2026</h2></div><span class="day-count">7 prompts</span></div>
+        <ol class="prompts">
+          <li class="prompt"><div class="prompt-top"><h3 class="prompt-title"><span>01</span> Technology Mystery Solver</h3><button class="copy" type="button" aria-label="Copy prompt 1">Copy</button></div><p class="prompt-text">Act as a detective for strange technology problems. I'll describe the symptoms, what changed recently, and what device I'm using. Give me three ranked explanations, the safest quick experiment for each, and a fix that avoids resetting or deleting anything unless truly necessary.</p></li>
+          <li class="prompt"><div class="prompt-top"><h3 class="prompt-title"><span>02</span> Invent a Creature That Could Exist</h3><button class="copy" type="button" aria-label="Copy prompt 2">Copy</button></div><p class="prompt-text">Invent a bizarre but biologically plausible animal no one has discovered. Describe its anatomy, habitat, diet, courtship behavior, defense mechanisms, and one unexpected symbiotic relationship. Finish with a field researcher's first encounter.</p></li>
+          <li class="prompt"><div class="prompt-top"><h3 class="prompt-title"><span>03</span> Make My Chaos Into a Plan</h3><button class="copy" type="button" aria-label="Copy prompt 3">Copy</button></div><p class="prompt-text">I'm going to dump an unorganized pile of ideas, errands, and unfinished projects. Group them by goal, distinguish urgent from optional, spot hidden dependencies, and give me the smallest doable first step for each. Don't discard ideas just because they're weird.</p></li>
+          <li class="prompt"><div class="prompt-top"><h3 class="prompt-title"><span>04</span> Build a No-Driving Micro-Adventure</h3><button class="copy" type="button" aria-label="Copy prompt 4">Copy</button></div><p class="prompt-text">Design an unusual, low-stress half-day outing near North Brunswick, New Jersey that doesn't require me to drive. Prioritize accessible rest stops, interesting discoveries, realistic transport options, and avoiding crowds. Verify any current hours, prices, and transit details before recommending them.</p></li>
+          <li class="prompt"><div class="prompt-top"><h3 class="prompt-title"><span>05</span> One-File Weird Game Studio</h3><button class="copy" type="button" aria-label="Copy prompt 5">Copy</button></div><p class="prompt-text">Make an original weird little browser game in one self-contained HTML file I can save and run offline. It must have clear instructions, mouse and touch controls, a real win-or-lose condition, a score, and replayability. Give me the full working code, not just an outline.</p></li>
+          <li class="prompt"><div class="prompt-top"><h3 class="prompt-title"><span>06</span> Obscure Knowledge Rabbit Hole</h3><button class="copy" type="button" aria-label="Copy prompt 6">Copy</button></div><p class="prompt-text">Teach me something obscure and true about nature, history, space, food science, psychology, or engineering. Choose a subject most people have never heard of. Explain how it works with unforgettable comparisons, and distinguish verified facts from speculation.</p></li>
+          <li class="prompt"><div class="prompt-top"><h3 class="prompt-title"><span>07</span> Cinematic Continuity Director</h3><button class="copy" type="button" aria-label="Copy prompt 7">Copy</button></div><p class="prompt-text">Turn a short fictional scene I give you into an eight-shot cinematic storyboard. Keep every character's appearance, props, location, injuries, lighting, and eyelines consistent across shots. Include framing, action, dialogue, sound, and the exact transition into the next shot.</p></li>
+        </ol>
+      </article>
+      <!-- DAILY_PROMPTS_END -->
+    </div>
+    <footer>✦ Part of <a href="../">Sno's Chaos Archive</a> · This page is a separate, ongoing prompt archive.</footer>
+  </main>
+  <script>
+  document.addEventListener('click', async function(event){
+    const button = event.target.closest('button.copy');
+    if (!button) return;
+    const text = button.closest('.prompt').querySelector('.prompt-text').textContent.trim();
+    const original = button.textContent;
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const area = document.createElement('textarea');
+        area.value = text;
+        area.style.position = 'fixed';
+        area.style.opacity = '0';
+        document.body.appendChild(area);
+        area.select();
+        const ok = document.execCommand('copy');
+        area.remove();
+        if (!ok) throw new Error('Clipboard unavailable');
+      }
+      button.textContent = 'Copied ✓';
+    } catch (_error) {
+      button.textContent = 'Select text';
+    }
+    window.setTimeout(function(){ button.textContent = original; }, 1800);
+  });
+  </script>
+</body>
+</html>

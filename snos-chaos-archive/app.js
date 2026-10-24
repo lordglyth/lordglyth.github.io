@@ -249,3 +249,7 @@ for(let i=0;i<28;i++){
 qs("#postCount").textContent=POSTS.length;
 qs("#year").textContent=new Date().getFullYear();
 renderFilters();renderPosts();renderProjects();
+
+// Allow an individual archive post to open from a shareable URL.
+const requestedPost = new URLSearchParams(window.location.search).get("post");
+if (requestedPost && POSTS.some(p => p.id === requestedPost)) openPost(requestedPost);

@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover"><title>Snake with Zombies v1.0 — Illustrated Zombie Forge</title><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover"><title>Snake with Zombies v1.1 — Segment Arsenal</title><style>
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#090611;color:#f6eaff;font-family:system-ui,'Trebuchet MS',sans-serif;overflow-x:hidden}button{touch-action:manipulation;cursor:pointer;font:inherit}.wrap{max-width:1140px;margin:auto;padding:8px}.head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:3px 0 8px}.logo{font-weight:1000;letter-spacing:.03em;font-size:clamp(18px,3.7vw,29px);line-height:1;color:#bdff24;text-shadow:2px 2px #542174,0 0 12px #69f00066}.logo span{color:#ff3458}.tag{font-size:11px;color:#dcb9ef;border:1px solid #723e93;padding:5px 8px;background:#170b25}.hud{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-bottom:6px}.metric{background:linear-gradient(#211133,#0d0818);border:1px solid #753e92;text-align:center;padding:6px 2px;color:#ddacf4;font-size:10px;font-weight:bold}.metric b{display:block;font-size:clamp(13px,2.4vw,21px);color:#b8ff30;text-shadow:0 0 6px #a5ff3a55}.stage{position:relative;border:3px ridge #8f4fb5;background:#151020;box-shadow:0 0 30px #6817a750;overflow:hidden}canvas{display:block;width:100%;height:auto;aspect-ratio:3/2;image-rendering:pixelated;touch-action:none}.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#090714d9;padding:14px;z-index:4}.overlay.hidden{display:none}.modal{width:min(530px,96%);max-height:95%;overflow-y:auto;background:linear-gradient(150deg,#21102f,#0c0a16);border:3px solid #b564d2;box-shadow:0 0 0 3px #09040e,0 0 25px #a82eff77;padding:16px;text-align:center}.modal h1{font-size:clamp(24px,5vw,42px);color:#b9ff2c;text-shadow:3px 3px #401f68;margin:0 0 10px}.modal p{color:#ead7f1;line-height:1.35}.cta{border:2px solid #beff2b;background:#253b12;color:#eaffd6;box-shadow:inset 0 0 14px #8cff2d44;font-weight:900;padding:12px 20px;margin:6px;border-radius:2px;min-height:46px}.cta:active{transform:scale(.97)}.cta.alt{border-color:#d377fc;background:#29133b}.shopgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.schooltabs{display:flex;gap:5px;overflow-x:auto;padding:3px 1px 10px;margin:5px 0}.schooltabs button{border:1px solid #8847a6;background:#1a0b26;color:#f3dbff;padding:8px;white-space:nowrap;font-size:11px}.schooltabs button.selected{border-color:#b8ff32;background:#284018;color:#dfffba}.shopitem{background:#180b25;border:1px solid #8847a6;color:#eee;padding:8px;text-align:left;min-height:105px}.shopitem b{color:#baff32;display:block}.shopitem small{display:block;color:#dbbce9;margin:5px 0}.shopitem:disabled{opacity:.48}.shopitem .cost{font-weight:bold;color:#f8c1ff}.forgeitem{background:linear-gradient(120deg,#1f102e,#111925);border:1px solid #8548aa;padding:10px;margin:8px 0;text-align:left}.forgeitem strong{display:block;color:#b8ff30}.forgeitem small{display:block;color:#e9caed;margin:4px 0}.forgeitem.equipped{border:2px solid #baff34}.forgebalance{display:flex;justify-content:space-around;flex-wrap:wrap;gap:6px;background:#261335;padding:10px;color:#f7cf6e;font-weight:900}.forgeactions{display:flex;justify-content:center;flex-wrap:wrap;gap:5px}.bossalert{color:#ffbd6f;font-weight:900}.choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.pick{text-align:left;background:#1a0c2a;border:2px solid #874caa;color:white;padding:11px 8px;min-height:112px}.pick strong{display:block;color:#bcff39;font-size:14px;margin-bottom:6px}.pick small{color:#d6bde0}.pick:active{border-color:#b9ff2c}.meta{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:6px}.help{color:#bca5d0;font-size:12px}.controlrow{display:flex;gap:8px;align-items:center;justify-content:space-between;margin:10px auto 0;max-width:760px}.dpad{display:grid;grid-template-columns:repeat(3,52px);grid-template-rows:repeat(3,47px);gap:2px}.dpad button{font-weight:1000;font-size:20px;background:#271438;color:#e4c5ff;border:2px solid #925ac0;border-radius:7px}.dpad button[data-dir="0,-1"]{grid-column:2;grid-row:1}.dpad button[data-dir="-1,0"]{grid-column:1;grid-row:2}.dpad button[data-dir="0,1"]{grid-column:2;grid-row:3}.dpad button[data-dir="1,0"]{grid-column:3;grid-row:2}.actions{display:flex;gap:8px}.actions button{background:#260f3a;color:#fff;border:2px solid #ab66c2;border-radius:7px;min-width:70px;min-height:55px;padding:7px;font-weight:900}.actions .bite{border-color:#b8ff30;background:#315015}.xpbar{height:9px;background:#1d0b2b;border:1px solid #9a55ba;margin-top:5px}.xpbar div{height:100%;width:0;background:linear-gradient(90deg,#9223d5,#e793ff);transition:width .2s}.caption{margin-top:10px;font-size:12px;color:#bb9dcb;line-height:1.5}.caption b{color:#b9ff29}.audio-row{display:grid;grid-template-columns:86px 1fr 47px;align-items:center;gap:10px;margin:14px 0;text-align:left}.audio-row input{width:100%;accent-color:#b9ff30;min-height:28px}.audio-row output{color:#dcaeff;text-align:right}.audio-check{display:flex;align-items:center;justify-content:center;gap:8px;margin:9px 0}.audio-note{font-size:12px;color:#d5b5e5}.dangerbtn{border-color:#ff557b!important;color:#ffd5df!important;background:#36101f!important}@media(max-width:600px){.hud{grid-template-columns:repeat(3,1fr)}.stage canvas{aspect-ratio:640/426}.choices,.shopgrid{grid-template-columns:1fr}.pick{min-height:68px}.modal{padding:11px}.dpad{grid-template-columns:repeat(3,45px);grid-template-rows:repeat(3,44px)}.actions button{min-width:60px;font-size:12px}.meta{font-size:11px}}@media(max-height:650px){.dpad{grid-template-columns:repeat(3,40px);grid-template-rows:repeat(3,38px)}.controlrow{margin-top:3px}.modal{padding:9px}}
 
 /* ZOMBIE FORGE 1.0 — Illustrated item assets, touch-first panels, permanent Soul-driven mods. */
@@ -42,9 +42,20 @@
 .forge-weapon-card small{color:#d8bddd;font-size:10px;display:block}
 .forge-weapon-card button{background:#4f2374;border:1px solid #c779fa;color:#fff;font-weight:bold;margin-top:4px;padding:5px;font-size:10px}
 .forge-note{font-size:11px;color:#dcbfe9;margin:8px 0}
+.forge-slot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:6px;max-height:220px;overflow:auto;padding:3px}
+.forge-slot{border:2px solid #744794;border-radius:4px;background:linear-gradient(#241236,#0e0a17);color:#e6d5f1;padding:7px;text-align:left;min-height:69px;overflow:hidden}
+.forge-slot.selected{border-color:#caff41;box-shadow:0 0 9px #7cf62e55;background:linear-gradient(#273d20,#180d24)}
+.forge-slot strong{display:block;color:#bfff3c;font-size:12px;margin-bottom:3px}
+.forge-slot small{display:block;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.forge-slot-actions{display:flex;gap:4px;align-items:center;justify-content:space-between;margin:2px 0 8px}
+.forge-slot-actions span{font-size:11px;color:#d7c3e8}
+.forge-slot-actions button{border:1px solid #bb75ea;color:white;background:#452361;padding:5px 9px;font-size:11px;font-weight:800}
+.forge-weapon-card button{margin-right:5px;min-height:28px}
+.forge-weapon-card.selected-weapon{box-shadow:inset 0 0 11px #ae3aff80}
+.forge-action-status{font-size:12px;color:#bfff4d;font-weight:800;margin:5px 0}
 @media(max-width:820px){.forge-columns{grid-template-columns:1fr}.forge-partgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.forge-modgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.overlay.forge-open .modal{padding:8px;max-height:96dvh;height:96dvh;width:99vw}.forge-head{position:sticky;top:-8px;background:#1b0b2b;z-index:2;padding:6px;margin:-6px -6px 8px}.forge-list{max-height:360px}}
 @media(max-width:440px){.forge-modgrid{grid-template-columns:1fr}.forge-weapon-view{grid-template-columns:1fr}.forge-part img{width:52px;height:47px}.forge-partgrid{gap:3px}.forge-part{padding:3px 1px}.forge-weapon-card{grid-template-columns:70px 1fr}.forge-weapon-card img{width:65px;height:58px}}
-</style></head><body><div class="wrap"><div class="head"><div class="logo">SNAKE <small style="color:white;font-size:.55em">WITH</small> <span>ZOMBIES</span></div><div class="tag">PLAYABLE ALPHA v1.0 · SOUL-POWERED FORGE</div></div><div class="hud"><div class="metric">AREA<b id="area">SAFE HUB</b></div><div class="metric">WAVE<b id="wave">1</b></div><div class="metric">LEVEL<b id="level">1</b></div><div class="metric">KILLS<b id="kills">0</b></div><div class="metric">SCORE<b id="score">0</b></div><div class="metric">HEALTH<b id="hp">100</b></div><div class="metric">TIME<b id="time">0:00</b></div><div class="metric">SOULS<b id="points">0</b></div><div class="metric">BOSSES<b id="cores">0</b></div><div class="metric">AUTO WEAPON<b id="weaponhud">None</b></div></div><div class="stage"><canvas id="game" width="640" height="426" aria-label="Playable snake versus zombie battlefield"></canvas><div id="overlay" class="overlay"><div class="modal" id="modal"><h1>SNAKE WITH ZOMBIES</h1><p>Begin in a SAFE HUB, enter the dungeon gate, and explore an infinite screen-by-screen roguelike. Zombies drop permanent Souls and parts. Shop purchases and mutations survive death, restart, and new runs. Progress saves locally.</p><p>Move: arrows / WASD / touch pad / drag on the battlefield. Your snake automatically bites nearby zombies. Tap <b>VENOM</b> as often as you like: zero cooldown. Collect purple upgrade-point drops to buy permanent powers and procedural stock. Cross a doorway to scroll into another dungeon room. Return west from the entrance room to reach the safe hub.</p><button class="cta" id="start">▶ PLAY GAME</button><button class="cta alt" id="menuShop">✦ UPGRADE SHOP</button><button class="cta alt" id="menuForge">⚒ ZOMBIE FORGE</button><button class="cta alt" id="menuAudio">♫ AUDIO SETTINGS</button><p style="font-size:11px">This is an actual playable arcade alpha, not the previous simulation screen.</p></div></div></div><div class="xpbar"><div id="xp"></div></div><div class="meta"><div class="help" id="status">🧬 Survive the horde and evolve forever</div><div style="display:flex;gap:6px"><button class="cta" style="padding:6px 13px;min-height:37px" id="shop">✦ UPGRADE SHOP</button><button class="cta alt" style="padding:6px 13px;min-height:37px" id="forge">⚒ ZOMBIE FORGE</button><button class="cta alt" style="padding:6px 13px;min-height:37px" id="audioSettings">♫ AUDIO</button><button class="cta alt" style="padding:6px 13px;min-height:37px" id="pause">Ⅱ PAUSE</button></div></div><div class="controlrow"><div class="dpad"><button data-dir="0,-1" aria-label="up">▲</button><button data-dir="-1,0" aria-label="left">◀</button><button data-dir="1,0" aria-label="right">▶</button><button data-dir="0,1" aria-label="down">▼</button></div><div class="help" style="text-align:center">DODGE THE HORDE<br>DEVOUR THE DEAD<br><b>UNLIMITED MUTATIONS ∞</b></div><div class="actions"><button id="venom" class="bite">☣<br>VENOM</button></div></div><div class="meta"><div class="help" id="save-status">💾 Permanent upgrades are saved on this device</div><button class="cta alt" id="backup" style="padding:6px 13px;min-height:37px">⇩ BACKUP UPGRADES</button><button class="cta alt" id="restore" style="padding:6px 13px;min-height:37px">⇧ RESTORE BACKUP</button><input type="file" id="restorefile" accept="application/json,.json" hidden></div><div class="caption"><b>Visual development note:</b> Original illustrated environment quality is restored; static zombie and fake pickup art has been removed. Real loot and enemies are rendered by gameplay. Zombie parts, Souls, and Soul-powered gun mods persist across deaths. No external resources or server required.</div></div><script>
+</style></head><body><div class="wrap"><div class="head"><div class="logo">SNAKE <small style="color:white;font-size:.55em">WITH</small> <span>ZOMBIES</span></div><div class="tag">PLAYABLE ALPHA v1.1 · SEGMENT ARSENAL</div></div><div class="hud"><div class="metric">AREA<b id="area">SAFE HUB</b></div><div class="metric">WAVE<b id="wave">1</b></div><div class="metric">LEVEL<b id="level">1</b></div><div class="metric">KILLS<b id="kills">0</b></div><div class="metric">SCORE<b id="score">0</b></div><div class="metric">HEALTH<b id="hp">100</b></div><div class="metric">TIME<b id="time">0:00</b></div><div class="metric">SOULS<b id="points">0</b></div><div class="metric">BOSSES<b id="cores">0</b></div><div class="metric">WEAPON SLOTS<b id="weaponhud">0 / 5</b></div></div><div class="stage"><canvas id="game" width="640" height="426" aria-label="Playable snake versus zombie battlefield"></canvas><div id="overlay" class="overlay"><div class="modal" id="modal"><h1>SNAKE WITH ZOMBIES</h1><p>Begin in a SAFE HUB, enter the dungeon gate, and explore an infinite screen-by-screen roguelike. Zombies drop permanent Souls and parts. Shop purchases and mutations survive death, restart, and new runs. Progress saves locally.</p><p>Move: arrows / WASD / touch pad / drag on the battlefield. Your snake automatically bites nearby zombies. Tap <b>VENOM</b> as often as you like: zero cooldown. Collect purple upgrade-point drops to buy permanent powers and procedural stock. Cross a doorway to scroll into another dungeon room. Return west from the entrance room to reach the safe hub.</p><button class="cta" id="start">▶ PLAY GAME</button><button class="cta alt" id="menuShop">✦ UPGRADE SHOP</button><button class="cta alt" id="menuForge">⚒ ZOMBIE FORGE</button><button class="cta alt" id="menuAudio">♫ AUDIO SETTINGS</button><p style="font-size:11px">This is an actual playable arcade alpha, not the previous simulation screen.</p></div></div></div><div class="xpbar"><div id="xp"></div></div><div class="meta"><div class="help" id="status">🧬 Survive the horde and evolve forever</div><div style="display:flex;gap:6px"><button class="cta" style="padding:6px 13px;min-height:37px" id="shop">✦ UPGRADE SHOP</button><button class="cta alt" style="padding:6px 13px;min-height:37px" id="forge">⚒ ZOMBIE FORGE</button><button class="cta alt" style="padding:6px 13px;min-height:37px" id="audioSettings">♫ AUDIO</button><button class="cta alt" style="padding:6px 13px;min-height:37px" id="pause">Ⅱ PAUSE</button></div></div><div class="controlrow"><div class="dpad"><button data-dir="0,-1" aria-label="up">▲</button><button data-dir="-1,0" aria-label="left">◀</button><button data-dir="1,0" aria-label="right">▶</button><button data-dir="0,1" aria-label="down">▼</button></div><div class="help" style="text-align:center">DODGE THE HORDE<br>DEVOUR THE DEAD<br><b>UNLIMITED MUTATIONS ∞</b></div><div class="actions"><button id="venom" class="bite">☣<br>VENOM</button></div></div><div class="meta"><div class="help" id="save-status">💾 Permanent upgrades are saved on this device</div><button class="cta alt" id="backup" style="padding:6px 13px;min-height:37px">⇩ BACKUP UPGRADES</button><button class="cta alt" id="restore" style="padding:6px 13px;min-height:37px">⇧ RESTORE BACKUP</button><input type="file" id="restorefile" accept="application/json,.json" hidden></div><div class="caption"><b>Visual development note:</b> Original illustrated environment quality is restored; static zombie and fake pickup art has been removed. Real loot and enemies are rendered by gameplay. Zombie parts, Souls, and Soul-powered gun mods persist across deaths. No external resources or server required.</div></div><script>
 // Native single-file arcade runtime. No network calls.
 // Snake with Zombies — deterministic, renderer-independent arcade simulation.
 const SCHOOLS=[
@@ -99,9 +110,9 @@ const ENEMIES={shambler:{hp:24,speed:27,harm:6,score:20},crawler:{hp:15,speed:55
 const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
 const cap=(n,a,b)=>Math.max(a,Math.min(b,n));
 class Game {
- constructor({width=960,height=640,seed=1234,permanentLevels={},points=0}={}){this.width=width;this.height=height;this.seed=seed>>>0;this.permanentLevels={...permanentLevels};this.points=points;this.bossCores=0;this.parts=Object.create(null);this.weapons=[];this.equippedId=null;this.bossKills=0;this.reset()}
+ constructor({width=960,height=640,seed=1234,permanentLevels={},points=0}={}){this.width=width;this.height=height;this.seed=seed>>>0;this.permanentLevels={...permanentLevels};this.points=points;this.bossCores=0;this.parts=Object.create(null);this.weapons=[];this.equippedId=null;this.equippedIds=[];this.weaponClocks=[];this.bossKills=0;this.reset()}
  rand(){this.seed=(1664525*this.seed+1013904223)>>>0;return this.seed/4294967296}
- reset(){this.time=0;this.wave=1;this.score=0;this.kills=0;this.level=1;this.xp=0;this.nextXp=50;this.pendingUpgrades=0;this.paused=false;this.dead=false;this.combo=0;this.comboTimer=0;this.spawnTimer=0;this.entities=[];this.pickups=[];this.projectiles=[];this.particles=[];this.pointDrops=[];this.levels={...this.permanentLevels};this.abilities={};this.player={x:this.width/2,y:this.height/2,vx:1,vy:0,hp:100,maxHp:100,damage:28,armor:0,poison:0,speed:130,length:5,orbs:0,magnet:90,chain:0,aura:0,bones:0,revives:0,radius:18,invuln:0,crit:0,critpower:0,frenzy:0,execute:0,venomradius:0,toxic:0,plague:0,corrosion:0,thorns:0,soul:0,reaper:0,staticField:0,arc:0,tempest:0,regen:0,leech:0,bloodrage:0,reachbite:0,harvest:0,mutation:0,growth:0,multistrike:0,overdrive:0,segments:[]};for(let i=0;i<5;i++)this.player.segments.push({x:this.player.x-i*17,y:this.player.y});this.environment='city';this.region='hub';this.roomX=0;this.roomY=0;this.roomsVisited=0;this.dungeonSeed=(this.seed^0x715A81)>>>0;this.roomCache=new Map();this.bossTimer=15+this.rand()*13;this.weaponClock=0;this.bossAlert='';this.bossCount=0;for(const up of UPGRADES){const count=Math.min(1000000,Math.max(0,Math.floor(Number(this.levels[up.id])||0)));this.levels[up.id]=count;this.grantStat(up,count)}}
+ reset(){this.time=0;this.wave=1;this.score=0;this.kills=0;this.level=1;this.xp=0;this.nextXp=50;this.pendingUpgrades=0;this.paused=false;this.dead=false;this.combo=0;this.comboTimer=0;this.spawnTimer=0;this.entities=[];this.pickups=[];this.projectiles=[];this.particles=[];this.pointDrops=[];this.levels={...this.permanentLevels};this.abilities={};this.player={x:this.width/2,y:this.height/2,vx:1,vy:0,hp:100,maxHp:100,damage:28,armor:0,poison:0,speed:130,length:5,orbs:0,magnet:90,chain:0,aura:0,bones:0,revives:0,radius:18,invuln:0,crit:0,critpower:0,frenzy:0,execute:0,venomradius:0,toxic:0,plague:0,corrosion:0,thorns:0,soul:0,reaper:0,staticField:0,arc:0,tempest:0,regen:0,leech:0,bloodrage:0,reachbite:0,harvest:0,mutation:0,growth:0,multistrike:0,overdrive:0,segments:[]};for(let i=0;i<5;i++)this.player.segments.push({x:this.player.x-i*17,y:this.player.y});this.environment='city';this.region='hub';this.roomX=0;this.roomY=0;this.roomsVisited=0;this.dungeonSeed=(this.seed^0x715A81)>>>0;this.roomCache=new Map();this.bossTimer=15+this.rand()*13;this.weaponClock=0;this.weaponClocks=[];this.equippedIds=Array.isArray(this.equippedIds)?this.equippedIds.slice(0,this.player.segments.length):[];this.bossAlert='';this.bossCount=0;for(const up of UPGRADES){const count=Math.min(1000000,Math.max(0,Math.floor(Number(this.levels[up.id])||0)));this.levels[up.id]=count;this.grantStat(up,count)}}
  get upgrades(){return UPGRADES.map(u=>({...u,level:this.levels[u.id]||0}))}
  choices(n=3){let pool=[...UPGRADES];const result=[];while(result.length<n&&pool.length){result.push(pool.splice(Math.floor(this.rand()*pool.length),1)[0]);}return result}
  grantStat(up,n=1){if(!n)return;const p=this.player;switch(up.stat){case'length':p.length+=n;for(let i=0;i<n;i++)p.segments.push({...p.segments.at(-1)});break;case'maxHp':p.maxHp+=up.rate*n;p.hp+=up.rate*n;break;case'revives':p.revives+=n;break;case'armor':p.armor=1-(1-p.armor)*Math.pow(1-up.rate,n);break;case'speed':p.speed*=Math.pow(1+up.rate,n);break;case'magnet':p.magnet*=Math.pow(1+up.rate,n);break;case'damage':p.damage*=Math.pow(1+up.rate,n);break;default:p[up.stat]+=up.rate*n;}}
@@ -146,24 +157,33 @@ if(e.boss){
  update(dt){if(this.paused||this.dead||this.pendingUpgrades>0)return;dt=cap(dt,0,.05);if(this.region==='dungeon')this.time+=dt;this.player.hp=Math.min(this.player.maxHp,this.player.hp+this.player.regen*dt);this.wave=this.region==='hub'?0:1+Math.floor(this.time/45)+Math.floor((Math.abs(this.roomX)+Math.abs(this.roomY))/2);const p=this.player;p.invuln=Math.max(0,p.invuln-dt);p.x=cap(p.x+p.vx*p.speed*dt,p.radius,this.width-p.radius);p.y=cap(p.y+p.vy*p.speed*dt,p.radius,this.height-p.radius);p.segments[0].x=p.x;p.segments[0].y=p.y;for(let i=1;i<p.segments.length;i++){const prev=p.segments[i-1],seg=p.segments[i],dx=prev.x-seg.x,dy=prev.y-seg.y,d=Math.hypot(dx,dy);if(d>17){seg.x+=dx/d*Math.min(d-17,p.speed*dt*(1+.14*i));seg.y+=dy/d*Math.min(d-17,p.speed*dt*(1+.14*i));}}
  this.bossTimer-=dt;
  if(this.region==='dungeon'&&this.bossTimer<=0)this.spawnBoss();
- this.weaponClock-=dt;
- const equipped=(this.weapons||[]).find(w=>w.id===this.equippedId);
- if(equipped&&this.region==='dungeon'&&this.weaponClock<=0){
- const candidates=this.entities.filter(e=>e.hp>0).sort((a,b)=>dist(a,p)-dist(b,p));
- const target=candidates[0];
- if(target){
-   const dx=target.x-p.x,dy=target.y-p.y,d=Math.hypot(dx,dy)||1;
-   const stats=weaponStats(equipped);
-   const rounds=Math.max(1,Math.min(28,stats.shots));
-   const virtualShots=stats.shots/rounds;
-   const burst=Math.max(1,stats.fireRate/18);
-   for(let k=0;k<rounds;k++){
-     const spread=(k-(rounds-1)/2)*stats.spread;
-     const a=Math.atan2(dy,dx)+spread;
-     this.projectiles.push({x:p.x,y:p.y,vx:Math.cos(a)*stats.velocity,vy:Math.sin(a)*stats.velocity,damage:stats.damage*virtualShots*burst,ttl:stats.ttl,team:'player',design:equipped.design,pierce:stats.pierce,potency:stats.potency,siphon:stats.siphon});
+ // One independent gun mount per living snake segment. Every occupied mount auto-fires.
+ // The hub remains peaceful: gunfire starts once the snake enters a dungeon room.
+ if(this.region==='dungeon'&&this.entities.length){
+   const arsenal=this.equippedIds||[];
+   const byId=new Map(this.weapons.map(w=>[w.id,w]));
+   const living=this.entities.filter(e=>e.hp>0);
+   for(let i=0;i<Math.min(arsenal.length,p.segments.length);i++){
+     const equipped=byId.get(arsenal[i]);if(!equipped)continue;
+     const remaining=(this.weaponClocks[i]||0)-dt;
+     this.weaponClocks[i]=remaining;
+     if(remaining>0||!living.length)continue;
+     const muzzle=p.segments[i];
+     let target=null,closest=Infinity;
+     for(const e of living){const d=dist(e,muzzle);if(d<closest){closest=d;target=e}}
+     if(!target)continue;
+     const dx=target.x-muzzle.x,dy=target.y-muzzle.y;
+     const stats=weaponStats(equipped);
+     const rounds=Math.max(1,Math.min(28,stats.shots));
+     const virtualShots=stats.shots/rounds;
+     const burst=Math.max(1,stats.fireRate/18);
+     const baseAngle=Math.atan2(dy,dx);
+     for(let k=0;k<rounds;k++){
+       const a=baseAngle+(k-(rounds-1)/2)*stats.spread;
+       this.projectiles.push({x:muzzle.x,y:muzzle.y,vx:Math.cos(a)*stats.velocity,vy:Math.sin(a)*stats.velocity,damage:stats.damage*virtualShots*burst,ttl:stats.ttl,team:'player',design:equipped.design,pierce:stats.pierce,potency:stats.potency,siphon:stats.siphon});
+     }
+     this.weaponClocks[i]=1/Math.max(.001,Math.min(18,stats.fireRate));
    }
-   this.weaponClock=1/Math.max(.001,Math.min(18,stats.fireRate));
- }
  }
  for(const missile of this.projectiles){
   missile.x+=missile.vx*dt;missile.y+=missile.vy*dt;missile.ttl-=dt;
@@ -274,8 +294,8 @@ function loadForge(){
     id:w.id,name:String(w.name||'Unknown Relic').slice(0,100),tier:Math.max(0,Math.floor(Number(w.tier)||0)),
     infusions:Math.max(0,Math.floor(Number(w.infusions)||0)),design:Math.max(0,Math.floor(Number(w.design)||0))%WEAPON_KINDS.length,damageFactor:Math.max(.2,Number(w.damageFactor)||1),rateFactor:Math.max(.2,Number(w.rateFactor)||1),extraPierce:Math.max(0,Math.floor(Number(w.extraPierce)||0)),mods:Object.fromEntries(MOD_TYPES.map(m=>[m.id,Math.max(0,Math.floor(Number(w.mods?.[m.id])||0))]))
   })):[];
-  return {parts,weapons,bossCores:Math.max(0,Math.floor(Number(f.bossCores)||0)),bossKills:Math.max(0,Math.floor(Number(f.bossKills)||0)),equippedId:f.equippedId||null};
- }catch{return {parts:{},weapons:[],bossCores:0,bossKills:0,equippedId:null}}
+  return {parts,weapons,bossCores:Math.max(0,Math.floor(Number(f.bossCores)||0)),bossKills:Math.max(0,Math.floor(Number(f.bossKills)||0)),equippedId:f.equippedId||null,equippedIds:Array.isArray(f.equippedIds)?f.equippedIds.slice(0,20000):null};
+ }catch{return {parts:{},weapons:[],bossCores:0,bossKills:0,equippedId:null,equippedIds:null}}
 }
 function applyForge(g,forge){
  g.parts=Object.assign(Object.create(null),forge.parts||{});
@@ -283,13 +303,41 @@ function applyForge(g,forge){
  g.weapons=Array.isArray(forge.weapons)?forge.weapons.map(w=>({...w})):[];
  g.bossCores=0;
  g.bossKills=Math.max(0,forge.bossKills||0);
- g.equippedId=g.weapons.find(w=>w.id===forge.equippedId)?.id||g.weapons[0]?.id||null;
+ // Upgrade old one-weapon saves without losing the gun or previously purchased mods.
+ const validIds=new Set(g.weapons.map(w=>w.id));
+ const source=Array.isArray(forge.equippedIds)?forge.equippedIds:[forge.equippedId];
+ g.equippedIds=Array.from({length:g.player.segments.length},(_,i)=>validIds.has(source[i])?source[i]:null);
+ const used=new Set();for(let i=0;i<g.equippedIds.length;i++){if(used.has(g.equippedIds[i]))g.equippedIds[i]=null;else if(g.equippedIds[i])used.add(g.equippedIds[i])}
+ g.equippedId=validIds.has(forge.equippedId)?forge.equippedId:g.equippedIds.find(Boolean)||g.weapons[0]?.id||null;
+ g.weaponClocks=[];
  g.forgeDirty=false;
+}
+function slotCapacity(g=game){return g.player.segments.length}
+function equipWeaponInSlot(id,index,g=game){
+ index=Number(index);
+ if(!Number.isInteger(index)||index<0||index>=slotCapacity(g)||!g.weapons.some(w=>w.id===id))return false;
+ g.equippedIds??=[];
+ for(let i=0;i<g.equippedIds.length;i++)if(g.equippedIds[i]===id)g.equippedIds[i]=null;
+ g.equippedIds[index]=id;
+ g.equippedId=id;
+ g.weaponClocks[index]=0;
+ saveForge(g);return true;
+}
+function unequipWeaponSlot(index,g=game){
+ index=Number(index);
+ if(!Number.isInteger(index)||index<0||index>=slotCapacity(g)||!g.equippedIds?.[index])return false;
+ g.equippedIds[index]=null;g.weaponClocks[index]=0;
+ if(!g.equippedIds.includes(g.equippedId))g.equippedId=g.equippedIds.find(Boolean)||g.weapons[0]?.id||null;
+ saveForge(g);return true;
+}
+function firstEmptyWeaponSlot(g=game){
+ for(let i=0;i<slotCapacity(g);i++)if(!g.equippedIds?.[i])return i;
+ return -1;
 }
 function saveForge(g=game){
  try{
   localStorage.setItem(FORGE_KEY,JSON.stringify({
-   version:2,parts:g.parts,bossCores:0,bossKills:g.bossKills,weapons:g.weapons,equippedId:g.equippedId,
+   version:3,parts:g.parts,bossCores:0,bossKills:g.bossKills,weapons:g.weapons,equippedId:g.equippedId,equippedIds:(g.equippedIds||[]).slice(0,slotCapacity(g)),
    savedAt:new Date().toISOString()
   }));
   g.forgeDirty=false;return true;
@@ -316,7 +364,12 @@ function forgeNew(){
  const design=Math.floor(Math.random()*WEAPON_KINDS.length);
  const id='bone-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10);
  const weapon={id,design,tier:0,infusions:0,damageFactor:.85+Math.random()*.75,rateFactor:.8+Math.random()*.65,extraPierce:Math.floor(Math.random()*2),mods:{},name:randomWeaponName(0,design)};
- game.weapons.push(weapon);game.equippedId=id;saveForge();sound.effect('upgrade');return true;
+ game.weapons.push(weapon);game.equippedId=id;
+ const free=firstEmptyWeaponSlot(game);
+ if(free>=0){equipWeaponInSlot(id,free);selectedForgeSlot=free;}
+ else saveForge();
+ forgeMessage=free>=0?'Forged and equipped to segment '+(free+1)+'!':'New gun forged! Choose a segment slot, then tap EQUIP on the gun.';
+ sound.effect('upgrade');return true;
 }
 function fuseWeapons(){
  const cost=forgeFusionCost();if(game.points<cost.souls||partTotal()<cost.parts)return false;
@@ -328,11 +381,18 @@ function fuseWeapons(){
  if(!chosen)return false;
  game.points-=cost.souls;spendParts(game,cost.parts);savePermanent(game.permanentLevels,game.points);
  const [a,b]=chosen;
+ const previousSlot=game.equippedIds.findIndex(id=>id===a.id||id===b.id);
  const newTier=a.tier+1,design=Math.floor(Math.random()*WEAPON_KINDS.length);
  game.weapons=game.weapons.filter(w=>w.id!==a.id&&w.id!==b.id);
  const id='fused-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10);
  game.weapons.push({id,tier:newTier,infusions:Math.max(a.infusions||0,b.infusions||0)+1,design,damageFactor:Math.max(a.damageFactor||1,b.damageFactor||1)*1.12,rateFactor:Math.max(a.rateFactor||1,b.rateFactor||1)*1.04,extraPierce:Math.max(a.extraPierce||0,b.extraPierce||0)+(newTier%4===0?1:0),mods:Object.fromEntries(MOD_TYPES.map(m=>[m.id,modLevel(a,m.id)+modLevel(b,m.id)])),name:randomWeaponName(newTier,design)});
- game.equippedId=id;saveForge();sound.effect('upgrade');return true;
+ game.equippedIds=game.equippedIds.map(wid=>wid===a.id||wid===b.id?null:wid);
+ game.equippedId=id;
+ const slot=previousSlot>=0?previousSlot:firstEmptyWeaponSlot(game);
+ if(slot>=0){equipWeaponInSlot(id,slot);selectedForgeSlot=slot;}
+ else saveForge();
+ forgeMessage=slot>=0?'Fused gun equipped to segment '+(slot+1)+'!':'Fused gun saved to collection. Choose a slot to equip it.';
+ sound.effect('upgrade');return true;
 }
 function infuseWeapon(){
  const w=game.weapons.find(w=>w.id===game.equippedId);
@@ -517,6 +577,19 @@ function drawApprovedSnake(p,time){
  snakeAtlasSprite(biting?'bite':'head',x,y,56+Math.min(10,Math.floor(game.level/8)),angle);
 }
 
+const segmentGunArt=new Image();segmentGunArt.src=FORGE_GUN_ART;
+function drawSegmentGuns(p){
+ if(!segmentGunArt.complete||!segmentGunArt.naturalWidth)return;
+ for(let i=0;i<Math.min(p.segments.length,game.equippedIds.length);i++){
+  const id=game.equippedIds[i];if(!id)continue;
+  const w=game.weapons.find(w=>w.id===id);if(!w)continue;
+  const a=p.segments[i],ahead=p.segments[Math.max(0,i-1)]||p,angle=Math.atan2(ahead.y-a.y,ahead.x-a.x);
+  ctx.save();ctx.translate(fx(a.x),fy(a.y));ctx.rotate(angle);
+  ctx.shadowColor='#b64ffb';ctx.shadowBlur=5;
+  ctx.drawImage(segmentGunArt,-11,-14,25,16);
+  ctx.restore();
+ }
+}
 const terrain=document.createElement('canvas');terrain.width=CW;terrain.height=CH;let bg=terrain.getContext('2d');const zones=['city','graveyard','lab','sewer'];
 
 const environmentArt=Object.create(null);
@@ -557,7 +630,7 @@ for(const missile of game.projectiles){
    rect(5,-3,4,6,['#cbf943','#ece8c0','#72dfff','#b355fb','#f09aff','#f58c3d','#8df5ff','#ff6589','#c076ff','#b6ff4f'][missile.design%10]||'#cbf943');rect(-10,-2,3,4,'#ff4d62');ctx.restore();
  }
 }
-let hx=fx(p.x),hy=fy(p.y);ring(hx,hy,27+Math.sin(time*7)*2,'#78e526',2);drawApprovedSnake(p,time);if(p.invuln>0&&Math.floor(time*15)%2)ring(hx,hy,21,'#fff9b9',2);
+let hx=fx(p.x),hy=fy(p.y);ring(hx,hy,27+Math.sin(time*7)*2,'#78e526',2);drawApprovedSnake(p,time);drawSegmentGuns(p);if(p.invuln>0&&Math.floor(time*15)%2)ring(hx,hy,21,'#fff9b9',2);
 for(let i=0;i<p.bones;i++){const ang=time*3+i*Math.PI*2/Math.max(1,p.bones);const bx=hx+Math.cos(ang)*37,by=hy+Math.sin(ang)*37;ring(bx,by,6,'#ecb9f8',2);spark(bx,by,7,'#dfffe2')}
 for(let i=0;i<p.orbs;i++){let ang=time*2.2+i*Math.PI*2/Math.max(p.orbs,1),ox=hx+Math.cos(ang)*58,oy=hy+Math.sin(ang)*40;ring(ox,oy,5,'#e44aff',3);spark(ox,oy,9,'#e7b6ff')}
 if(p.aura>0)ring(hx,hy,70,'#9d46c4',1+Math.min(5,p.aura));
@@ -624,7 +697,7 @@ function drawRoomFeatures(){ctx.save();if(game.region==='hub'){
  ctx.fillStyle='#b8ff45';ctx.font='bold 11px monospace';ctx.textAlign='center';ctx.fillText('ROOM '+game.roomX+','+game.roomY,w/2,24);
  if(game.roomX===0&&game.roomY===0){ctx.fillStyle='#dca4ff';ctx.font='bold 10px monospace';ctx.textAlign='left';ctx.fillText('← HUB',21,cy-49)}
  }ctx.restore()}
-function updHud(){$('area').textContent=game.region==='hub'?'SAFE HUB':game.roomX+','+game.roomY;$('wave').textContent=game.wave;$('level').textContent=game.level;$('kills').textContent=game.kills;$('score').textContent=game.score.toLocaleString();$('hp').textContent=Math.ceil(game.player.hp)+' / '+Math.ceil(game.player.maxHp);$('time').textContent=Math.floor(game.time/60)+':'+String(Math.floor(game.time%60)).padStart(2,'0');$('xp').style.width=(100*game.xp/game.nextXp)+'%';$('points').textContent=game.points.toLocaleString();$('cores').textContent=game.bossKills.toLocaleString();const equipped=game.weapons.find(w=>w.id===game.equippedId);$('weaponhud').textContent=equipped?'Rank '+(equipped.tier+1)+' · +'+equipped.infusions:'None';$('status').textContent=(game.region==='hub'?'🏰 SANCTUARY · No zombie spawns · East gate to dungeon · ':'🗝 DUNGEON '+game.roomX+','+game.roomY+' · Cross doorways to scroll rooms · ')+'🧬 '+(game.level<5?'Hatchling':game.level<15?'Mutated':game.level<30?'Aberrant':'Monstrous')+' · '+game.player.segments.length+' segments · '+game.kills+' devoured'}
+function updHud(){$('area').textContent=game.region==='hub'?'SAFE HUB':game.roomX+','+game.roomY;$('wave').textContent=game.wave;$('level').textContent=game.level;$('kills').textContent=game.kills;$('score').textContent=game.score.toLocaleString();$('hp').textContent=Math.ceil(game.player.hp)+' / '+Math.ceil(game.player.maxHp);$('time').textContent=Math.floor(game.time/60)+':'+String(Math.floor(game.time%60)).padStart(2,'0');$('xp').style.width=(100*game.xp/game.nextXp)+'%';$('points').textContent=game.points.toLocaleString();$('cores').textContent=game.bossKills.toLocaleString();const used=(game.equippedIds||[]).filter(Boolean).length; $('weaponhud').textContent=used+' / '+slotCapacity();$('status').textContent=(game.region==='hub'?'🏰 SANCTUARY · No zombie spawns · East gate to dungeon · ':'🗝 DUNGEON '+game.roomX+','+game.roomY+' · Cross doorways to scroll rooms · ')+'🧬 '+(game.level<5?'Hatchling':game.level<15?'Mutated':game.level<30?'Aberrant':'Monstrous')+' · '+game.player.segments.length+' segments · '+game.kills+' devoured'}
 const ov=$('overlay'),md=$('modal');function show(html){ov.classList.remove('hidden');md.innerHTML=html}function hide(){ov.classList.add('hidden')}
 
 // Entirely original synthesized spooky-comedy chiptune and sound effects.
@@ -666,8 +739,8 @@ function drawShop(){
 }
 $('shop').onclick=openShop;$('menuShop').onclick=openShop;$('menuAudio').onclick=()=>{sound.init();openAudio()};
 
-let forgeReturn='menu';
-function openForge(){forgeReturn=mode;paused=true;mode='forge';ov.classList.add('forge-open');renderForge()}
+let forgeReturn='menu',selectedForgeSlot=0,forgeMessage='';
+function openForge(){forgeReturn=mode;paused=true;mode='forge';selectedForgeSlot=Math.max(0,firstEmptyWeaponSlot()>=0?firstEmptyWeaponSlot():Math.min(selectedForgeSlot,slotCapacity()-1));forgeMessage='Tap a segment slot, then EQUIP a gun from your collection.';ov.classList.add('forge-open');renderForge()}
 function closeForge(){
  ov.classList.remove('forge-open');
  if(forgeReturn==='menu'){mode='menu';showMainMenu()}
@@ -678,29 +751,42 @@ function closeForge(){
 function escForge(v){return String(v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 
 function renderForge(){
- const weapon=game.weapons.find(w=>w.id===game.equippedId);
- const levels={};for(const w of game.weapons)levels[w.tier]=(levels[w.tier]||0)+1;
- const forgeCost=forgeCreateCost(),fuseCost=forgeFusionCost(),infuseCost=weapon?forgeInfuseCost(weapon):{souls:55,parts:3};
- const canForge=game.points>=forgeCost.souls&&partTotal()>=forgeCost.parts;
- const canFuse=game.points>=fuseCost.souls&&partTotal()>=fuseCost.parts&&Object.values(levels).some(n=>n>=2);
- const canInfuse=weapon&&game.points>=infuseCost.souls&&partTotal()>=infuseCost.parts;
- const parts=ZOMBIE_PARTS.map(k=>'<div class="forge-part"><img alt="'+escForge(k)+' zombie part" src="'+FORGE_ICON_DATA[k]+'"><span class="forge-part-name">'+escForge(k)+'</span><b>'+formatV(game.parts[k]||0)+'</b></div>').join('');
- const stats=weapon?weaponStats(weapon):null;
- const preview=weapon?'<div class="forge-weapon-view"><div><img class="forge-weapon-img" alt="Illustrated necro-mechanical auto weapon" src="'+FORGE_GUN_ART+'" style="filter:hue-rotate('+((weapon.design||0)*29)+'deg) drop-shadow(0 0 9px #c53dff)"><div class="forge-weapon-name">'+escForge(weapon.name)+'</div></div><div class="forge-weapon-info">⚔ Rank '+formatV((weapon.tier||0)+1)+' · '+escForge(WEAPON_ELEMENTS[weapon.design%WEAPON_ELEMENTS.length])+'<div>✹ Damage <b>'+formatV(stats.damage)+'</b></div><div>⚡ Fire Rate <b>'+formatV(stats.fireRate)+'/s</b></div><div>☄ Projectiles <b>'+formatV(stats.shots)+'</b></div><div>➶ Pierce <b>'+formatV(stats.pierce)+'</b></div><div>✦ Range <b>'+formatV(Math.round(stats.velocity*stats.ttl))+'</b></div><div>⚗ Infusions <b>'+formatV(weapon.infusions||0)+'</b></div></div></div>':'<div class="forge-weapon-info">Collect four zombie parts and 150 Souls to forge your first automatic weapon.</div>';
- const mods=MOD_TYPES.map(mod=>{
-  const lv=weapon?modLevel(weapon,mod.id):0;
-  const price=weapon?forgeModPrice(weapon,mod.id):{souls:24,parts:1};
-  const disabled=!weapon||game.points<price.souls||(game.parts[mod.part]||0)<price.parts;
-  return '<div class="forge-mod"><div class="forge-mod-top"><span class="forge-mod-icon">'+mod.symbol+'</span><span class="forge-mod-title">'+escForge(mod.name)+'</span><span class="forge-mod-level">Lv '+formatV(lv)+' ∞</span></div><div class="forge-mod-desc">'+escForge(mod.desc)+'</div><button data-mod="'+mod.id+'" '+(disabled?'disabled':'')+'>+ UPGRADE · ☠ '+formatV(price.souls)+' Souls · '+price.parts+' '+escForge(mod.part)+'</button></div>';
- }).join('');
- const items=game.weapons.map(w=>'<div class="forge-weapon-card '+(w.id===game.equippedId?'equipped':'')+'"><img alt="Necro weapon" src="'+FORGE_GUN_ART+'" style="filter:hue-rotate('+((w.design||0)*29)+'deg)"><div><strong>'+escForge(w.name)+'</strong><small>Rank '+formatV((w.tier||0)+1)+' · '+formatV(w.infusions||0)+' Infusions · '+MOD_TYPES.reduce((n,m)=>n+modLevel(w,m.id),0)+' mod upgrades</small><button data-equip="'+escForge(w.id)+'">'+(w.id===game.equippedId?'✓ EQUIPPED':'EQUIP')+'</button></div></div>').join('');
- show('<section class="forge-shell"><div class="forge-head"><h1>☠ ZOMBIE FORGE</h1><button class="cta alt" id="closeForge">✕ CLOSE</button></div><div class="forge-ledger"><span>☠ Souls <b>'+formatV(game.points)+'</b></span><span>🦴 Parts <b>'+formatV(partTotal())+'</b></span><span>🏆 Bosses <b>'+formatV(game.bossKills)+'</b></span><span>⚔ Weapons <b>'+game.weapons.length+'</b></span></div><div class="forge-columns"><div><div class="forge-panel"><h2>🧟 Illustrated Zombie Parts</h2><div class="forge-partgrid">'+parts+'</div><p class="forge-note">Real zombie drops fuel your auto-weapon crafting. No Boss Cores required.</p></div><div class="forge-panel"><h2>⚔ Permanent Weapon Collection</h2><div class="forge-list">'+(items||'<p>Defeat zombies and gather parts to build a gun!</p>')+'</div></div></div><div><div class="forge-panel"><h2>🔮 Equipped Procedural Auto-Weapon</h2>'+preview+'<div class="forge-toolbar"><button class="cta" id="forgeCreate" '+(canForge?'':'disabled')+'>⚒ FORGE NEW<br><small>☠ '+forgeCost.souls+' Souls + '+forgeCost.parts+' Parts</small></button><button class="cta alt" id="forgeFuse" '+(canFuse?'':'disabled')+'>⬆ COMBINE RANKS<br><small>☠ '+fuseCost.souls+' Souls + '+fuseCost.parts+' Parts</small></button><button class="cta alt" id="forgeInfuse" '+(canInfuse?'':'disabled')+'>☣ INFUSE<br><small>☠ '+infuseCost.souls+' Souls + '+infuseCost.parts+' Parts</small></button></div></div><div class="forge-panel"><h2>⚡ Gun Mod Laboratory — Unlimited Upgrades ∞</h2><div class="forge-modgrid">'+mods+'</div><p class="forge-note">Every gun mod is permanent on that weapon. Combining weapons inherits ALL their mod levels. In extreme builds, visual bullets are batched for mobile performance while effective projectile damage and firing output continue scaling.</p></div></div></div></section>');
- $('forgeCreate').onclick=()=>{if(forgeNew())renderForge()};
- $('forgeFuse').onclick=()=>{if(fuseWeapons())renderForge()};
- $('forgeInfuse').onclick=()=>{if(infuseWeapon())renderForge()};
- md.querySelectorAll('[data-mod]').forEach(b=>b.onclick=()=>{if(upgradeWeaponMod(b.dataset.mod))renderForge()});
- md.querySelectorAll('[data-equip]').forEach(b=>b.onclick=()=>{if(game.weapons.some(w=>w.id===b.dataset.equip)){game.equippedId=b.dataset.equip;saveForge();renderForge()}});
- $('closeForge').onclick=closeForge;
+  selectedForgeSlot=Math.min(Math.max(0,selectedForgeSlot),Math.max(0,slotCapacity()-1));
+  const weapon=game.weapons.find(w=>w.id===game.equippedId);
+  const levels={};for(const w of game.weapons)levels[w.tier]=(levels[w.tier]||0)+1;
+  const forgeCost=forgeCreateCost(),fuseCost=forgeFusionCost(),infuseCost=weapon?forgeInfuseCost(weapon):{souls:55,parts:3};
+  const canForge=game.points>=forgeCost.souls&&partTotal()>=forgeCost.parts;
+  const canFuse=game.points>=fuseCost.souls&&partTotal()>=fuseCost.parts&&Object.values(levels).some(n=>n>=2);
+  const canInfuse=weapon&&game.points>=infuseCost.souls&&partTotal()>=infuseCost.parts;
+  const parts=ZOMBIE_PARTS.map(k=>'<div class="forge-part"><img alt="'+escForge(k)+' zombie part" src="'+FORGE_ICON_DATA[k]+'"><span class="forge-part-name">'+escForge(k)+'</span><b>'+formatV(game.parts[k]||0)+'</b></div>').join('');
+  const slots=Array.from({length:slotCapacity()},(_,i)=>{
+   const id=game.equippedIds[i],mounted=game.weapons.find(w=>w.id===id);
+   return '<button class="forge-slot '+(i===selectedForgeSlot?'selected':'')+'" data-slot="'+i+'" aria-pressed="'+(i===selectedForgeSlot)+'"><strong>🐍 SEGMENT '+(i+1)+'</strong><small>'+(mounted?escForge(mounted.name):'＋ EMPTY · READY TO EQUIP')+'</small></button>';
+  }).join('');
+  const mounted=game.equippedIds[selectedForgeSlot];
+  const used=game.equippedIds.filter(Boolean).length;
+  const stats=weapon?weaponStats(weapon):null;
+  const preview=weapon?'<div class="forge-weapon-view"><div><img class="forge-weapon-img" alt="Illustrated necro-mechanical auto weapon" src="'+FORGE_GUN_ART+'" style="filter:hue-rotate('+((weapon.design||0)*29)+'deg) drop-shadow(0 0 9px #c53dff)"><div class="forge-weapon-name">'+escForge(weapon.name)+'</div></div><div class="forge-weapon-info">⚔ Rank '+formatV((weapon.tier||0)+1)+' · '+escForge(WEAPON_ELEMENTS[weapon.design%WEAPON_ELEMENTS.length])+'<div>✹ Damage <b>'+formatV(stats.damage)+'</b></div><div>⚡ Fire Rate <b>'+formatV(stats.fireRate)+'/s</b></div><div>☄ Projectiles <b>'+formatV(stats.shots)+'</b></div><div>➶ Pierce <b>'+formatV(stats.pierce)+'</b></div><div>✦ Range <b>'+formatV(Math.round(stats.velocity*stats.ttl))+'</b></div><div>⚗ Infusions <b>'+formatV(weapon.infusions||0)+'</b></div><small>'+(game.equippedIds.includes(weapon.id)?'Mounted on segment '+(game.equippedIds.indexOf(weapon.id)+1):'In collection · not equipped')+'</small></div></div>':'<div class="forge-weapon-info">Collect four zombie parts and 150 Souls to forge your first automatic weapon.</div>';
+  const mods=MOD_TYPES.map(mod=>{
+   const lv=weapon?modLevel(weapon,mod.id):0;
+   const price=weapon?forgeModPrice(weapon,mod.id):{souls:24,parts:1};
+   const disabled=!weapon||game.points<price.souls||(game.parts[mod.part]||0)<price.parts;
+   return '<div class="forge-mod"><div class="forge-mod-top"><span class="forge-mod-icon">'+mod.symbol+'</span><span class="forge-mod-title">'+escForge(mod.name)+'</span><span class="forge-mod-level">Lv '+formatV(lv)+' ∞</span></div><div class="forge-mod-desc">'+escForge(mod.desc)+'</div><button data-mod="'+mod.id+'" '+(disabled?'disabled':'')+'>+ UPGRADE · ☠ '+formatV(price.souls)+' Souls · '+price.parts+' '+escForge(mod.part)+'</button></div>';
+  }).join('');
+  const items=game.weapons.map(w=>{
+   const slot=game.equippedIds.indexOf(w.id);
+   return '<div class="forge-weapon-card '+(slot>=0?'equipped ':'')+(w.id===game.equippedId?'selected-weapon':'')+'"><img alt="Necro weapon" src="'+FORGE_GUN_ART+'" style="filter:hue-rotate('+((w.design||0)*29)+'deg)"><div><strong>'+escForge(w.name)+'</strong><small>Rank '+formatV((w.tier||0)+1)+' · '+formatV(w.infusions||0)+' Infusions · '+MOD_TYPES.reduce((n,m)=>n+modLevel(w,m.id),0)+' mod upgrades'+(slot>=0?' · SEGMENT '+(slot+1):' · STORED')+'</small><button data-equip="'+escForge(w.id)+'">'+(slot===selectedForgeSlot?'✓ IN SELECTED SLOT':'⚔ EQUIP TO SLOT '+(selectedForgeSlot+1))+'</button><button data-focus="'+escForge(w.id)+'">🔧 MODS</button></div></div>';
+  }).join('');
+  show('<section class="forge-shell"><div class="forge-head"><h1>☠ ZOMBIE FORGE</h1><button class="cta alt" id="closeForge">✕ CLOSE</button></div><div class="forge-ledger"><span>☠ Souls <b>'+formatV(game.points)+'</b></span><span>🦴 Parts <b>'+formatV(partTotal())+'</b></span><span>🏆 Bosses <b>'+formatV(game.bossKills)+'</b></span><span>⚔ Guns <b>'+game.weapons.length+'</b></span><span>🐍 Equipped <b>'+used+' / '+slotCapacity()+'</b></span></div><div class="forge-panel"><h2>🐍 Snake Arsenal — One Gun Per Body Segment</h2><p class="forge-note">Each segment provides one permanent weapon slot. Growing longer unlocks more. Select a segment below, then choose a gun from your collection to mount it.</p><div class="forge-slot-grid">'+slots+'</div><div class="forge-slot-actions"><span>Selected: Segment '+(selectedForgeSlot+1)+(mounted?' · Equipped':' · Empty')+'</span><button id="unequipSlot" '+(mounted?'':'disabled')+'>UNEQUIP SLOT</button></div><div class="forge-action-status" role="status">'+escForge(forgeMessage)+'</div></div><div class="forge-columns"><div><div class="forge-panel"><h2>🧟 Illustrated Zombie Parts</h2><div class="forge-partgrid">'+parts+'</div><p class="forge-note">Real zombie drops fuel your auto-weapon crafting. No Boss Cores required.</p></div><div class="forge-panel"><h2>⚔ Permanent Weapon Collection</h2><div class="forge-list">'+(items||'<p>Defeat zombies and gather parts to build a gun!</p>')+'</div></div></div><div><div class="forge-panel"><h2>🔮 Selected Gun — Stats & Upgrades</h2>'+preview+'<div class="forge-toolbar"><button class="cta" id="forgeCreate" '+(canForge?'':'disabled')+'>⚒ FORGE NEW<br><small>☠ '+forgeCost.souls+' Souls + '+forgeCost.parts+' Parts</small></button><button class="cta alt" id="forgeFuse" '+(canFuse?'':'disabled')+'>⬆ COMBINE RANKS<br><small>☠ '+fuseCost.souls+' Souls + '+fuseCost.parts+' Parts</small></button><button class="cta alt" id="forgeInfuse" '+(canInfuse?'':'disabled')+'>☣ INFUSE<br><small>☠ '+infuseCost.souls+' Souls + '+infuseCost.parts+' Parts</small></button></div></div><div class="forge-panel"><h2>⚡ Gun Mod Laboratory — Unlimited Upgrades ∞</h2><div class="forge-modgrid">'+mods+'</div><p class="forge-note">Every gun mod is permanent on that gun. Combining weapons inherits ALL mod levels. Extreme builds batch visual projectiles for mobile performance while preserving effective firing output.</p></div></div></div></section>');
+  $('forgeCreate').onclick=()=>{if(forgeNew())renderForge()};
+  $('forgeFuse').onclick=()=>{if(fuseWeapons())renderForge()};
+  $('forgeInfuse').onclick=()=>{if(infuseWeapon())renderForge()};
+  $('unequipSlot').onclick=()=>{if(unequipWeaponSlot(selectedForgeSlot)){forgeMessage='Segment '+(selectedForgeSlot+1)+' is empty. Select any gun to equip it.';sound.effect('click');renderForge()}};
+  md.querySelectorAll('[data-slot]').forEach(b=>b.onclick=()=>{selectedForgeSlot=Number(b.dataset.slot);forgeMessage='Segment '+(selectedForgeSlot+1)+' selected. Tap EQUIP on the gun you want here.';renderForge()});
+  md.querySelectorAll('[data-mod]').forEach(b=>b.onclick=()=>{if(upgradeWeaponMod(b.dataset.mod)){forgeMessage='Gun mod upgraded permanently!';renderForge()}});
+  md.querySelectorAll('[data-focus]').forEach(b=>b.onclick=()=>{game.equippedId=b.dataset.focus;saveForge();forgeMessage='Selected gun for infusions and upgrades.';renderForge()});
+  md.querySelectorAll('[data-equip]').forEach(b=>b.onclick=()=>{if(equipWeaponInSlot(b.dataset.equip,selectedForgeSlot)){forgeMessage='✓ Gun equipped to snake segment '+(selectedForgeSlot+1)+' and ready to fire in dungeon rooms!';sound.effect('upgrade');renderForge()}});
+  $('closeForge').onclick=closeForge;
 }
 $('forge').onclick=openForge;
 $('menuForge').onclick=openForge;
@@ -720,7 +806,7 @@ $('restorefile').onchange=async e=>{const file=e.target.files?.[0];if(!file)retu
       if(!prev||Number(w.tier)>Number(prev.tier)||Number(w.infusions)>Number(prev.infusions))weaponsById.set(w.id,w);
      }
    }
-   applyForge(game,{parts,weapons:[...weaponsById.values()],bossCores:Math.max(old.bossCores||0,Number(incoming.bossCores)||0),bossKills:Math.max(old.bossKills||0,Number(incoming.bossKills)||0),equippedId:old.equippedId||incoming.equippedId});
+   applyForge(game,{parts,weapons:[...weaponsById.values()],bossCores:Math.max(old.bossCores||0,Number(incoming.bossCores)||0),bossKills:Math.max(old.bossKills||0,Number(incoming.bossKills)||0),equippedId:old.equippedId||incoming.equippedId,equippedIds:Array.isArray(old.equippedIds)&&old.equippedIds.some(Boolean)?old.equippedIds:incoming.equippedIds});
    saveForge();
  }
 if(!savePermanent(merged,mergedPoints))throw Error('Local save unavailable');game.points=mergedPoints;$('save-status').textContent='✅ Backup merged. Souls, zombie parts, weapons and gun mods restored. Restart only to apply higher base upgrade levels.'}catch(err){$('save-status').textContent='⚠ Restore failed: '+err.message}finally{e.target.value=''}};

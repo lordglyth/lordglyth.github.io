@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover"><title>Snake with Zombies v1.4 — Separate Action Skill Tree</title><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover"><title>Snake with Zombies v1.5 — Mobile Canvas HUD and Unlimited Skills</title><style>
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#090611;color:#f6eaff;font-family:system-ui,'Trebuchet MS',sans-serif;overflow-x:hidden}button{touch-action:manipulation;cursor:pointer;font:inherit}.wrap{max-width:1140px;margin:auto;padding:8px}.head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:3px 0 8px}.logo{font-weight:1000;letter-spacing:.03em;font-size:clamp(18px,3.7vw,29px);line-height:1;color:#bdff24;text-shadow:2px 2px #542174,0 0 12px #69f00066}.logo span{color:#ff3458}.tag{font-size:11px;color:#dcb9ef;border:1px solid #723e93;padding:5px 8px;background:#170b25}.hud{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-bottom:6px}.metric{background:linear-gradient(#211133,#0d0818);border:1px solid #753e92;text-align:center;padding:6px 2px;color:#ddacf4;font-size:10px;font-weight:bold}.metric b{display:block;font-size:clamp(13px,2.4vw,21px);color:#b8ff30;text-shadow:0 0 6px #a5ff3a55}.stage{position:relative;border:3px ridge #8f4fb5;background:#151020;box-shadow:0 0 30px #6817a750;overflow:hidden}canvas{display:block;width:100%;height:auto;aspect-ratio:3/2;image-rendering:pixelated;touch-action:none}.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#090714d9;padding:14px;z-index:4}.overlay.hidden{display:none}.modal{width:min(530px,96%);max-height:95%;overflow-y:auto;background:linear-gradient(150deg,#21102f,#0c0a16);border:3px solid #b564d2;box-shadow:0 0 0 3px #09040e,0 0 25px #a82eff77;padding:16px;text-align:center}.modal h1{font-size:clamp(24px,5vw,42px);color:#b9ff2c;text-shadow:3px 3px #401f68;margin:0 0 10px}.modal p{color:#ead7f1;line-height:1.35}.cta{border:2px solid #beff2b;background:#253b12;color:#eaffd6;box-shadow:inset 0 0 14px #8cff2d44;font-weight:900;padding:12px 20px;margin:6px;border-radius:2px;min-height:46px}.cta:active{transform:scale(.97)}.cta.alt{border-color:#d377fc;background:#29133b}.shopgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.schooltabs{display:flex;gap:5px;overflow-x:auto;padding:3px 1px 10px;margin:5px 0}.schooltabs button{border:1px solid #8847a6;background:#1a0b26;color:#f3dbff;padding:8px;white-space:nowrap;font-size:11px}.schooltabs button.selected{border-color:#b8ff32;background:#284018;color:#dfffba}.shopitem{background:#180b25;border:1px solid #8847a6;color:#eee;padding:8px;text-align:left;min-height:105px}.shopitem b{color:#baff32;display:block}.shopitem small{display:block;color:#dbbce9;margin:5px 0}.shopitem:disabled{opacity:.48}.shopitem .cost{font-weight:bold;color:#f8c1ff}.forgeitem{background:linear-gradient(120deg,#1f102e,#111925);border:1px solid #8548aa;padding:10px;margin:8px 0;text-align:left}.forgeitem strong{display:block;color:#b8ff30}.forgeitem small{display:block;color:#e9caed;margin:4px 0}.forgeitem.equipped{border:2px solid #baff34}.forgebalance{display:flex;justify-content:space-around;flex-wrap:wrap;gap:6px;background:#261335;padding:10px;color:#f7cf6e;font-weight:900}.forgeactions{display:flex;justify-content:center;flex-wrap:wrap;gap:5px}.bossalert{color:#ffbd6f;font-weight:900}.choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.pick{text-align:left;background:#1a0c2a;border:2px solid #874caa;color:white;padding:11px 8px;min-height:112px}.pick strong{display:block;color:#bcff39;font-size:14px;margin-bottom:6px}.pick small{color:#d6bde0}.pick:active{border-color:#b9ff2c}.meta{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:6px}.help{color:#bca5d0;font-size:12px}.controlrow{display:flex;gap:8px;align-items:center;justify-content:space-between;margin:10px auto 0;max-width:760px}.dpad{display:grid;grid-template-columns:repeat(3,52px);grid-template-rows:repeat(3,47px);gap:2px}.dpad button{font-weight:1000;font-size:20px;background:#271438;color:#e4c5ff;border:2px solid #925ac0;border-radius:7px}.dpad button[data-dir="0,-1"]{grid-column:2;grid-row:1}.dpad button[data-dir="-1,0"]{grid-column:1;grid-row:2}.dpad button[data-dir="0,1"]{grid-column:2;grid-row:3}.dpad button[data-dir="1,0"]{grid-column:3;grid-row:2}.actions{display:flex;gap:8px}.actions button{background:#260f3a;color:#fff;border:2px solid #ab66c2;border-radius:7px;min-width:70px;min-height:55px;padding:7px;font-weight:900}.actions .bite{border-color:#b8ff30;background:#315015}.xpbar{height:9px;background:#1d0b2b;border:1px solid #9a55ba;margin-top:5px}.xpbar div{height:100%;width:0;background:linear-gradient(90deg,#9223d5,#e793ff);transition:width .2s}.caption{margin-top:10px;font-size:12px;color:#bb9dcb;line-height:1.5}.caption b{color:#b9ff29}.audio-row{display:grid;grid-template-columns:86px 1fr 47px;align-items:center;gap:10px;margin:14px 0;text-align:left}.audio-row input{width:100%;accent-color:#b9ff30;min-height:28px}.audio-row output{color:#dcaeff;text-align:right}.audio-check{display:flex;align-items:center;justify-content:center;gap:8px;margin:9px 0}.audio-note{font-size:12px;color:#d5b5e5}.dangerbtn{border-color:#ff557b!important;color:#ffd5df!important;background:#36101f!important}@media(max-width:600px){.hud{grid-template-columns:repeat(3,1fr)}.stage canvas{aspect-ratio:640/426}.choices,.shopgrid{grid-template-columns:1fr}.pick{min-height:68px}.modal{padding:11px}.dpad{grid-template-columns:repeat(3,45px);grid-template-rows:repeat(3,44px)}.actions button{min-width:60px;font-size:12px}.meta{font-size:11px}}@media(max-height:650px){.dpad{grid-template-columns:repeat(3,40px);grid-template-rows:repeat(3,38px)}.controlrow{margin-top:3px}.modal{padding:9px}}
 
 /* ZOMBIE FORGE 1.0 — Illustrated item assets, touch-first panels, permanent Soul-driven mods. */
@@ -74,7 +74,20 @@
 .action-branches{display:flex;gap:5px;overflow-x:auto;padding:9px 0;scrollbar-color:#8541b6 #1e0f28}.action-branches button{border:1px solid #7b4f9d;background:#22122f;color:#e2c7f3;padding:10px;min-height:42px;white-space:nowrap;font-size:11px;font-weight:900}.action-branches button.picked{background:#32491f;color:#eaffbf;border-color:#baff3f}
 .action-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.action-card{border:2px solid var(--skillcolor,#a460e0);background:linear-gradient(145deg,#2a1836,#100c1d);min-width:0;padding:10px}.action-card.branch-locked{opacity:.7;border-color:#6e5878}.action-card-head{display:flex;align-items:center;gap:9px}.action-icon{font-size:28px;color:var(--skillcolor);min-width:35px}.action-card-head h3{font-size:14px;color:#f4e6ff;margin:0}.action-card-head small{font-size:10px;color:#cbadda}.action-card-head strong{margin-left:auto;white-space:nowrap;font-size:11px;color:#baff40}.action-card p{margin:7px 0;font-size:12px;min-height:28px;color:#eddbf0}.action-stats{color:#c9b6d9;font-size:10px;margin-bottom:8px}.action-buttons{display:grid;grid-template-columns:1fr 1fr;gap:7px}.action-buttons button{min-height:39px;background:#314722;color:#efffd3;border:1px solid #baff46;padding:6px;font-weight:bold;font-size:11px}.action-buttons button.equip{background:#3f245e;border-color:#bf88eb;color:#f9e9ff}.action-buttons button:disabled{opacity:.45;filter:grayscale(1)}.action-note{font-size:12px;color:#bfc0a6}
 @media(max-width:630px){.overlay.skill-tree-open .modal{padding:6px;height:99dvh;max-height:99dvh}.action-head{top:-6px}.action-head p{display:none}.action-head .cta{font-size:11px;padding:7px}.action-loadout-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.action-loadout-slot{min-height:45px}.action-grid{grid-template-columns:1fr}.action-card p{min-height:0}.action-card{padding:8px}.action-branches button{padding:8px}}
-</style></head><body><div class="wrap"><div class="head"><div class="logo">SNAKE <small style="color:white;font-size:.55em">WITH</small> <span>ZOMBIES</span></div><div class="tag">PLAYABLE ALPHA v1.4 · 72-SKILL CONSTELLATION</div></div><div class="hud"><div class="metric">AREA<b id="area">SAFE HUB</b></div><div class="metric">WAVE<b id="wave">1</b></div><div class="metric">LEVEL<b id="level">1</b></div><div class="metric">KILLS<b id="kills">0</b></div><div class="metric">SCORE<b id="score">0</b></div><div class="metric">HEALTH<b id="hp">100</b></div><div class="metric">TIME<b id="time">0:00</b></div><div class="metric">SOULS<b id="points">0</b></div><div class="metric">BOSSES<b id="cores">0</b></div><div class="metric">WEAPON SLOTS<b id="weaponhud">0 / 5</b></div></div><div class="stage"><canvas id="game" width="640" height="426" aria-label="Playable snake versus zombie battlefield"></canvas><div id="overlay" class="overlay"><div class="modal" id="modal"><h1>SNAKE WITH ZOMBIES</h1><p>Begin in a SAFE HUB, enter the dungeon gate, and explore an infinite screen-by-screen roguelike. Zombies drop permanent Souls and parts. Shop purchases and mutations survive death, restart, and new runs. Progress saves locally.</p><p>Move: arrows / WASD / on-canvas touch pad / drag on the battlefield. Your snake automatically bites nearby zombies. Tap <b>VENOM</b> as often as you like: zero cooldown. Collect purple upgrade-point drops to buy permanent powers and procedural stock. Cross a doorway to scroll into another dungeon room. Return west from the entrance room to reach the safe hub.</p><button class="cta" id="start">▶ PLAY GAME</button><button class="cta alt" id="menuShop">✦ UPGRADE SHOP</button><button class="cta alt" id="menuForge">⚒ ZOMBIE FORGE</button><button class="cta alt" id="menuAudio">♫ AUDIO SETTINGS</button><p style="font-size:11px">This is an actual playable arcade alpha, not the previous simulation screen.</p></div></div></div><div class="xpbar"><div id="xp"></div></div><div class="meta"><div class="help" id="status">🧬 Survive the horde and evolve forever</div><div style="display:flex;gap:6px"><button class="cta" style="padding:6px 13px;min-height:37px" id="shop">✦ UPGRADE SHOP</button><button class="cta alt" style="padding:6px 13px;min-height:37px" id="forge">⚒ ZOMBIE FORGE</button><button class="cta alt" style="padding:6px 13px;min-height:37px" id="audioSettings">♫ AUDIO</button><button class="cta alt" style="padding:6px 13px;min-height:37px" id="pause">Ⅱ PAUSE</button></div></div><div class="controlrow"><div class="dpad"><button data-dir="0,-1" aria-label="up">▲</button><button data-dir="-1,0" aria-label="left">◀</button><button data-dir="1,0" aria-label="right">▶</button><button data-dir="0,1" aria-label="down">▼</button></div><div class="help" style="text-align:center">DODGE THE HORDE<br>DEVOUR THE DEAD<br><b>UNLIMITED MUTATIONS ∞</b></div><div class="actions"><button id="venom" class="bite">☣<br>VENOM</button></div></div><div class="meta"><div class="help" id="save-status">💾 Permanent upgrades are saved on this device</div><button class="cta alt" id="backup" style="padding:6px 13px;min-height:37px">⇩ BACKUP UPGRADES</button><button class="cta alt" id="restore" style="padding:6px 13px;min-height:37px">⇧ RESTORE BACKUP</button><input type="file" id="restorefile" accept="application/json,.json" hidden></div><div class="caption"><b>Visual development note:</b> Original illustrated environment quality is restored; static zombie and fake pickup art has been removed. Real loot and enemies are rendered by gameplay. Zombie parts, Souls, and Soul-powered gun mods persist across deaths. No external resources or server required.</div></div><script>
+
+/* v1.5: true fullscreen responsive game CANVAS; the original canvas renders the world,
+   the visible mobile canvas crops with a following camera and draws touch HUD inside it. */
+#mobileView{display:none}
+@media (pointer:coarse), (max-width:750px){
+ html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
+ .wrap{width:100vw;max-width:none;height:100dvh;height:100svh;height:100dvh;margin:0;padding:0;overflow:hidden}
+ .wrap>.stage{width:100%;height:100%;max-width:none;margin:0;border:0;box-shadow:none;overflow:hidden}
+ .stage #game{display:none!important}
+ .stage #mobileView{display:block;width:100%;height:100%;aspect-ratio:auto;image-rendering:pixelated;touch-action:none}
+ .stage>.overlay{padding:7px;max-height:100%}
+ .stage>.overlay .modal{max-height:min(94dvh,900px)}
+}
+</style></head><body><div class="wrap"><div class="head"><div class="logo">SNAKE <small style="color:white;font-size:.55em">WITH</small> <span>ZOMBIES</span></div><div class="tag">PLAYABLE ALPHA v1.4 · 72-SKILL CONSTELLATION</div></div><div class="hud"><div class="metric">AREA<b id="area">SAFE HUB</b></div><div class="metric">WAVE<b id="wave">1</b></div><div class="metric">LEVEL<b id="level">1</b></div><div class="metric">KILLS<b id="kills">0</b></div><div class="metric">SCORE<b id="score">0</b></div><div class="metric">HEALTH<b id="hp">100</b></div><div class="metric">TIME<b id="time">0:00</b></div><div class="metric">SOULS<b id="points">0</b></div><div class="metric">BOSSES<b id="cores">0</b></div><div class="metric">WEAPON SLOTS<b id="weaponhud">0 / 5</b></div></div><div class="stage"><canvas id="game" width="640" height="426" aria-label="Playable snake versus zombie battlefield"></canvas><canvas id="mobileView" width="640" height="800" aria-label="Responsive on-canvas mobile game, movement and action skill controls"></canvas><div id="overlay" class="overlay"><div class="modal" id="modal"><h1>SNAKE WITH ZOMBIES</h1><p>Begin in a SAFE HUB, enter the dungeon gate, and explore an infinite screen-by-screen roguelike. Zombies drop permanent Souls and parts. Shop purchases and mutations survive death, restart, and new runs. Progress saves locally.</p><p>Move: arrows / WASD / on-canvas touch pad / drag on the battlefield. Your snake automatically bites nearby zombies. Tap <b>VENOM</b> as often as you like: zero cooldown. Collect purple upgrade-point drops to buy permanent powers and procedural stock. Cross a doorway to scroll into another dungeon room. Return west from the entrance room to reach the safe hub.</p><button class="cta" id="start">▶ PLAY GAME</button><button class="cta alt" id="menuShop">✦ UPGRADE SHOP</button><button class="cta alt" id="menuForge">⚒ ZOMBIE FORGE</button><button class="cta alt" id="menuAudio">♫ AUDIO SETTINGS</button><p style="font-size:11px">This is an actual playable arcade alpha, not the previous simulation screen.</p></div></div></div><div class="xpbar"><div id="xp"></div></div><div class="meta"><div class="help" id="status">🧬 Survive the horde and evolve forever</div><div style="display:flex;gap:6px"><button class="cta" style="padding:6px 13px;min-height:37px" id="shop">✦ UPGRADE SHOP</button><button class="cta alt" style="padding:6px 13px;min-height:37px" id="forge">⚒ ZOMBIE FORGE</button><button class="cta alt" style="padding:6px 13px;min-height:37px" id="audioSettings">♫ AUDIO</button><button class="cta alt" style="padding:6px 13px;min-height:37px" id="pause">Ⅱ PAUSE</button></div></div><div class="controlrow"><div class="dpad"><button data-dir="0,-1" aria-label="up">▲</button><button data-dir="-1,0" aria-label="left">◀</button><button data-dir="1,0" aria-label="right">▶</button><button data-dir="0,1" aria-label="down">▼</button></div><div class="help" style="text-align:center">DODGE THE HORDE<br>DEVOUR THE DEAD<br><b>UNLIMITED MUTATIONS ∞</b></div><div class="actions"><button id="venom" class="bite">☣<br>VENOM</button></div></div><div class="meta"><div class="help" id="save-status">💾 Permanent upgrades are saved on this device</div><button class="cta alt" id="backup" style="padding:6px 13px;min-height:37px">⇩ BACKUP UPGRADES</button><button class="cta alt" id="restore" style="padding:6px 13px;min-height:37px">⇧ RESTORE BACKUP</button><input type="file" id="restorefile" accept="application/json,.json" hidden></div><div class="caption"><b>Visual development note:</b> Original illustrated environment quality is restored; static zombie and fake pickup art has been removed. Real loot and enemies are rendered by gameplay. Zombie parts, Souls, and Soul-powered gun mods persist across deaths. No external resources or server required.</div></div><script>
 // v1.2.1: Playable even when a file preview blocks Web Storage. When storage
 // is available, it is the original persistent store with unchanged save keys.
 // When denied by a restricted viewer, an in-memory fallback avoids a crash;
@@ -1103,8 +1116,155 @@ function drawCanvasHUD(){
  hudText(actionMsgUntil>actionTime?actionMsg:'9 SKILLS · 1–9  |  VENOM: SPACE',359,262,9,actionMsgUntil>actionTime?'#ffe1a5':'#c7e3a8','bold','center');
  ctx.restore();
 }
-function canvasPoint(e){const r=c.getBoundingClientRect();return {x:(e.clientX-r.left)*CW/r.width,y:(e.clientY-r.top)*CH/r.height}}
-function canvasHudHit(p){return canvasHudActions.find(a=>p.x>=a.x&&p.y>=a.y&&p.x<a.x+a.w&&p.y<a.y+a.h)}
+
+// v1.5 MOBILE DISPLAY SYSTEM. The simulation and approved world art stay at 640x426.
+// A separate, visible canvas provides a player-following camera with two layouts.
+// All movement, menu, Venom and nine skill slots remain pixel-drawn and hit-tested.
+const mobileView=document.getElementById('mobileView');
+const mobileCtx=mobileView.getContext('2d',{alpha:false});
+mobileCtx.imageSmoothingEnabled=false;
+let mobileActions=[],mobileMenuOpen=false,mobilePortrait=true;
+function mobileActive(){return window.matchMedia('(pointer:coarse), (max-width:750px)').matches}
+function mobileSize(){
+ if(!mobileActive())return;
+ const rect=mobileView.getBoundingClientRect();
+ if(rect.width<2||rect.height<2)return;
+ const height=Math.max(230,Math.min(2200,Math.round(CW*rect.height/rect.width)));
+ if(mobileView.width!==CW||mobileView.height!==height){
+   mobileView.width=CW;mobileView.height=height;mobileCtx.imageSmoothingEnabled=false;
+ }
+ mobilePortrait=height>520;
+}
+function mPanel(x,y,w,h,bg='#110b21e8',edge='#9458bf'){
+ mobileCtx.fillStyle=bg;mobileCtx.fillRect(x,y,w,h);
+ mobileCtx.strokeStyle=edge;mobileCtx.lineWidth=1.5;mobileCtx.strokeRect(x+.75,y+.75,w-1.5,h-1.5);
+}
+function mText(t,x,y,size=12,color='#f2e8ff',align='left'){
+ mobileCtx.font='bold '+size+'px monospace';mobileCtx.textAlign=align;mobileCtx.textBaseline='middle';
+ mobileCtx.fillStyle='#08040f';mobileCtx.fillText(String(t),x+1,y+1);
+ mobileCtx.fillStyle=color;mobileCtx.fillText(String(t),x,y);
+}
+function mButton(id,x,y,w,h,label,action){
+ mobileActions.push({id,x,y,w,h,label,action});
+}
+function drawMButton(a){
+ const slot=a.id.startsWith('slot-'),dir=['up','left','down','right'].includes(a.id);
+ const sk=slot?ACTION_SKILL_BY_ID[actionState.slots[Number(a.id.slice(5))]]:null;
+ const cd=sk?Math.max(0,(actionCd[sk.id]||0)-actionTime):0;
+ const edge=sk?sk.color:a.id==='venom'?'#baff39':dir?'#b77de8':'#a866e0';
+ mPanel(a.x,a.y,a.w,a.h,a.id==='venom'?'#29450be9':'#1d1030e7',edge);
+ if(slot){
+   const num=Number(a.id.slice(5));
+   mText(num+1,a.x+5,a.y+8,9,'#e6c5fc');
+   if(!sk){mText('·',a.x+a.w/2,a.y+a.h/2+1,mobilePortrait?22:19,'#8d709d','center');return;}
+   if(cd>.02){
+     mobileCtx.fillStyle='#090614cf';mobileCtx.fillRect(a.x+2,a.y+2,a.w-4,a.h-4);
+     mText((cd<10?cd.toFixed(1):Math.ceil(cd))+'s',a.x+a.w/2,a.y+a.h/2+1,mobilePortrait?17:15,'#ffe0ee','center');
+   }else{
+     mText(sk.icon,a.x+a.w/2,a.y+(mobilePortrait?21:15),mobilePortrait?23:19,sk.color,'center');
+     if(mobilePortrait)mText(sk.name.slice(0,11),a.x+a.w/2,a.y+a.h-9,9,'#ebd8f8','center');
+   }
+   return;
+ }
+ if(a.id==='venom'){
+   mText('☣',a.x+a.w/2,a.y+a.h*.37,mobilePortrait?38:26,'#baff39','center');
+   mText('VENOM',a.x+a.w/2,a.y+a.h*.76,mobilePortrait?14:11,'#efffcd','center');
+ }else mText(a.label,a.x+a.w/2,a.y+a.h/2,dir?(mobilePortrait?29:23):(mobilePortrait?15:12),'#f5deff','center');
+}
+function drawMobileGame(){
+ mobileSize();
+ const H=mobileView.height,W=CW,portrait=mobilePortrait;
+ mobileCtx.save();mobileCtx.setTransform(1,0,0,1,0,0);
+ mobileCtx.fillStyle='#0c0718';mobileCtx.fillRect(0,0,W,H);
+ // A continuous world view: zoom and camera follow player, never distort art.
+ // Portrait reserves a compact header and bottom HUD; landscape overlays controls.
+ const top=portrait?74:0;
+ const bottom=portrait?236:0;
+ const sceneH=Math.max(80,H-top-bottom);
+ const zoom=Math.max(W/CW,sceneH/CH);
+ const sw=Math.min(CW,W/zoom),sh=Math.min(CH,sceneH/zoom);
+ const px=fx(game.player.x),py=fy(game.player.y);
+ const sx=Math.max(0,Math.min(CW-sw,px-sw/2)),sy=Math.max(0,Math.min(CH-sh,py-sh/2));
+ mobileCtx.drawImage(c,sx,sy,sw,sh,0,top,W,sceneH);
+ mobileActions=[];
+ if(started&&mode!=='menu'){
+   const area=game.region==='hub'?'SAFE HUB':'DUNGEON '+game.roomX+','+game.roomY;
+   const hp=Math.max(0,Math.min(1,game.player.hp/Math.max(1,game.player.maxHp)));
+   if(portrait){
+     mobileCtx.fillStyle='#0b0619f4';mobileCtx.fillRect(0,0,W,74);
+     mobileCtx.fillStyle='#b762df';mobileCtx.fillRect(0,72,W,2);
+     mText('SNAKE / ZOMBIES',8,15,14,'#baff39');
+     mText('LV '+game.level+'  WAVE '+game.wave,8,40,12,'#e9bdff');
+     mText('HP',222,15,12,'#ffb8cc');
+     mPanel(255,7,166,16,'#280e2a','#da7e9e');
+     mobileCtx.fillStyle=hp>.38?'#93ed43':'#fa5276';mobileCtx.fillRect(258,10,160*hp,10);
+     mText(Math.ceil(game.player.hp)+'/'+Math.ceil(game.player.maxHp),336,35,11,'#ffffff','center');
+     mText('SOULS '+formatV(game.points),631,15,13,'#e9b7ff','right');
+     mText('K '+formatV(game.kills)+'  B '+formatV(game.bossKills)+'  AP '+formatV(actionState.points),631,42,11,'#c8ff61','right');
+     mText(area,8,58,10,'#ffe3a6');
+     mobileCtx.fillStyle='#32123c';mobileCtx.fillRect(8,66,624,4);
+     mobileCtx.fillStyle='#c368f1';mobileCtx.fillRect(8,66,624*Math.max(0,Math.min(1,game.xp/Math.max(1,game.nextXp))),4);
+     const base=H-207;
+     mPanel(0,H-236,W,236,'#0a0616f0','#642c89');
+     mText(actionMsgUntil>actionTime?actionMsg:game.player.segments.length+' SEGMENTS · '+(game.equippedIds||[]).filter(Boolean).length+' GUNS · 9 ACTION SKILLS',W/2,H-221,11,'#dce9b9','center');
+     mButton('up',83,base+13,72,56,'▲',()=>setDir(0,-1));
+     mButton('left',7,base+73,72,57,'◀',()=>setDir(-1,0));
+     mButton('down',83,base+73,72,57,'▼',()=>setDir(0,1));
+     mButton('right',159,base+73,72,57,'▶',()=>setDir(1,0));
+     for(let i=0;i<9;i++){
+       const col=i%3,row=Math.floor(i/3);
+       mButton('slot-'+i,250+col*91,base+11+row*55,86,51,'' ,()=>castSlot(i));
+     }
+     mButton('venom',531,base+26,103,125,'VENOM',()=>venom());
+     mButton('menu',7,80,88,43,'☰ MENU',()=>{mobileMenuOpen=!mobileMenuOpen});
+   }else{
+     mobileCtx.fillStyle='#0a051af0';mobileCtx.fillRect(0,0,W,42);
+     mobileCtx.fillStyle='#9b51bf';mobileCtx.fillRect(0,40,W,2);
+     mText('SNAKE / Z',7,13,13,'#baff39');
+     mText('HP '+Math.ceil(game.player.hp)+'/'+Math.ceil(game.player.maxHp),119,13,11,'#f7bbcf');
+     mPanel(237,7,96,11,'#280e2a','#c7579d');
+     mobileCtx.fillStyle=hp>.38?'#96eb3b':'#fa5276';mobileCtx.fillRect(240,10,90*hp,5);
+     mText('LV '+game.level,347,13,11,'#baff39');
+     mText('W '+game.wave,433,13,11,'#f2b375');
+     mText('SOULS '+formatV(game.points),634,13,11,'#edc8ff','right');
+     mText(area,7,31,10,'#ffe2a6');
+     mText('K '+formatV(game.kills)+' B '+formatV(game.bossKills)+' AP '+formatV(actionState.points)+'  GUNS '+(game.equippedIds||[]).filter(Boolean).length+'/'+slotCapacity(),633,31,10,'#c7fa71','right');
+     mButton('menu',7,47,83,39,'☰ MENU',()=>{mobileMenuOpen=!mobileMenuOpen});
+     // Single world scene with controls hugging the edges; 9 large skill hit areas.
+     const b=H-93;
+     mButton('up',65,b-58,49,49,'▲',()=>setDir(0,-1));
+     mButton('left',13,b-7,49,49,'◀',()=>setDir(-1,0));
+     mButton('down',65,b-7,49,49,'▼',()=>setDir(0,1));
+     mButton('right',117,b-7,49,49,'▶',()=>setDir(1,0));
+     for(let i=0;i<9;i++){
+       const col=i<5?i:i-5,row=i<5?0:1;
+       mButton('slot-'+i,190+(row===1?32:0)+col*65,H-91+row*44,62,41,'',()=>castSlot(i));
+     }
+     mButton('venom',553,H-95,79,90,'VENOM',()=>venom());
+   }
+   for(const a of mobileActions)drawMButton(a);
+   if(mobileMenuOpen){
+     const yy=portrait?127:48,hh=portrait?47:38;
+     const choices=[
+      ['shop','✦ SHOP',()=>openShop()],
+      ['forge','⚒ FORGE',()=>openForge()],
+      ['skills','✦ SKILLS',()=>openSkillTree()],
+      ['pause','Ⅱ PAUSE',()=>showPause()]
+     ];
+     for(let i=0;i<choices.length;i++){
+       const [id,label,fn]=choices[i];
+       mButton('menu-'+id,7,yy+i*(hh+3),179,hh,label,()=>{mobileMenuOpen=false;fn()});
+     }
+     // Dark backing for the open menu, rendered on top of the world and hotbar.
+     mPanel(5,yy-3,183,choices.length*(hh+3)+3,'#0b0619f5','#bb70d9');
+     for(const a of mobileActions.slice(-choices.length))drawMButton(a);
+   }
+ }else mobileMenuOpen=false;
+ mobileCtx.restore();
+}
+
+function canvasPoint(e){const target=e.currentTarget||c,r=target.getBoundingClientRect();return {x:(e.clientX-r.left)*target.width/r.width,y:(e.clientY-r.top)*target.height/r.height}}
+function canvasHudHit(p){return (mobileActive()?mobileActions:canvasHudActions).slice().reverse().find(a=>p.x>=a.x&&p.y>=a.y&&p.x<a.x+a.w&&p.y<a.y+a.h)}
 // Preserve keyboard/gamepad-like arrows and WASD even without visible HTML buttons.
 window.onkeydown=e=>{let dirs={ArrowUp:[0,-1],KeyW:[0,-1],ArrowDown:[0,1],KeyS:[0,-1],ArrowLeft:[-1,0],KeyA:[-1,0],ArrowRight:[1,0],KeyD:[1,0]};dirs.KeyS=[0,1];
  if(dirs[e.code]){e.preventDefault();setDir(...dirs[e.code])}
@@ -1116,7 +1276,7 @@ let canvasDrag=null;
 c.onpointerdown=e=>{
  if(!started||paused)return;
  e.preventDefault();const p=canvasPoint(e);
- try{c.setPointerCapture(e.pointerId)}catch{}
+ try{(e.currentTarget||c).setPointerCapture(e.pointerId)}catch{}
  const hit=canvasHudHit(p);
  if(hit){canvasDrag={pointerId:e.pointerId,usedHUD:true};hit.action();return}
  canvasDrag={pointerId:e.pointerId,usedHUD:false,x:e.clientX,y:e.clientY,dragged:false};
@@ -1132,7 +1292,9 @@ c.onpointerup=e=>{
  canvasDrag=null;
 };
 c.onpointercancel=()=>{canvasDrag=null};
+mobileView.onpointerdown=c.onpointerdown;mobileView.onpointermove=c.onpointermove;mobileView.onpointerup=c.onpointerup;mobileView.onpointercancel=c.onpointercancel;
+window.addEventListener('resize',mobileSize,{passive:true});
 window.addEventListener('pagehide',()=>{saveForge();saveActionState();savePermanent(game.permanentLevels,game.points)});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&game.forgeDirty)saveForge()});
-let lastKills=0,lastHp=0,lastLvl=1,lastPoints=0;function loop(now){sound.tick();const dt=Math.min(.044,Math.max(0,(now-last)/1000||.016));last=now;t+=dt;if(started&&!paused){tickActionEffects(dt);const pointsBefore=game.points;if(transfer){transfer.progress=Math.min(1,transfer.progress+dt/.38);if(transfer.progress>=1)transfer=null;}else{game.update(dt);checkDoorways();}actionAwardProgress();if(game.points!==pointsBefore){sound.effect('point');savePermanent(game.permanentLevels,game.points)}if(game.forgeDirty && (Math.floor(t*2)%3===0))saveForge();if(game.kills>lastKills)sound.effect('kill');if(game.player.hp<lastHp-1)sound.effect('hurt');lastKills=game.kills;lastHp=game.player.hp;lastLvl=game.level;lastPoints=game.points;for(const q of attackFlashes)q.life-=dt*2.5;attackFlashes=attackFlashes.filter(q=>q.life>0);if(game.pendingUpgrades>0)upgrade();if(game.dead){sound.effect('dead');showDeath()}let z=game.region==='hub'?'city':roomBiome(game.roomX,game.roomY);if(activeZone!==z)terrainMake(z)}display();drawActionEffects();drawCanvasHUD();updHud();requestAnimationFrame(loop)}requestAnimationFrame(loop);
+let lastKills=0,lastHp=0,lastLvl=1,lastPoints=0;function loop(now){sound.tick();const dt=Math.min(.044,Math.max(0,(now-last)/1000||.016));last=now;t+=dt;if(started&&!paused){tickActionEffects(dt);const pointsBefore=game.points;if(transfer){transfer.progress=Math.min(1,transfer.progress+dt/.38);if(transfer.progress>=1)transfer=null;}else{game.update(dt);checkDoorways();}actionAwardProgress();if(game.points!==pointsBefore){sound.effect('point');savePermanent(game.permanentLevels,game.points)}if(game.forgeDirty && (Math.floor(t*2)%3===0))saveForge();if(game.kills>lastKills)sound.effect('kill');if(game.player.hp<lastHp-1)sound.effect('hurt');lastKills=game.kills;lastHp=game.player.hp;lastLvl=game.level;lastPoints=game.points;for(const q of attackFlashes)q.life-=dt*2.5;attackFlashes=attackFlashes.filter(q=>q.life>0);if(game.pendingUpgrades>0)upgrade();if(game.dead){sound.effect('dead');showDeath()}let z=game.region==='hub'?'city':roomBiome(game.roomX,game.roomY);if(activeZone!==z)terrainMake(z)}display();drawActionEffects();if(mobileActive())drawMobileGame();else drawCanvasHUD();updHud();requestAnimationFrame(loop)}requestAnimationFrame(loop);
 </script></body></html>

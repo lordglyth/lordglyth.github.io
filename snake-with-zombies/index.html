@@ -1218,29 +1218,32 @@ function drawMobileGame(){
      mButton('venom',531,base+26,103,125,'VENOM',()=>venom());
      mButton('menu',7,80,88,43,'☰ MENU',()=>{mobileMenuOpen=!mobileMenuOpen});
    }else{
-     mobileCtx.fillStyle='#0a051af0';mobileCtx.fillRect(0,0,W,42);
-     mobileCtx.fillStyle='#9b51bf';mobileCtx.fillRect(0,40,W,2);
-     mText('SNAKE / Z',7,13,13,'#baff39');
-     mText('HP '+Math.ceil(game.player.hp)+'/'+Math.ceil(game.player.maxHp),119,13,11,'#f7bbcf');
-     mPanel(237,7,96,11,'#280e2a','#c7579d');
-     mobileCtx.fillStyle=hp>.38?'#96eb3b':'#fa5276';mobileCtx.fillRect(240,10,90*hp,5);
-     mText('LV '+game.level,347,13,11,'#baff39');
-     mText('W '+game.wave,433,13,11,'#f2b375');
-     mText('SOULS '+formatV(game.points),634,13,11,'#edc8ff','right');
-     mText(area,7,31,10,'#ffe2a6');
-     mText('K '+formatV(game.kills)+' B '+formatV(game.bossKills)+' AP '+formatV(actionState.points)+'  GUNS '+(game.equippedIds||[]).filter(Boolean).length+'/'+slotCapacity(),633,31,10,'#c7fa71','right');
-     mButton('menu',7,47,83,39,'☰ MENU',()=>{mobileMenuOpen=!mobileMenuOpen});
-     // Single world scene with controls hugging the edges; 9 large skill hit areas.
-     const b=H-93;
-     mButton('up',65,b-58,49,49,'▲',()=>setDir(0,-1));
-     mButton('left',13,b-7,49,49,'◀',()=>setDir(-1,0));
-     mButton('down',65,b-7,49,49,'▼',()=>setDir(0,1));
-     mButton('right',117,b-7,49,49,'▶',()=>setDir(1,0));
+     // v1.5.1: a genuinely compact landscape HUD. Keep all nine skills visible
+     // in ONE in-canvas hotbar row; do not obscure the playfield with two rows.
+     mobileCtx.fillStyle='#0a051aeb';mobileCtx.fillRect(0,0,W,29);
+     mobileCtx.fillStyle='#9b51bf';mobileCtx.fillRect(0,28,W,1);
+     mText('SNAKE / Z',7,9,11,'#baff39');
+     mText('HP '+Math.ceil(game.player.hp)+'/'+Math.ceil(game.player.maxHp),104,9,10,'#f7bbcf');
+     mPanel(197,4,99,9,'#280e2a','#c7579d');
+     mobileCtx.fillStyle=hp>.38?'#96eb3b':'#fa5276';mobileCtx.fillRect(200,7,93*hp,3);
+     mText('LV '+game.level,308,9,10,'#baff39');
+     mText('W '+game.wave,376,9,10,'#f2b375');
+     mText('SOULS '+formatV(game.points),633,9,10,'#edc8ff','right');
+     mText(area,7,22,9,'#ffe2a6');
+     mText('K '+formatV(game.kills)+' B '+formatV(game.bossKills)+' AP '+formatV(actionState.points)+'  GUNS '+(game.equippedIds||[]).filter(Boolean).length+'/'+slotCapacity(),633,22,9,'#c7fa71','right');
+     mButton('menu',7,34,72,30,'☰ MENU',()=>{mobileMenuOpen=!mobileMenuOpen});
+     // All bottom controls share a shallow strip: expanded central world view.
+     mobileCtx.fillStyle='#0a061288';mobileCtx.fillRect(154,H-52,W-154,52);
+     // Compact D-pad clustered in the lower-left corner.
+     mButton('up',58,H-85,41,39,'▲',()=>setDir(0,-1));
+     mButton('left',11,H-43,41,39,'◀',()=>setDir(-1,0));
+     mButton('down',58,H-43,41,39,'▼',()=>setDir(0,1));
+     mButton('right',105,H-43,41,39,'▶',()=>setDir(1,0));
+     // Nine simultaneous action-skill hitboxes. No HTML controls or second row.
      for(let i=0;i<9;i++){
-       const col=i<5?i:i-5,row=i<5?0:1;
-       mButton('slot-'+i,190+(row===1?32:0)+col*65,H-91+row*44,62,41,'',()=>castSlot(i));
+       mButton('slot-'+i,158+i*42,H-46,40,42,'',()=>castSlot(i));
      }
-     mButton('venom',553,H-95,79,90,'VENOM',()=>venom());
+     mButton('venom',540,H-52,94,48,'VENOM',()=>venom());
    }
    for(const a of mobileActions)drawMButton(a);
    if(mobileMenuOpen){

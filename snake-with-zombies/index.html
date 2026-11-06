@@ -998,3 +998,133 @@ function tickActionEffects(dt){actionTime+=dt;
   }
   if(actionTime>=fx.next){const targets=actionNearby(fx.x,fx.y,fx.r);
    if(fx.kind==='decoy'){for(const e of targets)e.fearUntil=0;}
+   else if(fx.kind==='pull'){for(const e of targets){const d=Math.hypot(fx.x-e.x,fx.y-e.y)||1;e.x+=((fx.x-e.x)/d)*Math.min(d,dt*300);e.y+=((fx.y-e.y)/d)*Math.min(d,dt*300)}damageActionTargets(targets,sk,fx.rank,.25)}
+   else if(fx.kind==='trap'){if(targets.length){damageActionTargets(targets,sk,fx.rank,1.4);fx.until=actionTime;actionFlash(fx.x,fx.y,fx.r,sk.color,.8)}}
+   else if(fx.kind==='wall'){const nearWall=targets.filter(e=>Math.abs((e.x-fx.x)*fx.dx+(e.y-fx.y)*fx.dy)<48);damageActionTargets(nearWall,sk,fx.rank,.55)}
+   else damageActionTargets(targets,sk,fx.rank,.29);
+   fx.next=actionTime+.38;
+  }
+ }
+ actionEffects=actionEffects.filter(fx=>{if(fx.until>actionTime)return true;
+  if(fx.kind==='buff'){game.player.damage/=fx.dm;game.player.speed/=fx.sm}return false});
+ actionFx=actionFx.filter(fx=>fx.until>actionTime);
+}
+function drawActionEffects(){ctx.save();ctx.setTransform(1,0,0,1,0,0);
+ for(const fx of actionEffects){const sk=ACTION_SKILL_BY_ID[fx.id];if(!sk||!['zone','wall','trap','pull','decoy','summon'].includes(fx.kind))continue;
+  const alpha=Math.max(.15,Math.min(.65,(fx.until-actionTime)*.15));ctx.globalAlpha=alpha;ctx.strokeStyle=sk.color;ctx.lineWidth=3;
+  if(fx.kind==='summon'){ctx.fillStyle=sk.color;ctx.beginPath();ctx.arc(fx.x,fx.y,11,0,6.283);ctx.fill();ctx.stroke();ctx.globalAlpha=1;continue}
+  ctx.beginPath();ctx.arc(fx.x,fx.y,Math.min(fx.r,fx.kind==='wall'?60:fx.r),0,6.283);ctx.stroke();
+  if(fx.kind==='wall'){ctx.beginPath();ctx.moveTo(fx.x-fx.dy*fx.r*.6,fx.y+fx.dx*fx.r*.6);ctx.lineTo(fx.x+fx.dy*fx.r*.6,fx.y-fx.dx*fx.r*.6);ctx.stroke()}
+ }
+ for(const fx of actionFx){ctx.globalAlpha=Math.max(0,(fx.until-actionTime)/.7);ctx.strokeStyle=fx.color;ctx.lineWidth=4;ctx.beginPath();ctx.arc(fx.x,fx.y,Math.min(fx.r,260)*(1-Math.max(0,fx.until-actionTime)*.22),0,6.283);ctx.stroke()}
+ ctx.restore();}
+
+// v1.3 INTERNAL HUD SYSTEM: all combat HUD panels, buttons, and touch hit areas
+// live in the SAME GAME CANVAS as the artwork. DOM is for full menus/file input only.
+function setDir(dx,dy){if(!started||paused)return;game.setDirection(dx,dy)}
+const canvasHudActions=[
+ ...Array.from({length:9},(_,i)=>({id:'slot-'+i,x:211+(i%3)*103,y:274+Math.floor(i/3)*48,w:97,h:43,action:()=>castSlot(i)})),
+ {id:'shop',x:188,y:61,w:107,h:35,label:'✦ SHOP',action:()=>openShop()},
+ {id:'forge',x:299,y:61,w:107,h:35,label:'⚒ FORGE',action:()=>openForge()},
+ {id:'skills',x:410,y:61,w:107,h:35,label:'✦ SKILLS',action:()=>openSkillTree()},
+ {id:'pause',x:521,y:61,w:107,h:35,label:'Ⅱ PAUSE',action:()=>showPause()},
+ {id:'up',x:82,y:294,w:60,h:56,label:'▲',action:()=>setDir(0,-1)},
+ {id:'left',x:20,y:354,w:60,h:56,label:'◀',action:()=>setDir(-1,0)},
+ {id:'down',x:82,y:354,w:60,h:56,label:'▼',action:()=>setDir(0,1)},
+ {id:'right',x:144,y:354,w:60,h:56,label:'▶',action:()=>setDir(1,0)},
+ {id:'venom',x:526,y:336,w:104,h:78,label:'☣ VENOM',action:()=>venom()}
+];
+function hudPanel(x,y,w,h,bg='#110b21d9',edge='#9650b7'){
+ ctx.fillStyle=bg;ctx.fillRect(x,y,w,h);ctx.strokeStyle=edge;ctx.lineWidth=1.5;ctx.strokeRect(x+.75,y+.75,w-1.5,h-1.5);
+}
+function hudText(t,x,y,size=12,color='#f5e8ff',weight='bold',align='left'){
+ ctx.textAlign=align;ctx.textBaseline='middle';ctx.fillStyle='#0c0718';ctx.font=weight+' '+size+'px monospace';ctx.fillText(t,x+1,y+1);ctx.fillStyle=color;ctx.fillText(t,x,y);
+}
+function drawCanvasHUD(){
+ if(!started||mode==='menu')return;
+ ctx.save();ctx.setTransform(1,0,0,1,0,0);
+ // Top heads-up display: health and experience are visible at a glance.
+ ctx.fillStyle='#0c0619eb';ctx.fillRect(0,0,CW,57);
+ ctx.fillStyle='#8d4cb4';ctx.fillRect(0,56,CW,1);
+ const area=game.region==='hub'?'SAFE HUB':'DUNGEON '+game.roomX+','+game.roomY;
+ hudText('SNAKE // ZOMBIES',9,13,12,'#bcff39');
+ hudText(area,9,32,11,'#e3b9fa');
+ hudText('HP',192,13,11,'#ff98a8');
+ hudPanel(216,7,132,14,'#2a1125','#d65c90');
+ const hpPercent=Math.max(0,Math.min(1,game.player.hp/Math.max(1,game.player.maxHp)));
+ ctx.fillStyle=hpPercent>.4?'#93ec42':'#ff5278';ctx.fillRect(219,10,126*hpPercent,8);
+ hudText(Math.ceil(game.player.hp)+'/'+Math.ceil(game.player.maxHp),282,29,11,'#f7e9ff','bold','center');
+ hudText('LV '+game.level,364,13,12,'#baff39');
+ hudText('WAVE '+game.wave,454,13,12,'#ffb86c');
+ hudText('SOULS '+formatV(game.points),632,13,12,'#e7b4ff','bold','right');
+ hudText('KILLS '+formatV(game.kills),365,32,11,'#e0c7f1');
+ hudText('BOSS '+formatV(game.bossKills),477,32,11,'#fabbad');
+ hudText('SCORE '+formatV(game.score),632,32,11,'#e3ddff','bold','right');
+ hudText('AP '+formatV(actionState.points),632,42,9,'#caff45','bold','right');
+ // Experience progress and current armed segment count.
+ ctx.fillStyle='#30153f';ctx.fillRect(7,47,450,5);
+ ctx.fillStyle='#ba61e9';ctx.fillRect(7,47,450*Math.max(0,Math.min(1,game.xp/Math.max(1,game.nextXp))),5);
+ ctx.fillStyle='#c8e67b';ctx.fillRect(7,47,3,5);
+ hudText('GUNS '+(game.equippedIds||[]).filter(Boolean).length+'/'+slotCapacity(),632,49,10,'#baff39','bold','right');
+ hudPanel(7,61,175,35,'#170b2ce8','#713d98');
+ hudText(game.region==='hub'?'EAST GATE → DUNGEON':'EXPLORE • SURVIVE',15,74,10,'#baff39');
+ hudText(Math.floor(game.time/60)+':'+String(Math.floor(game.time%60)).padStart(2,'0')+'  /  '+game.player.segments.length+' SEGMENTS',15,88,9,'#e7c4ef');
+ // Pixel-arcade touch controls, drawn onto the battlefield, with genuine hitboxes.
+ for(const a of canvasHudActions){
+  const slot=a.id.startsWith('slot-');
+  if(slot){
+   const n=Number(a.id.slice(5)),id=actionState.slots[n],sk=ACTION_SKILL_BY_ID[id],rank=sk?actionRank(id):0,left=sk?Math.max(0,(actionCd[id]||0)-actionTime):0;
+   hudPanel(a.x,a.y,a.w,a.h,sk?'#211333eb':'#130b1de0',sk?sk.color:'#6d557d');
+   hudText(String(n+1),a.x+8,a.y+10,10,'#d9c0f3');
+   if(sk){
+     hudText(sk.icon,a.x+26,a.y+21,19,sk.color,'bold','center');
+     hudText(sk.name.length>13?sk.name.slice(0,12)+'…':sk.name,a.x+62,a.y+26,9,'#f3eaff','bold','center');
+     hudText('R'+rank,a.x+87,a.y+10,9,'#baff40','bold','right');
+     if(left>.03){ctx.fillStyle='#0a0617d5';ctx.fillRect(a.x+3,a.y+3,a.w-6,a.h-6);
+      hudText(Math.ceil(left)+'s',a.x+a.w/2,a.y+23,16,'#ffc4eb','bold','center')}
+   }else hudText('EMPTY',a.x+a.w/2,a.y+24,11,'#95819d','bold','center');
+   continue;
+  }
+  const battle=a.id==='venom',direction=['up','down','left','right'].includes(a.id);
+  const edge=battle?'#baff39':direction?'#bb83e0':'#a35ad3';
+  hudPanel(a.x,a.y,a.w,a.h,battle?'#27420de8':direction?'#251333d5':'#21112edc',edge);
+  if(battle){ctx.fillStyle='#9cd43a';ctx.fillRect(a.x+5,a.y+5,a.w-10,3);hudText('☣',a.x+a.w/2,a.y+27,28,'#baff39','bold','center');hudText('VENOM',a.x+a.w/2,a.y+57,13,'#eaffd0','bold','center')}
+  else hudText(a.label,a.x+a.w/2,a.y+a.h/2,direction?26:12,direction?'#f4d5ff':'#e9ddf4','bold','center');
+ }
+ hudPanel(211,253,297,19,'#0c071ae7','#6e3e8e');
+ hudText(actionMsgUntil>actionTime?actionMsg:'9 SKILLS · 1–9  |  VENOM: SPACE',359,262,9,actionMsgUntil>actionTime?'#ffe1a5':'#c7e3a8','bold','center');
+ ctx.restore();
+}
+function canvasPoint(e){const r=c.getBoundingClientRect();return {x:(e.clientX-r.left)*CW/r.width,y:(e.clientY-r.top)*CH/r.height}}
+function canvasHudHit(p){return canvasHudActions.find(a=>p.x>=a.x&&p.y>=a.y&&p.x<a.x+a.w&&p.y<a.y+a.h)}
+// Preserve keyboard/gamepad-like arrows and WASD even without visible HTML buttons.
+window.onkeydown=e=>{let dirs={ArrowUp:[0,-1],KeyW:[0,-1],ArrowDown:[0,1],KeyS:[0,-1],ArrowLeft:[-1,0],KeyA:[-1,0],ArrowRight:[1,0],KeyD:[1,0]};dirs.KeyS=[0,1];
+ if(dirs[e.code]){e.preventDefault();setDir(...dirs[e.code])}
+ if(/^Digit[1-9]$/.test(e.code)||/^Numpad[1-9]$/.test(e.code)){e.preventDefault();castSlot(Number(e.code.at(-1))-1)}
+ if(e.code==='Space'||e.code==='Digit0'){e.preventDefault();venom()}
+ if(e.code==='KeyK'){e.preventDefault();if(mode==='playing')openSkillTree()}
+ if(e.code==='Escape'){e.preventDefault();if(mode==='skilltree')treeReturn();else if(started&&!paused)showPause();else if(mode==='pause'){paused=false;mode='playing';hide()}}};
+let canvasDrag=null;
+c.onpointerdown=e=>{
+ if(!started||paused)return;
+ e.preventDefault();const p=canvasPoint(e);
+ try{c.setPointerCapture(e.pointerId)}catch{}
+ const hit=canvasHudHit(p);
+ if(hit){canvasDrag={pointerId:e.pointerId,usedHUD:true};hit.action();return}
+ canvasDrag={pointerId:e.pointerId,usedHUD:false,x:e.clientX,y:e.clientY,dragged:false};
+};
+c.onpointermove=e=>{
+ if(!canvasDrag||canvasDrag.pointerId!==e.pointerId||canvasDrag.usedHUD||!started||paused)return;
+ let dx=e.clientX-canvasDrag.x,dy=e.clientY-canvasDrag.y;
+ if(Math.hypot(dx,dy)>15){canvasDrag.dragged=true;setDir(dx,dy)}
+};
+c.onpointerup=e=>{
+ if(!canvasDrag||canvasDrag.pointerId!==e.pointerId)return;
+ if(!canvasDrag.usedHUD&&!canvasDrag.dragged&&started&&!paused){venom()}
+ canvasDrag=null;
+};
+c.onpointercancel=()=>{canvasDrag=null};
+window.addEventListener('pagehide',()=>{saveForge();saveActionState();savePermanent(game.permanentLevels,game.points)});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&game.forgeDirty)saveForge()});
+let lastKills=0,lastHp=0,lastLvl=1,lastPoints=0;function loop(now){sound.tick();const dt=Math.min(.044,Math.max(0,(now-last)/1000||.016));last=now;t+=dt;if(started&&!paused){tickActionEffects(dt);const pointsBefore=game.points;if(transfer){transfer.progress=Math.min(1,transfer.progress+dt/.38);if(transfer.progress>=1)transfer=null;}else{game.update(dt);checkDoorways();}actionAwardProgress();if(game.points!==pointsBefore){sound.effect('point');savePermanent(game.permanentLevels,game.points)}if(game.forgeDirty && (Math.floor(t*2)%3===0))saveForge();if(game.kills>lastKills)sound.effect('kill');if(game.player.hp<lastHp-1)sound.effect('hurt');lastKills=game.kills;lastHp=game.player.hp;lastLvl=game.level;lastPoints=game.points;for(const q of attackFlashes)q.life-=dt*2.5;attackFlashes=attackFlashes.filter(q=>q.life>0);if(game.pendingUpgrades>0)upgrade();if(game.dead){sound.effect('dead');showDeath()}let z=game.region==='hub'?'city':roomBiome(game.roomX,game.roomY);if(activeZone!==z)terrainMake(z)}display();drawActionEffects();drawCanvasHUD();updHud();requestAnimationFrame(loop)}requestAnimationFrame(loop);
+</script></body></html>
